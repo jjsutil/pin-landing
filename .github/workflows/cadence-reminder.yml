@@ -1,0 +1,74 @@
+# bootflower — weekly maintenance-cadence watchdog.
+# Reads .claude/maintenance-schedule.md; if any periodic task is overdue, opens (or
+# updates — never duplicates) a reminder issue in this repo listing what's overdue.
+# Seeded by repo-bootstrap; updated only via workflow-sync (rule 9).
+name: cadence-reminder
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Compute overdue tasks
+        id: overdue
+        run: |
+          SCHEDULE=".claude/maintenance-schedule.md"
+          [ -f "$SCHEDULE" ] || { echo "no schedule file"; exit 0; }
+          NOW=$(date +%s)
+          OVERDUE=""
+          # table rows: | task | cadence | last_run |
+          while IFS='|' read -r _ task cadence last _; do
+            task=$(echo "$task" | xargs); cadence=$(echo "$cadence" | xargs); last=$(echo "$last" | xargs)
+            [ -z "$task" ] || [ "$task" = "task" ] || [[ "$task" == -* ]] && continue
+            case "$cadence" in
+              weekly)  LIMIT=$((7*86400)) ;;
+              monthly) LIMIT=$((30*86400)) ;;
+              *) continue ;; # on-change / on-tag are event-driven, not clock-driven
+            esac
+            if [ "$last" = "never" ] || [ -z "$last" ]; then
+              OVERDUE="$OVERDUE\n- **$task** ($cadence) — never run"
+            else
+              LAST_TS=$(date -d "$last" +%s 2>/dev/null || echo 0)
+              AGE=$((NOW - LAST_TS))
+              if [ "$AGE" -gt "$LIMIT" ]; then
+                DAYS=$((AGE / 86400))
+                OVERDUE="$OVERDUE\n- **$task** ($cadence) — last run $last, ${DAYS}d ago"
+              fi
+            fi
+          done < <(grep -E '^\|' "$SCHEDULE")
+          if [ -n "$OVERDUE" ]; then
+            {
+              echo "list<<EOF"
+              echo -e "$OVERDUE"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update reminder issue
+        if: steps.overdue.outputs.list != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="chore: maintenance tasks overdue"
+          BODY="The following periodic tasks from \`.claude/maintenance-schedule.md\` are overdue:
+          ${{ steps.overdue.outputs.list }}
+
+          Run each with its skill (e.g. \`repo-health-report\`, \`todo-harvester\`) and update \`last_run\`.
+          _Opened automatically by cadence-reminder.yml (bootflower)._"
+          EXISTING=$(gh issue list --state open --label bootflower-cadence --json number --jq '.[0].number' || true)
+          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            gh issue edit "$EXISTING" --body "$BODY"
+          else
+            gh label create bootflower-cadence --color BFD4F2 --description "bootflower maintenance reminders" 2>/dev/null || true
+            gh issue create --title "$TITLE" --body "$BODY" --label bootflower-cadence
+          fi

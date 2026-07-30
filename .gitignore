@@ -10,3 +10,7 @@ npm-debug.log*
 
 # OS / editor
 .DS_Store
+
+# bootflower
+.obsidian/
+.bootflower-cache/
