@@ -1,0 +1,28 @@
+# bootflower — machine enforcement of the mechanical pre-PR gate subset (rule 1).
+# Seeded by repo-bootstrap; updated only via workflow-sync (rule 9).
+name: check-gates
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full history: gitleaks, commitlint and merge-base need it
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Run gate checks
+        env:
+          CI: "true"
+        run: |
+          chmod +x scripts/check-gates.sh
+          scripts/check-gates.sh --base "origin/${{ github.base_ref }}"
