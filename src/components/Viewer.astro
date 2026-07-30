@@ -1,0 +1,87 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<div class="viewer rise" style="--d:290ms" id="viewer">
+  <div class="viewer-side">
+    <div class="viewer-head">
+      <span>{d['viewer.date']}</span>
+      <span>{d['viewer.count']}</span>
+    </div>
+    <div class="hit on" data-p="0" tabindex="0" role="button" aria-pressed="true">
+      <span class="pg">{d['viewer.p1']}</span>
+      <p set:html={d['viewer.h1']} />
+    </div>
+    <div class="hit" data-p="1" tabindex="0" role="button" aria-pressed="false">
+      <span class="pg">{d['viewer.p2']}</span>
+      <p set:html={d['viewer.h2']} />
+    </div>
+    <div class="hit" data-p="2" tabindex="0" role="button" aria-pressed="false">
+      <span class="pg">{d['viewer.p3']}</span>
+      <p set:html={d['viewer.h3']} />
+    </div>
+    <div class="viewer-head" style="padding-top:.125rem">
+      <span>{d['viewer.more']}</span>
+      <span class="pg">↓</span>
+    </div>
+  </div>
+
+  <div class="viewer-side">
+    <div class="viewer-head">
+      <span>{d['viewer.tome']}</span>
+      <span class="pg" id="pv-num">{d['viewer.p1']}</span>
+    </div>
+
+    <div class="page on">
+      <p class="page-no">312</p>
+      <div class="ln md"></div>
+      <div class="ln sm"></div>
+      <div class="ln-box">
+        <span class="ln-tag">{d['viewer.tag']}</span>
+        <div class="ln md"></div>
+        <div class="ln xs" style="margin-top:7px"></div>
+      </div>
+      <div class="ln md"></div>
+      <div class="ln sm"></div>
+      <div class="ln xs"></div>
+      <div class="ln md"></div>
+      <p class="hand">{d['viewer.hand']}</p>
+    </div>
+
+    <div class="page">
+      <p class="page-no">{d['viewer.pn2']}</p>
+      <div class="ln sm"></div>
+      <div class="ln md"></div>
+      <div class="ln md"></div>
+      <div class="ln xs"></div>
+      <div class="ln-box">
+        <span class="ln-tag">{d['viewer.tag2']}</span>
+        <div class="ln sm"></div>
+      </div>
+      <div class="ln md"></div>
+      <div class="ln sm"></div>
+    </div>
+
+    <div class="page">
+      <p class="page-no">{d['viewer.pn3']}</p>
+      <div class="ln-box">
+        <span class="ln-tag">{d['viewer.tag3']}</span>
+        <div class="ln md"></div>
+        <div class="ln sm" style="margin-top:7px"></div>
+      </div>
+      <div class="ln md"></div>
+      <div class="ln xs"></div>
+      <div class="ln md"></div>
+      <div class="ln sm"></div>
+      <div class="ln md"></div>
+      <p class="hand">{d['viewer.hand2']}</p>
+    </div>
+  </div>
+</div>

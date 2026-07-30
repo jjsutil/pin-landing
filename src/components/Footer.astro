@@ -1,0 +1,45 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-col" style="gap:1.125rem">
+        <a class="mark" href="#top" aria-label="pin">pin<span class="dot">.</span></a>
+        <p class="foot-tag">{d['foot.blurb']}</p>
+        <p class="aside" style="max-width:22rem" set:html={d['foot.blurb2']} />
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h">{d['foot.h1']}</p>
+        <a href="#empezar" data-mode="case">{d['foot.l1']}</a>
+        <a href="#empezar" data-mode="early">{d['foot.l2']}</a>
+        <a href="#top">{d['foot.l4']}</a>
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h">{d['foot.h2']}</p>
+        <a href="#top">{d['foot.l5']}</a>
+        <a href="#top">{d['foot.l6']}</a>
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h">{d['foot.h3']}</p>
+        <address set:html={d['foot.addr']} />
+        <a href="mailto:hola@pin.legal">hola@pin.legal</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>{d['foot.copy']}</span>
+    </div>
+  </div>
+</footer>
