@@ -1,0 +1,54 @@
+---
+import { T, MAIL_PH, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<div class="view-access">
+  <div class="wrap access">
+    <div class="card">
+      <span class="badge">{d['ac.badge']}</span>
+
+      <div class="stack-s">
+        <h1>{d['ac.h1']}</h1>
+        <p class="aside" style="font-size:.9375rem;line-height:1.55" set:html={d['ac.lede']} />
+      </div>
+
+      <ul class="perks">
+        <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p1']}</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p2']}</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p3']}</span></li>
+      </ul>
+
+      <form id="access-form" novalidate>
+        <div class="fields">
+          <div class="field">
+            <label for="ac-mail">{d['ac.mail']}</label>
+            <input id="ac-mail" type="email" autocomplete="email" placeholder={MAIL_PH[lang]} required />
+          </div>
+          <div class="field">
+            <label for="ac-role">{d['ac.role']}</label>
+            <select id="ac-role" required>
+              <option>{d['f.role.1']}</option>
+              <option>{d['f.role.2']}</option>
+              <option>{d['f.role.3']}</option>
+              <option>{d['f.role.4']}</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:.875rem">
+          <button class="btn" type="submit">{d['ac.submit']}</button>
+          <span class="aside">{d['ac.note']}</span>
+        </div>
+        <div class="done" id="ac-done" role="status" style="margin-top:1.25rem"></div>
+      </form>
+
+      <button class="back" type="button" id="back">{d['ac.back']}</button>
+    </div>
+  </div>
+</div>

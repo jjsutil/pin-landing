@@ -1,0 +1,27 @@
+---
+import { T, type Lang } from '../i18n';
+import Viewer from './Viewer.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow rise">{d['hero.eyebrow']}</p>
+      <h1 class="rise" style="--d:70ms">{d['hero.h1']}</h1>
+      <p class="lede rise" style="--d:140ms" set:html={d['hero.lede']} />
+      <div class="actions rise" style="--d:210ms">
+        <a class="btn" href="#empezar" data-mode="case">{d['hero.cta1']}</a>
+        <a class="btn btn-ghost" href="#empezar" data-mode="early">{d['hero.cta2']}</a>
+      </div>
+    </div>
+
+    <Viewer lang={lang} />
+  </div>
+</section>

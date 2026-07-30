@@ -1,0 +1,38 @@
+---
+import { T, FIG_10000, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section>
+  <div class="wrap stack-s">
+    <p class="eyebrow rise">{d['figs.eyebrow']}</p>
+    <h2 class="rise" style="--d:70ms">{d['figs.h2']}</h2>
+  </div>
+
+  <div class="wrap" style="padding-inline:0">
+    <div class="figures" id="figures" style="margin-top:3.75rem">
+      <div class="fig rise">
+        <p class="fig-n"><span class="n" data-n="10000">{FIG_10000[lang]}</span><span class="u">{d['figs.u1']}</span></p>
+        <p class="fig-t">{d['figs.t1']}</p>
+      </div>
+      <div class="fig rise" style="--d:90ms">
+        <p class="fig-n"><span class="n" data-n="17">17</span><span class="u">ms</span></p>
+        <p class="fig-t">{d['figs.t2']}</p>
+      </div>
+      <div class="fig rise" style="--d:180ms">
+        <p class="fig-n"><span class="n" data-n="100">100</span><span class="u">%</span></p>
+        <p class="fig-t">{d['figs.t3']}</p>
+      </div>
+      <div class="fig rise" style="--d:270ms">
+        <p class="fig-n"><span class="n" data-n="2">2</span><span class="u">×</span></p>
+        <p class="fig-t">{d['figs.t4']}</p>
+      </div>
+    </div>
+  </div>
+</section>

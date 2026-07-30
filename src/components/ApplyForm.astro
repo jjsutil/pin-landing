@@ -1,0 +1,72 @@
+---
+import { T, MAIL_PH, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section id="empezar">
+  <div class="wrap stack-l">
+    <div class="stack-s">
+      <h2 class="rise">
+        <span>{d['start.h2']}</span><span class="caret blink" aria-hidden="true"></span>
+      </h2>
+      <p class="lede rise" style="--d:70ms">{d['start.lede']}</p>
+    </div>
+
+    <form class="apply rise" style="--d:140ms" id="apply" novalidate>
+      <div class="segmented" role="group">
+        <button class="seg" type="button" id="seg-causa" aria-pressed="true">{d['seg.case']}</button>
+        <button class="seg" type="button" id="seg-cotiza" aria-pressed="false">{d['seg.early']}</button>
+      </div>
+
+      <div class="mode-info" id="early-info">
+        <p set:html={d['ea.info']} />
+        <ul class="perks">
+          <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p1']}</span></li>
+          <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p2']}</span></li>
+          <li><span class="tick" aria-hidden="true">→</span><span>{d['ea.p3']}</span></li>
+        </ul>
+      </div>
+
+      <div class="fields">
+        <div class="field">
+          <label for="nombre">{d['f.name']}</label>
+          <input id="nombre" type="text" autocomplete="name" placeholder={d['f.name.ph']} required />
+        </div>
+        <div class="field">
+          <label for="correo">{d['f.mail']}</label>
+          <input id="correo" type="email" autocomplete="email" placeholder={MAIL_PH[lang]} required />
+        </div>
+        <div class="field">
+          <label for="rol">{d['f.role']}</label>
+          <select id="rol" required>
+            <option>{d['f.role.1']}</option>
+            <option>{d['f.role.2']}</option>
+            <option>{d['f.role.3']}</option>
+            <option>{d['f.role.4']}</option>
+          </select>
+        </div>
+        <div class="field" id="wrap-size">
+          <label for="size-sel">{d['f.size']}</label>
+          <select id="size-sel" required>
+            <option>{d['f.size.1']}</option>
+            <option selected>{d['f.size.2']}</option>
+            <option>{d['f.size.3']}</option>
+            <option>{d['f.size.4']}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button class="btn" type="submit" id="submit">{d['f.submit']}</button>
+      </div>
+
+      <div class="done" id="done" role="status"></div>
+    </form>
+  </div>
+</section>

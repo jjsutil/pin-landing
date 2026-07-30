@@ -1,0 +1,40 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section class="band-sec">
+  <div class="wrap">
+    <div class="stack-s">
+      <p class="eyebrow rise">{d['tried.eyebrow']}</p>
+      <h2 class="rise" style="--d:70ms">{d['tried.h2']}</h2>
+    </div>
+
+    <div class="quotes">
+      <div class="said rise-x">
+        <q>{d['tried.q1']}</q>
+        <span class="who">{d['tried.w1']}</span>
+      </div>
+      <div class="said rise-x" style="--d:120ms">
+        <q>{d['tried.q2']}</q>
+        <span class="who">{d['tried.w2']}</span>
+      </div>
+      <div class="said rise-x" style="--d:240ms">
+        <q>{d['tried.q3']}</q>
+        <span class="who">{d['tried.w3']}</span>
+      </div>
+      <div class="said rise-x" style="--d:360ms">
+        <q>{d['tried.q4']}</q>
+        <span class="who">{d['tried.w4']}</span>
+      </div>
+    </div>
+
+    <p class="verdict rise" style="--d:150ms" set:html={d['tried.verdict']} />
+  </div>
+</section>

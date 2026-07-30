@@ -1,0 +1,22 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section>
+  <div class="wrap stack">
+    <p class="eyebrow rise">{d['ask.eyebrow']}</p>
+    <h2 class="rise" style="--d:70ms">{d['ask.h2']}</h2>
+    <div class="ask rise" style="--d:150ms" aria-hidden="true">
+      <span class="glyph-ask">&gt;</span>
+      <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
+    </div>
+    <p class="aside rise" style="--d:220ms">{d['ask.aside']}</p>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+---
+import { T, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = T[lang];
+---
+
+<section>
+  <div class="wrap thesis">
+    <div class="stack">
+      <p class="eyebrow rise">{d['thesis.eyebrow']}</p>
+      <h2 class="rise" style="--d:70ms">
+        <span>{d['thesis.h2']}</span>
+        <span class="accent">{d['thesis.h2b']}</span>
+      </h2>
+      <p class="lede rise" style="--d:140ms">{d['thesis.lede']}</p>
+    </div>
+
+    <ul class="points">
+      <li class="point rise" style="--d:120ms">
+        <span class="dot-li" aria-hidden="true"></span>
+        <h3>{d['p1.h']}</h3>
+        <p>{d['p1.b']}</p>
+      </li>
+      <li class="point rise" style="--d:220ms">
+        <span class="dot-li" aria-hidden="true"></span>
+        <h3>{d['p2.h']}</h3>
+        <p>{d['p2.b']}</p>
+      </li>
+      <li class="point rise" style="--d:320ms">
+        <span class="dot-li" aria-hidden="true"></span>
+        <h3>{d['p3.h']}</h3>
+        <p>{d['p3.b']}</p>
+      </li>
+    </ul>
+  </div>
+</section>
