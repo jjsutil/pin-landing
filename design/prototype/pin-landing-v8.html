@@ -1,0 +1,1619 @@
+<title>pin — el expediente completo, respondiendo</title>
+
+<style>
+  /* ============================================================
+     pin · landing
+     Dos temas (sistema por defecto) · dos idiomas (ES / EN)
+     ============================================================ */
+
+  :root {
+    --base:      #FBF8F3;
+    --surface:   #FFFFFF;
+    --elevated:  #FFFFFF;
+    --band:      #F2EDE4;
+
+    --line:      #E3DCD0;
+    --line-soft: #EDE7DC;
+    --line-hard: #C4BBAA;
+
+    --ink:       #1A1714;
+    --ink-muted: #55504A;
+    --ink-faint: #6C665A;
+
+    --accent:      #1B5FA8;
+    --accent-deep: #17518F;
+    --accent-chip: #DCE8F5;
+
+    --ok:   #1F6D46;
+
+    --btn-bg:    #1A1714;
+    --btn-fg:    #FBF8F3;
+    --btn-hover: #000000;
+
+    --shadow:   0 34px 64px -36px rgba(26,23,20,0.34);
+    --shadow-s: 0 2px 4px -2px rgba(26,23,20,0.14);
+
+    --paper:     #FFFFFF;
+    --paper-ink: #26231F;
+    --paper-ln:  #D8D2C6;
+    --paper-no:  #A49C8F;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --base:      #0E1012;
+      --surface:   #15171A;
+      --elevated:  #1A1D21;
+      --band:      #121417;
+
+      --line:      #24272C;
+      --line-soft: #1C1F23;
+      --line-hard: #363B43;
+
+      --ink:       #EDEAE5;
+      --ink-muted: #9BA1A9;
+      --ink-faint: #8A919B;
+
+      --accent:      #93B8E4;
+      --accent-deep: #4C9AF0;
+      --accent-chip: #18293A;
+
+      --ok:   #5FB884;
+
+      --btn-bg:    #EDEAE5;
+      --btn-fg:    #0E1012;
+      --btn-hover: #FFFFFF;
+
+      --shadow:   0 50px 100px -46px rgba(0,0,0,0.92);
+      --shadow-s: 0 2px 6px -2px rgba(0,0,0,0.6);
+
+      --paper:     #F4F2EC;
+      --paper-ink: #2A2723;
+      --paper-ln:  #C9C4BA;
+      --paper-no:  #8C877E;
+
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="light"] {
+    --base: #FBF8F3; --surface: #FFFFFF; --elevated: #FFFFFF; --band: #F2EDE4;
+    --line: #E3DCD0; --line-soft: #EDE7DC; --line-hard: #C4BBAA;
+    --ink: #1A1714; --ink-muted: #55504A; --ink-faint: #6C665A;
+    --accent: #1B5FA8; --accent-deep: #17518F; --accent-chip: #DCE8F5;
+    --ok: #1F6D46;
+    --btn-bg: #1A1714; --btn-fg: #FBF8F3; --btn-hover: #000000;
+    --shadow: 0 34px 64px -36px rgba(26,23,20,0.34);
+    --shadow-s: 0 2px 4px -2px rgba(26,23,20,0.14);
+    --paper: #FFFFFF; --paper-ink: #26231F; --paper-ln: #D8D2C6; --paper-no: #A49C8F;
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    --base: #0E1012; --surface: #15171A; --elevated: #1A1D21; --band: #121417;
+    --line: #24272C; --line-soft: #1C1F23; --line-hard: #363B43;
+    --ink: #EDEAE5; --ink-muted: #9BA1A9; --ink-faint: #8A919B;
+    --accent: #93B8E4; --accent-deep: #4C9AF0; --accent-chip: #18293A;
+    --ok: #5FB884;
+    --btn-bg: #EDEAE5; --btn-fg: #0E1012; --btn-hover: #FFFFFF;
+    --shadow: 0 50px 100px -46px rgba(0,0,0,0.92);
+    --shadow-s: 0 2px 6px -2px rgba(0,0,0,0.6);
+    --paper: #F4F2EC; --paper-ink: #2A2723; --paper-ln: #C9C4BA; --paper-no: #8C877E;
+    color-scheme: dark;
+  }
+
+  :root {
+    --sans: "Helvetica Neue", Helvetica, "Segoe UI", Roboto, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --gutter: clamp(1.25rem, 5vw, 4.5rem);
+    --measure: 33rem;
+    --max: 74rem;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--base);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent-chip); color: var(--ink); }
+  a { color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+
+  section { padding-block: clamp(6rem, 15vh, 10rem); scroll-margin-top: 64px; }
+  section + section { border-top: 1px solid var(--line-soft); }
+
+  /* ---------- tipografía ---------- */
+
+  h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; line-height: 1.05; }
+  h1 { font-size: clamp(2.6rem, 6.4vw, 4.9rem); }
+  h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); }
+  h3 { font-size: 1.0625rem; letter-spacing: -0.012em; }
+  p { margin: 0; }
+
+  .lede {
+    font-size: clamp(1.0625rem, 1.9vw, 1.3125rem);
+    line-height: 1.48;
+    color: var(--ink-muted);
+    max-width: var(--measure);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  .stack   { display: flex; flex-direction: column; gap: 1.5rem; }
+  .stack-s { display: flex; flex-direction: column; gap: 0.875rem; }
+  .stack-l { display: flex; flex-direction: column; gap: 3.5rem; }
+
+  .pg {
+    font-family: var(--mono);
+    font-size: 0.9em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .brand { font-weight: 600; color: var(--accent); letter-spacing: -0.03em; }
+
+  /* ---------- logotipo: palabra + punto azul ---------- */
+
+  .mark {
+    display: inline-flex;
+    align-items: baseline;
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .mark .dot { color: var(--accent); }
+
+  /* ---------- barra ---------- */
+
+  header.bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--base) 88%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; height: 64px; }
+  .bar-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    border: 1px solid var(--line); border-radius: 6px;
+    background: transparent; color: var(--ink-muted);
+    cursor: pointer; transition: color 140ms ease, border-color 140ms ease;
+  }
+
+  .icon-btn:hover { color: var(--ink); border-color: var(--line-hard); }
+  .icon-btn svg { display: block; }
+
+  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; height: 32px; }
+
+  .lang button {
+    border: 0; background: transparent; color: var(--ink-faint);
+    font: inherit; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em;
+    padding-inline: 0.5625rem; cursor: pointer;
+    transition: background 140ms ease, color 140ms ease;
+  }
+
+  .lang button[aria-pressed="true"] { background: var(--band); color: var(--ink); }
+
+  /* ---------- botones ---------- */
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--btn-bg); color: var(--btn-fg);
+    border: 1px solid var(--btn-bg);
+    padding: 0.875rem 1.625rem;
+    border-radius: 7px;
+    font: inherit; font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.012em;
+    text-decoration: none; cursor: pointer;
+    box-shadow: var(--shadow-s);
+    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); background: var(--btn-hover); border-color: var(--btn-hover); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-hard); box-shadow: none; }
+  .btn-ghost:hover { background: var(--band); border-color: var(--ink-faint); color: var(--ink); }
+
+  .btn-sm { padding: 0.5rem 0.9375rem; font-size: 0.8125rem; border-radius: 6px; }
+
+  .aside { font-size: 0.8125rem; color: var(--ink-faint); }
+
+  /* ---------- héroe: texto a la izquierda, visor a la derecha ---------- */
+
+  .hero { padding-block: clamp(4.5rem, 11vh, 7rem) clamp(5rem, 12vh, 7.5rem); }
+
+  .hero-grid { display: grid; gap: clamp(3rem, 6vw, 5rem); align-items: center; }
+
+  @media (min-width: 64rem) { .hero-grid { grid-template-columns: 0.88fr 1.24fr; } }
+
+  .hero-copy { display: flex; flex-direction: column; gap: 1.625rem; }
+
+  .hero h1 { font-size: clamp(2.4rem, 5.2vw, 4rem); }
+
+  /* ---------- visor ---------- */
+
+  .viewer {
+    display: grid; grid-template-columns: 1fr;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  @media (min-width: 42rem) { .viewer { grid-template-columns: 1fr 1fr; } }
+
+  .viewer-side { padding: 2rem 1.875rem; display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
+  .viewer-side + .viewer-side { border-top: 1px solid var(--line); }
+
+  @media (min-width: 42rem) {
+    .viewer-side + .viewer-side { border-top: 0; border-left: 1px solid var(--line); }
+  }
+
+  .viewer-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  .hit {
+    border-left: 2px solid var(--line-hard);
+    padding: 0.5625rem 0 0.5625rem 1.0625rem;
+    display: flex; flex-direction: column; gap: 0.4375rem;
+    font-size: 0.9375rem; line-height: 1.5; color: var(--ink-muted);
+    cursor: pointer;
+    transition: background 220ms ease, border-color 220ms ease, color 220ms ease;
+  }
+
+  .hit.on {
+    border-left-color: var(--accent);
+    color: var(--ink);
+    background: linear-gradient(90deg, var(--accent-chip), transparent 74%);
+  }
+
+  .hit mark {
+    background: transparent; color: var(--ink);
+    box-shadow: inset 0 -0.55em 0 var(--accent-chip);
+    padding-inline: 1px;
+  }
+
+  .page {
+    background: var(--paper);
+    border-radius: 6px;
+    padding: 1.5rem 1.375rem;
+    display: none;
+    flex-direction: column; gap: 0.6875rem;
+    min-height: 20rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.16), inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+
+  .page.on { display: flex; animation: pgIn 300ms ease; }
+
+  @keyframes pgIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .page-no { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.12em; color: var(--paper-no); text-align: right; }
+
+  .ln { height: 7px; border-radius: 1px; background: var(--paper-ln); }
+  .ln.sm { width: 62%; } .ln.md { width: 86%; } .ln.xs { width: 41%; }
+
+  .ln-box {
+    position: relative; padding: 7px; margin-inline: -7px; border-radius: 3px;
+    outline: 1.5px solid #17518F;
+    background: rgba(23, 81, 143, 0.12);
+  }
+
+  .ln-box .ln { background: var(--paper-ink); }
+
+  .ln-tag {
+    position: absolute; top: -10px; right: 7px;
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.08em;
+    background: #17518F; color: #FFFFFF;
+    padding: 1px 6px; border-radius: 2px; font-weight: 600;
+  }
+
+  .hand { font-family: var(--serif); font-style: italic; font-size: 0.8125rem; color: var(--paper-no); transform: rotate(-1.1deg); margin-top: 0.25rem; }
+
+  /* ---------- cifras ---------- */
+
+  .figures { display: grid; gap: 1px; background: var(--line-soft); border-block: 1px solid var(--line-soft); }
+
+  @media (min-width: 34rem) { .figures { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 60rem) { .figures { grid-template-columns: repeat(4, 1fr); } }
+
+  .fig { background: var(--base); padding: 2.5rem 1.75rem 2rem; display: flex; flex-direction: column; gap: 0.625rem; }
+
+  .fig-n { font-size: clamp(2.4rem, 5.2vw, 3.6rem); font-weight: 600; letter-spacing: -0.055em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .fig-n .u { font-size: 0.38em; letter-spacing: -0.01em; color: var(--ink-muted); margin-left: 0.18em; }
+  .fig-t { font-size: 0.875rem; color: var(--ink-muted); line-height: 1.45; }
+
+  /* ---------- banda editorial de quejas ---------- */
+
+  .band-sec { background: var(--band); border-block: 1px solid var(--line-soft); }
+
+  .quotes { display: flex; flex-direction: column; margin-top: 3.25rem; }
+
+  .said {
+    position: relative;
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding-block: 2.25rem;
+    align-items: baseline;
+  }
+
+  @media (min-width: 52rem) { .said { grid-template-columns: 1fr auto; } }
+
+  /* la línea divisoria se dibuja al entrar */
+  .said::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: var(--line);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 900ms cubic-bezier(.22,.7,.24,1);
+    transition-delay: var(--d, 0ms);
+  }
+
+  .said.seen::before { transform: scaleX(1); }
+
+  .said:last-of-type::after {
+    content: "";
+    position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: var(--line);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 900ms cubic-bezier(.22,.7,.24,1) 240ms;
+  }
+
+  .said.seen:last-of-type::after { transform: scaleX(1); }
+
+  .said q {
+    quotes: none;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.8vw, 1.875rem);
+    line-height: 1.28;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .said .who {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .verdict { margin-top: 3rem; max-width: 44rem; font-size: clamp(1.125rem, 2.1vw, 1.5rem); line-height: 1.42; letter-spacing: -0.015em; }
+
+  /* ---------- tesis ---------- */
+
+  .thesis { display: grid; gap: clamp(2.5rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 58rem) { .thesis { grid-template-columns: 1fr 0.9fr; } }
+  .thesis h2 .accent { color: var(--accent); }
+
+  .points { display: flex; flex-direction: column; gap: 1.75rem; margin: 0; padding: 0; list-style: none; }
+  .point { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; align-items: start; }
+  .dot-li { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-top: 0.5rem; }
+  .point p { grid-column: 2; color: var(--ink-muted); font-size: 0.9375rem; }
+
+  /* ---------- barra de pregunta ---------- */
+
+  .ask {
+    display: flex; align-items: center; gap: 0.875rem;
+    background: var(--surface);
+    border: 1px solid var(--line-hard);
+    border-radius: 11px;
+    padding: 1.25rem 1.5rem;
+    font-size: clamp(0.9375rem, 2.2vw, 1.375rem);
+    color: var(--ink);
+    max-width: 47rem; min-height: 4.5rem;
+    box-shadow: var(--shadow-s);
+  }
+
+  .ask .glyph-ask { color: var(--ink-faint); font-family: var(--mono); font-size: 0.875em; flex: none; }
+  .ask .typed { min-width: 0; }
+
+  .caret { display: inline-block; width: 3px; height: 0.92em; background: var(--accent-deep); margin-left: 0.14em; transform: translateY(0.08em); }
+  .caret.blink { animation: blink 1.15s steps(1, end) infinite; }
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  /* ---------- formulario ---------- */
+
+  .apply {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    box-shadow: var(--shadow);
+    max-width: 46rem;
+  }
+
+  .segmented { display: inline-flex; background: var(--band); border-radius: 8px; padding: 4px; gap: 4px; }
+
+  .seg {
+    border: 0; background: transparent; color: var(--ink-muted);
+    font: inherit; font-size: 0.8125rem; font-weight: 600;
+    padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;
+    transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .seg[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-s); }
+
+  .mode-info { display: none; margin-top: 1.5rem; flex-direction: column; gap: 1rem; }
+  .mode-info.on { display: flex; }
+  .mode-info p { font-size: 0.9375rem; color: var(--ink-muted); line-height: 1.55; max-width: 36rem; }
+
+  .perks { display: flex; flex-direction: column; gap: 0.625rem; margin: 0; padding: 0; list-style: none; }
+  .perks li { display: grid; grid-template-columns: auto 1fr; gap: 0.6875rem; align-items: start; font-size: 0.875rem; color: var(--ink-muted); }
+  .perks .tick { color: var(--accent); font-weight: 700; line-height: 1.5; }
+
+  .fields { display: grid; gap: 1.125rem; margin-top: 1.75rem; }
+  @media (min-width: 40rem) { .fields { grid-template-columns: 1fr 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  .field.hidden { display: none; }
+
+  label { font-size: 0.8125rem; font-weight: 600; color: var(--ink-muted); letter-spacing: -0.005em; }
+
+  input, select {
+    font: inherit; font-size: 1rem; color: var(--ink);
+    background: var(--base);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.8125rem 0.9375rem;
+    width: 100%;
+    transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+  }
+
+  input::placeholder { color: var(--ink-faint); }
+  input:hover, select:hover { border-color: var(--line-hard); }
+  input:focus, select:focus { outline: none; border-color: var(--accent-deep); box-shadow: 0 0 0 3px var(--accent-chip); background: var(--surface); }
+
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-faint) 50%),
+                      linear-gradient(135deg, var(--ink-faint) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+
+  .submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.75rem; }
+
+  .done {
+    display: none;
+    border: 1px solid var(--ok);
+    background: color-mix(in srgb, var(--ok) 10%, transparent);
+    border-radius: 9px; padding: 1.25rem 1.375rem; font-size: 0.9375rem;
+  }
+
+  .done.on { display: block; }
+  .apply.sent .fields, .apply.sent .submit-row, .apply.sent .segmented, .apply.sent .mode-info { display: none; }
+
+  /* ---------- vista de acceso ---------- */
+
+  .view-access { display: none; }
+  body.on-access .view-access { display: block; }
+  body.on-access main#top, body.on-access footer.site { display: none; }
+
+  .access { min-height: calc(100vh - 64px); display: grid; place-items: center; padding-block: clamp(3rem, 9vh, 6rem); }
+
+  .card {
+    width: 100%; max-width: 30rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1.875rem, 5vw, 2.75rem);
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 1.625rem;
+  }
+
+  .card h1 { font-size: clamp(1.7rem, 4vw, 2.15rem); }
+  .card .fields { margin-top: 0; }
+  @media (min-width: 40rem) { .card .fields { grid-template-columns: 1fr; } }
+  .card .btn { width: 100%; justify-content: center; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem; align-self: flex-start;
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-chip);
+    border-radius: 5px; padding: 0.4375rem 0.6875rem;
+  }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 0.4375rem;
+    background: none; border: 0; padding: 0; font: inherit; font-size: 0.8125rem;
+    color: var(--ink-faint); cursor: pointer; align-self: center;
+  }
+
+  .back:hover { color: var(--ink); }
+
+  /* ---------- pie ---------- */
+
+  footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
+
+  .foot-top { display: grid; gap: 2.75rem; padding-block: 4rem 3rem; }
+
+  @media (min-width: 52rem) { .foot-top { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+
+  .foot-col { display: flex; flex-direction: column; gap: 0.875rem; }
+
+  .foot-h {
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.25rem;
+  }
+
+  .foot-col a { text-decoration: none; font-size: 0.875rem; color: var(--ink-muted); transition: color 140ms ease; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-col address { font-style: normal; font-size: 0.875rem; color: var(--ink-muted); line-height: 1.6; }
+
+  .foot-tag { font-size: 1.0625rem; line-height: 1.45; letter-spacing: -0.015em; max-width: 22rem; }
+
+  .foot-bottom {
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem 3rem;
+    display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; justify-content: space-between;
+    font-size: 0.75rem; color: var(--ink-faint);
+  }
+
+  /* ---------- revelado ---------- */
+
+  .rise {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 760ms cubic-bezier(.22,.7,.24,1), transform 760ms cubic-bezier(.22,.7,.24,1);
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .rise.seen { opacity: 1; transform: none; }
+
+  .rise-x {
+    opacity: 0; transform: translateX(-16px);
+    transition: opacity 820ms cubic-bezier(.22,.7,.24,1), transform 820ms cubic-bezier(.22,.7,.24,1);
+    transition-delay: var(--d, 0ms);
+  }
+
+  .rise-x.seen { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rise, .rise-x { opacity: 1; transform: none; transition: none; }
+    .said::before, .said:last-of-type::after { transform: scaleX(1); transition: none; }
+    .btn { transition: none; }
+    .caret.blink { animation: none; opacity: 1; }
+    .page.on { animation: none; }
+  }
+</style>
+
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a class="mark" href="#top" aria-label="pin">pin<span class="dot">.</span></a>
+    <div class="bar-actions">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-es" aria-pressed="true">ES</button>
+        <button type="button" id="lang-en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" id="theme" aria-label="Tema">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path id="theme-icon" d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8 5.6 5.6 0 1 0 13.2 9.6Z" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <a class="btn btn-sm" href="#acceso" id="go-access" data-i18n="nav.login">Ingresar</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HÉROE ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+
+      <div class="hero-copy">
+        <p class="eyebrow rise" data-i18n="hero.eyebrow">Expedientes penales · escaneados y manuscritos</p>
+        <h1 class="rise" style="--d:70ms" data-i18n="hero.h1">Diez mil páginas, leídas antes de que termine la reunión.</h1>
+        <p class="lede rise" style="--d:140ms" data-i18n-html="hero.lede">
+          <span class="brand">pin</span> lee el expediente completo —torcido, sellado, a mano— y
+          responde señalando la página exacta.
+        </p>
+        <div class="actions rise" style="--d:210ms">
+          <a class="btn" href="#empezar" data-mode="case" data-i18n="hero.cta1">Analizar mi caso</a>
+          <a class="btn btn-ghost" href="#empezar" data-mode="early" data-i18n="hero.cta2">Acceso anticipado</a>
+        </div>
+      </div>
+
+      <div class="viewer rise" style="--d:290ms" id="viewer">
+        <div class="viewer-side">
+          <div class="viewer-head">
+            <span data-i18n="viewer.date">22 de junio de 2004</span>
+            <span data-i18n="viewer.count">51 menciones</span>
+          </div>
+          <div class="hit on" data-p="0" tabindex="0" role="button" aria-pressed="true">
+            <span class="pg" data-i18n="viewer.p1">p. 312</span>
+            <p data-i18n-html="viewer.h1">…con fecha <mark>22 de junio de 2004</mark> se decretó la diligencia solicitada por la defensa…</p>
+          </div>
+          <div class="hit" data-p="1" tabindex="0" role="button" aria-pressed="false">
+            <span class="pg" data-i18n="viewer.p2">p. 1.187</span>
+            <p data-i18n-html="viewer.h2">…reiterando lo obrado el <mark>22 de junio de 2004</mark> ante el tribunal…</p>
+          </div>
+          <div class="hit" data-p="2" tabindex="0" role="button" aria-pressed="false">
+            <span class="pg" data-i18n="viewer.p3">p. 2.044</span>
+            <p data-i18n-html="viewer.h3">…acompaña copia del acta de <mark>22.06.2004</mark>, suscrita por el ministro de fe…</p>
+          </div>
+          <div class="viewer-head" style="padding-top:.125rem">
+            <span data-i18n="viewer.more">48 más</span>
+            <span class="pg">↓</span>
+          </div>
+        </div>
+
+        <div class="viewer-side">
+          <div class="viewer-head">
+            <span data-i18n="viewer.tome">Volumen IV · imagen original</span>
+            <span class="pg" id="pv-num">p. 312</span>
+          </div>
+
+          <div class="page on">
+            <p class="page-no">312</p>
+            <div class="ln md"></div>
+            <div class="ln sm"></div>
+            <div class="ln-box">
+              <span class="ln-tag" data-i18n="viewer.tag">cita</span>
+              <div class="ln md"></div>
+              <div class="ln xs" style="margin-top:7px"></div>
+            </div>
+            <div class="ln md"></div>
+            <div class="ln sm"></div>
+            <div class="ln xs"></div>
+            <div class="ln md"></div>
+            <p class="hand" data-i18n="viewer.hand">conforme, pásese al volumen siguiente —</p>
+          </div>
+
+          <div class="page">
+            <p class="page-no" data-i18n="viewer.pn2">1.187</p>
+            <div class="ln sm"></div>
+            <div class="ln md"></div>
+            <div class="ln md"></div>
+            <div class="ln xs"></div>
+            <div class="ln-box">
+              <span class="ln-tag" data-i18n="viewer.tag2">cita</span>
+              <div class="ln sm"></div>
+            </div>
+            <div class="ln md"></div>
+            <div class="ln sm"></div>
+          </div>
+
+          <div class="page">
+            <p class="page-no" data-i18n="viewer.pn3">2.044</p>
+            <div class="ln-box">
+              <span class="ln-tag" data-i18n="viewer.tag3">cita</span>
+              <div class="ln md"></div>
+              <div class="ln sm" style="margin-top:7px"></div>
+            </div>
+            <div class="ln md"></div>
+            <div class="ln xs"></div>
+            <div class="ln md"></div>
+            <div class="ln sm"></div>
+            <div class="ln md"></div>
+            <p class="hand" data-i18n="viewer.hand2">se tiene por acompañada —</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CIFRAS ============ -->
+  <section>
+    <div class="wrap stack-s">
+      <p class="eyebrow rise" data-i18n="figs.eyebrow">Expediente tipo · 14 volúmenes · escaneo con manuscritos</p>
+      <h2 class="rise" style="--d:70ms" data-i18n="figs.h2">El expediente entero, en lo que dura un café.</h2>
+    </div>
+
+    <div class="wrap" style="padding-inline:0">
+      <div class="figures" id="figures" style="margin-top:3.75rem">
+        <div class="fig rise">
+          <p class="fig-n"><span class="n" data-n="10000">10.000</span><span class="u" data-i18n="figs.u1">páginas</span></p>
+          <p class="fig-t" data-i18n="figs.t1">Leídas, indexadas y citables en menos de veinte minutos.</p>
+        </div>
+        <div class="fig rise" style="--d:90ms">
+          <p class="fig-n"><span class="n" data-n="17">17</span><span class="u">ms</span></p>
+          <p class="fig-t" data-i18n="figs.t2">Encontrar una frase en todo el expediente.</p>
+        </div>
+        <div class="fig rise" style="--d:180ms">
+          <p class="fig-n"><span class="n" data-n="100">100</span><span class="u">%</span></p>
+          <p class="fig-t" data-i18n="figs.t3">De las menciones, citadas a su página exacta con imagen.</p>
+        </div>
+        <div class="fig rise" style="--d:270ms">
+          <p class="fig-n"><span class="n" data-n="2">2</span><span class="u">×</span></p>
+          <p class="fig-t" data-i18n="figs.t4">Mejor lectura del manuscrito que un OCR corriente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LO QUE YA INTENTÓ ============ -->
+  <section class="band-sec">
+    <div class="wrap">
+      <div class="stack-s">
+        <p class="eyebrow rise" data-i18n="tried.eyebrow">Lo que ya intentó, antes de llegar aquí</p>
+        <h2 class="rise" style="--d:70ms" data-i18n="tried.h2">Ninguna de esas herramientas fue hecha para su expediente.</h2>
+      </div>
+
+      <div class="quotes">
+        <div class="said rise-x">
+          <q data-i18n="tried.q1">Pagué la suscripción más cara y a la mitad del expediente ya no se acordaba de nada.</q>
+          <span class="who" data-i18n="tried.w1">Asistente general de IA</span>
+        </div>
+        <div class="said rise-x" style="--d:120ms">
+          <q data-i18n="tried.q2">Subí los volúmenes tres veces. Tres veces se cayó la carga.</q>
+          <span class="who" data-i18n="tried.w2">Plataforma legal en la nube</span>
+        </div>
+        <div class="said rise-x" style="--d:240ms">
+          <q data-i18n="tried.q3">Me respondió con total seguridad algo que no estaba en ninguna página.</q>
+          <span class="who" data-i18n="tried.w3">Buscador con IA</span>
+        </div>
+        <div class="said rise-x" style="--d:360ms">
+          <q data-i18n="tried.q4">Quinientos dólares después, terminé leyendo el expediente a mano.</q>
+          <span class="who" data-i18n="tried.w4">Todo lo anterior, junto</span>
+        </div>
+      </div>
+
+      <p class="verdict rise" style="--d:150ms" data-i18n-html="tried.verdict">
+        Fueron hechas para documentos limpios y expedientes pequeños.
+        <span class="brand">pin</span> se construyó para el suyo.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ TESIS ============ -->
+  <section>
+    <div class="wrap thesis">
+      <div class="stack">
+        <p class="eyebrow rise" data-i18n="thesis.eyebrow">Por qué se puede firmar lo que sale de aquí</p>
+        <h2 class="rise" style="--d:70ms">
+          <span data-i18n="thesis.h2">La cita no la escribe el modelo.</span>
+          <span class="accent" data-i18n="thesis.h2b">La apunta.</span>
+        </h2>
+        <p class="lede rise" style="--d:140ms" data-i18n="thesis.lede">
+          Una cita generada puede inventarse. Un puntero, no. Cada mención guarda su documento,
+          su página y sus coordenadas desde que se lee, con la imagen al lado para confirmarlo.
+        </p>
+      </div>
+
+      <ul class="points">
+        <li class="point rise" style="--d:120ms">
+          <span class="dot-li" aria-hidden="true"></span>
+          <h3 data-i18n="p1.h">Donde Ctrl-F no encuentra nada</h3>
+          <p data-i18n="p1.b">Escaneos torcidos, timbres, sellos y letra a mano. El material real, no el PDF limpio.</p>
+        </li>
+        <li class="point rise" style="--d:220ms">
+          <span class="dot-li" aria-hidden="true"></span>
+          <h3 data-i18n="p2.h">Le decimos qué no pudimos leer</h3>
+          <p data-i18n="p2.b">El mapa de páginas ilegibles, una por una, para saber dónde poner sus propios ojos.</p>
+        </li>
+        <li class="point rise" style="--d:320ms">
+          <span class="dot-li" aria-hidden="true"></span>
+          <h3 data-i18n="p3.h">El expediente no sale de su oficina</h3>
+          <p data-i18n="p3.b">Puede correr entero en su máquina. El deber de reserva no es un escrúpulo: es exposición.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ EL PUNTO ABIERTO ============ -->
+  <section>
+    <div class="wrap stack">
+      <p class="eyebrow rise" data-i18n="ask.eyebrow">El expediente queda abierto, esperando</p>
+      <h2 class="rise" style="--d:70ms" data-i18n="ask.h2">Pregunte lo que preguntaría un colega.</h2>
+      <div class="ask rise" style="--d:150ms" aria-hidden="true">
+        <span class="glyph-ask">&gt;</span>
+        <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
+      </div>
+      <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
+        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ EMPEZAR ============ -->
+  <section id="empezar">
+    <div class="wrap stack-l">
+
+      <div class="stack-s">
+        <h2 class="rise">
+          <span data-i18n="start.h2">Su primer caso corre por nuestra cuenta</span><span class="caret blink" aria-hidden="true"></span>
+        </h2>
+        <p class="lede rise" style="--d:70ms" data-i18n="start.lede">
+          Envíe un expediente real. Lo procesamos completo —índice, cronología, menciones, citas a
+          página— y se lo mostramos funcionando sobre su propio caso. Sin costo.
+        </p>
+      </div>
+
+      <form class="apply rise" style="--d:140ms" id="apply" novalidate>
+
+        <div class="segmented" role="group">
+          <button class="seg" type="button" id="seg-causa" aria-pressed="true" data-i18n="seg.case">Analizar un caso</button>
+          <button class="seg" type="button" id="seg-cotiza" aria-pressed="false" data-i18n="seg.early">Acceso anticipado</button>
+        </div>
+
+        <div class="mode-info" id="early-info">
+          <p data-i18n-html="ea.info">
+            Para estudios que quieren <span class="brand">pin</span> dentro del estudio, antes que el resto.
+          </p>
+          <ul class="perks">
+            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Plan enterprise</span></li>
+            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Infraestructura propia o nube dedicada</span></li>
+            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p3">Precio de fundador</span></li>
+          </ul>
+        </div>
+
+        <div class="fields">
+          <div class="field">
+            <label for="nombre" data-i18n="f.name">Nombre</label>
+            <input id="nombre" type="text" autocomplete="name" data-i18n-ph="f.name.ph" placeholder="Nombre y apellido" required>
+          </div>
+          <div class="field">
+            <label for="correo" data-i18n="f.mail">Correo</label>
+            <input id="correo" type="email" autocomplete="email" placeholder="nombre@estudio.cl" required>
+          </div>
+          <div class="field">
+            <label for="rol" data-i18n="f.role">Rol</label>
+            <select id="rol" required>
+              <option data-i18n="f.role.1">Socio</option>
+              <option data-i18n="f.role.2">Asociado</option>
+              <option data-i18n="f.role.3">Litigante independiente</option>
+              <option data-i18n="f.role.4">Defensoría o institución</option>
+            </select>
+          </div>
+          <div class="field" id="wrap-size">
+            <label for="size-sel" data-i18n="f.size">Tamaño del expediente</label>
+            <select id="size-sel" required>
+              <option data-i18n="f.size.1">Menos de 1.000 páginas</option>
+              <option selected data-i18n="f.size.2">1.000 a 10.000 páginas</option>
+              <option data-i18n="f.size.3">10.000 a 50.000 páginas</option>
+              <option data-i18n="f.size.4">Más de 50.000 páginas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn" type="submit" id="submit" data-i18n="f.submit">Analizar mi caso</button>
+        </div>
+
+        <div class="done" id="done" role="status"></div>
+      </form>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ VISTA DE ACCESO ============ -->
+<div class="view-access">
+  <div class="wrap access">
+    <div class="card">
+      <span class="badge" data-i18n="ac.badge">Acceso anticipado</span>
+
+      <div class="stack-s">
+        <h1 data-i18n="ac.h1">Todavía se entra por invitación.</h1>
+        <p class="aside" style="font-size:.9375rem;line-height:1.55" data-i18n-html="ac.lede">
+          <span class="brand">pin</span> se despliega dentro del estudio, no en una nube compartida.
+          Por eso abrimos por tandas: cada instalación se acompaña.
+        </p>
+      </div>
+
+      <ul class="perks">
+        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Plan enterprise</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Infraestructura propia o nube dedicada</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p3">Precio de fundador</span></li>
+      </ul>
+
+      <form id="access-form" novalidate>
+        <div class="fields">
+          <div class="field">
+            <label for="ac-mail" data-i18n="ac.mail">Correo del estudio</label>
+            <input id="ac-mail" type="email" autocomplete="email" placeholder="nombre@estudio.cl" required>
+          </div>
+          <div class="field">
+            <label for="ac-role" data-i18n="ac.role">Rol</label>
+            <select id="ac-role" required>
+              <option data-i18n="f.role.1">Socio</option>
+              <option data-i18n="f.role.2">Asociado</option>
+              <option data-i18n="f.role.3">Litigante independiente</option>
+              <option data-i18n="f.role.4">Defensoría o institución</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:.875rem">
+          <button class="btn" type="submit" data-i18n="ac.submit">Solicitar acceso</button>
+          <span class="aside" data-i18n="ac.note">Le respondemos en cinco días hábiles.</span>
+        </div>
+        <div class="done" id="ac-done" role="status" style="margin-top:1.25rem"></div>
+      </form>
+
+      <button class="back" type="button" id="back" data-i18n="ac.back">← Volver</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+
+      <div class="foot-col" style="gap:1.125rem">
+        <a class="mark" href="#top" aria-label="pin">pin<span class="dot">.</span></a>
+        <p class="foot-tag" data-i18n="foot.blurb">
+          El sistema operativo del trabajo legal en la era de la IA.
+        </p>
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h" data-i18n="foot.h1">Producto</p>
+        <a href="#empezar" data-mode="case" data-i18n="foot.l1">Analizar un caso</a>
+        <a href="#empezar" data-mode="early" data-i18n="foot.l2">Acceso anticipado</a>
+        <a href="#top" data-i18n="foot.l4">Cómo funciona</a>
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h" data-i18n="foot.h2">Empresa</p>
+        <a href="#top" data-i18n="foot.l5">Sobre pin</a>
+        <a href="#top" data-i18n="foot.l6">Seguridad y confidencialidad</a>
+      </div>
+
+      <div class="foot-col">
+        <p class="foot-h" data-i18n="foot.h3">Contacto</p>
+        <address data-i18n-html="foot.addr">
+          Apoquindo 4501, oficina 3205<br>
+          Las Condes, Santiago<br>
+          Chile
+        </address>
+        <a href="mailto:hola@pin.legal">hola@pin.legal</a>
+      </div>
+
+    </div>
+
+    <div class="foot-bottom">
+      <span data-i18n="foot.copy">© 2026 pin. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var T = {
+    es: {
+      'title': 'pin — el expediente completo, respondiendo',
+      'theme.dark': 'Cambiar a tema oscuro',
+      'theme.light': 'Cambiar a tema claro',
+      'viewer.p1': 'p. 312', 'viewer.p2': 'p. 1.187', 'viewer.p3': 'p. 2.044',
+      'viewer.pn2': '1.187', 'viewer.pn3': '2.044',
+      'nav.login': 'Ingresar',
+      'hero.eyebrow': 'Expedientes penales · escaneados y manuscritos',
+      'hero.h1': 'Diez mil páginas, leídas antes de que termine la reunión.',
+      'hero.lede': '<span class="brand">pin</span> lee el expediente completo —torcido, sellado, a mano— y responde señalando la página exacta.',
+      'hero.cta1': 'Analizar mi caso',
+      'hero.cta2': 'Acceso anticipado',
+      'viewer.date': '22 de junio de 2004',
+      'viewer.count': '51 menciones',
+      'viewer.h1': '…con fecha <mark>22 de junio de 2004</mark> se decretó la diligencia solicitada por la defensa…',
+      'viewer.h2': '…reiterando lo obrado el <mark>22 de junio de 2004</mark> ante el tribunal…',
+      'viewer.h3': '…acompaña copia del acta de <mark>22.06.2004</mark>, suscrita por el ministro de fe…',
+      'viewer.more': '48 más',
+      'viewer.tome': 'Volumen IV · imagen original',
+      'viewer.tag': 'cita', 'viewer.tag2': 'cita', 'viewer.tag3': 'cita',
+      'viewer.hand': 'conforme, pásese al volumen siguiente —',
+      'viewer.hand2': 'se tiene por acompañada —',
+      'figs.eyebrow': 'Expediente tipo · 14 volúmenes · escaneo con manuscritos',
+      'figs.h2': 'El expediente entero, en lo que dura un café.',
+      'figs.u1': 'páginas',
+      'figs.t1': 'Leídas, indexadas y citables en menos de veinte minutos.',
+      'figs.t2': 'Encontrar una frase en todo el expediente.',
+      'figs.t3': 'De las menciones, citadas a su página exacta con imagen.',
+      'figs.t4': 'Mejor lectura del manuscrito que un OCR corriente.',
+      'tried.eyebrow': 'Lo que ya intentó, antes de llegar aquí',
+      'tried.h2': 'Ninguna de esas herramientas fue hecha para su expediente.',
+      'tried.q1': 'Pagué la suscripción más cara y a la mitad del expediente ya no se acordaba de nada.',
+      'tried.w1': 'Asistente general de IA',
+      'tried.q2': 'Subí los volúmenes tres veces. Tres veces se cayó la carga.',
+      'tried.w2': 'Plataforma legal en la nube',
+      'tried.q3': 'Me respondió con total seguridad algo que no estaba en ninguna página.',
+      'tried.w3': 'Buscador con IA',
+      'tried.q4': 'Quinientos dólares después, terminé leyendo el expediente a mano.',
+      'tried.w4': 'Todo lo anterior, junto',
+      'tried.verdict': 'Fueron hechas para documentos limpios y expedientes pequeños. <span class="brand">pin</span> se construyó para el suyo.',
+      'thesis.eyebrow': 'Por qué se puede firmar lo que sale de aquí',
+      'thesis.h2': 'La cita no la escribe el modelo.',
+      'thesis.h2b': 'La apunta.',
+      'thesis.lede': 'Una cita generada puede inventarse. Un puntero, no. Cada mención guarda su documento, su página y sus coordenadas desde que se lee, con la imagen al lado para confirmarlo.',
+      'p1.h': 'Donde Ctrl-F no encuentra nada',
+      'p1.b': 'Escaneos torcidos, timbres, sellos y letra a mano. El material real, no el PDF limpio.',
+      'p2.h': 'Le decimos qué no pudimos leer',
+      'p2.b': 'El mapa de páginas ilegibles, una por una, para saber dónde poner sus propios ojos.',
+      'p3.h': 'El expediente no sale de su oficina',
+      'p3.b': 'Puede correr entero en su máquina. El deber de reserva no es un escrúpulo: es exposición.',
+      'ask.eyebrow': 'El expediente queda abierto, esperando',
+      'ask.h2': 'Pregunte lo que preguntaría un colega.',
+      'ask.aside': 'Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.',
+      'start.h2': 'Su primer caso corre por nuestra cuenta',
+      'start.lede': 'Envíe un expediente real. Lo procesamos completo —índice, cronología, menciones, citas a página— y se lo mostramos funcionando sobre su propio caso. Sin costo.',
+      'seg.case': 'Analizar un caso',
+      'seg.early': 'Acceso anticipado',
+      'ea.info': 'Para estudios que quieren <span class="brand">pin</span> dentro del estudio, antes que el resto.',
+      'ea.p1': 'Plan enterprise',
+      'ea.p2': 'Infraestructura propia o nube dedicada',
+      'ea.p3': 'Precio de fundador',
+      'f.name': 'Nombre', 'f.name.ph': 'Nombre y apellido',
+      'f.mail': 'Correo', 'f.role': 'Rol',
+      'f.role.1': 'Socio', 'f.role.2': 'Asociado',
+      'f.role.3': 'Litigante independiente', 'f.role.4': 'Defensoría o institución',
+      'f.size': 'Tamaño del expediente',
+      'f.size.1': 'Menos de 1.000 páginas', 'f.size.2': '1.000 a 10.000 páginas',
+      'f.size.3': '10.000 a 50.000 páginas', 'f.size.4': 'Más de 50.000 páginas',
+      'f.submit': 'Analizar mi caso',
+      'f.submit.q': 'Solicitar acceso',
+      'done.case': '<strong>Recibido.</strong> Le escribimos para coordinar la entrega del material y agendar la sesión sobre su caso.',
+      'done.quote': '<strong>Solicitud recibida.</strong> Le escribimos con la propuesta y los pasos de instalación.',
+      'ac.badge': 'Acceso anticipado',
+      'ac.h1': 'Todavía se entra por invitación.',
+      'ac.lede': '<span class="brand">pin</span> se despliega dentro del estudio, no en una nube compartida. Por eso abrimos por tandas: cada instalación se acompaña.',
+      'ac.mail': 'Correo del estudio', 'ac.role': 'Rol',
+      'ac.submit': 'Solicitar acceso',
+      'ac.note': 'Le respondemos en cinco días hábiles.',
+      'ac.done': '<strong>Solicitud recibida.</strong> Le escribimos en cinco días hábiles con los pasos y las opciones de instalación.',
+      'ac.back': '← Volver',
+      'foot.blurb': 'El sistema operativo del trabajo legal en la era de la IA.',
+      'foot.h1': 'Producto', 'foot.h2': 'Empresa', 'foot.h3': 'Contacto',
+      'foot.l1': 'Analizar un caso', 'foot.l2': 'Acceso anticipado',
+      'foot.l4': 'Cómo funciona',
+      'foot.l5': 'Sobre pin', 'foot.l6': 'Seguridad y confidencialidad',
+      'foot.addr': 'Apoquindo 4501, oficina 3205<br>Las Condes, Santiago<br>Chile',
+      'foot.copy': '© 2026 pin. Todos los derechos reservados.'
+    },
+    en: {
+      'title': 'pin — the entire case file, answering',
+      'theme.dark': 'Switch to dark theme',
+      'theme.light': 'Switch to light theme',
+      'viewer.p1': 'p. 312', 'viewer.p2': 'p. 1,187', 'viewer.p3': 'p. 2,044',
+      'viewer.pn2': '1,187', 'viewer.pn3': '2,044',
+      'nav.login': 'Sign in',
+      'hero.eyebrow': 'Criminal case files · scanned and handwritten',
+      'hero.h1': 'Ten thousand pages, read before the meeting ends.',
+      'hero.lede': '<span class="brand">pin</span> reads the entire file —skewed, stamped, handwritten— and answers pointing at the exact page.',
+      'hero.cta1': 'Analyze my case',
+      'hero.cta2': 'Early access',
+      'viewer.date': '22 June 2004',
+      'viewer.count': '51 mentions',
+      'viewer.h1': '…on <mark>22 June 2004</mark> the measure requested by the defense was ordered…',
+      'viewer.h2': '…reiterating the proceedings of <mark>22 June 2004</mark> before the court…',
+      'viewer.h3': '…enclosing a copy of the record of <mark>22.06.2004</mark>, signed by the clerk…',
+      'viewer.more': '48 more',
+      'viewer.tome': 'Volume IV · original image',
+      'viewer.tag': 'cite', 'viewer.tag2': 'cite', 'viewer.tag3': 'cite',
+      'viewer.hand': 'agreed, pass to the next volume —',
+      'viewer.hand2': 'admitted into the record —',
+      'figs.eyebrow': 'Typical file · 14 volumes · scanned with handwriting',
+      'figs.h2': 'The whole file, read over a coffee.',
+      'figs.u1': 'pages',
+      'figs.t1': 'Read, indexed and citable in under twenty minutes.',
+      'figs.t2': 'Finding a phrase across the entire file.',
+      'figs.t3': 'Of all mentions, cited to their exact page with the image.',
+      'figs.t4': 'Better handwriting recognition than ordinary OCR.',
+      'tried.eyebrow': 'What you already tried, before getting here',
+      'tried.h2': 'None of those tools was built for your file.',
+      'tried.q1': 'I paid for the most expensive plan and halfway through the file it had forgotten everything.',
+      'tried.w1': 'General-purpose AI assistant',
+      'tried.q2': 'I uploaded the volumes three times. Three times the upload died.',
+      'tried.w2': 'Cloud legal platform',
+      'tried.q3': 'It confidently gave me an answer that appeared on no page of the file.',
+      'tried.w3': 'AI-powered search',
+      'tried.q4': 'Five hundred dollars later, I ended up reading the file by hand.',
+      'tried.w4': 'All of the above, together',
+      'tried.verdict': 'They were built for clean documents and small files. <span class="brand">pin</span> was built for yours.',
+      'thesis.eyebrow': 'Why you can sign what comes out of here',
+      'thesis.h2': 'The model does not write the citation.',
+      'thesis.h2b': 'It points at it.',
+      'thesis.lede': 'A generated citation can be invented. A pointer cannot. Every mention keeps its document, its page and its coordinates from the moment it is read, with the image alongside to confirm it.',
+      'p1.h': 'Where Ctrl-F finds nothing',
+      'p1.b': 'Skewed scans, stamps, seals and handwriting. The real material, not the clean PDF.',
+      'p2.h': 'We tell you what we could not read',
+      'p2.b': 'The map of unreadable pages, one by one, so you know where to put your own eyes.',
+      'p3.h': 'The file never leaves your office',
+      'p3.b': 'It can run entirely on your machine. Professional privilege is not a scruple: it is exposure.',
+      'ask.eyebrow': 'The file stays open, waiting',
+      'ask.h2': 'Ask what you would ask a colleague.',
+      'ask.aside': 'No commands, no syntax. And every answer arrives with the pages where it is recorded.',
+      'start.h2': 'Your first case is on us',
+      'start.lede': 'Send a real file. We process it in full —index, timeline, mentions, page-anchored citations— and show it working on your own case. At no cost.',
+      'seg.case': 'Analyze a case',
+      'seg.early': 'Early access',
+      'ea.info': 'For firms that want <span class="brand">pin</span> inside, before everyone else.',
+      'ea.p1': 'Enterprise plan',
+      'ea.p2': 'Your own infrastructure or a dedicated cloud',
+      'ea.p3': 'Founder pricing',
+      'f.name': 'Name', 'f.name.ph': 'First and last name',
+      'f.mail': 'Email', 'f.role': 'Role',
+      'f.role.1': 'Partner', 'f.role.2': 'Associate',
+      'f.role.3': 'Solo practitioner', 'f.role.4': 'Public defence or institution',
+      'f.size': 'Size of the file',
+      'f.size.1': 'Under 1,000 pages', 'f.size.2': '1,000 to 10,000 pages',
+      'f.size.3': '10,000 to 50,000 pages', 'f.size.4': 'Over 50,000 pages',
+      'f.submit': 'Analyze my case',
+      'f.submit.q': 'Request access',
+      'done.case': '<strong>Received.</strong> We will write to arrange the handover and schedule the session on your case.',
+      'done.quote': '<strong>Request received.</strong> We will write with the proposal and the deployment steps.',
+      'ac.badge': 'Early access',
+      'ac.h1': 'Entry is still by invitation.',
+      'ac.lede': '<span class="brand">pin</span> is deployed inside the firm, not on a shared cloud. That is why we open in batches: every deployment is accompanied.',
+      'ac.mail': 'Firm email', 'ac.role': 'Role',
+      'ac.submit': 'Request access',
+      'ac.note': 'We reply within five business days.',
+      'ac.done': '<strong>Request received.</strong> We will write within five business days with the next steps and deployment options.',
+      'ac.back': '← Back',
+      'foot.blurb': 'The operating system of legal work in the AI era.',
+      'foot.h1': 'Product', 'foot.h2': 'Company', 'foot.h3': 'Contact',
+      'foot.l1': 'Analyze a case', 'foot.l2': 'Early access',
+      'foot.l4': 'How it works',
+      'foot.l5': 'About pin', 'foot.l6': 'Security and confidentiality',
+      'foot.addr': 'Apoquindo 4501, office 3205<br>Las Condes, Santiago<br>Chile',
+      'foot.copy': '© 2026 pin. All rights reserved.'
+    }
+  };
+
+  var POOL = {
+    es: [
+      '¿Qué declaró el testigo Ramírez la primera vez?',
+      'Todas las menciones de la empresa demandada',
+      '¿Cuándo se notificó a la contraparte?',
+      'Contradicciones entre las dos declaraciones del imputado',
+      '¿Dónde consta el pago de la factura 4.812?',
+      'Resumen de la prueba documental acompañada',
+      '¿Qué peritajes se decretaron y en qué fecha?',
+      'Todas las fechas de audiencia del expediente',
+      '¿Consta el domicilio del demandado en el expediente?',
+      'Menciones del vehículo patente GJ-2481',
+      '¿Qué alegó la defensa sobre la cadena de custodia?',
+      'Cronología de las diligencias del año 2023',
+      '¿Se acompañó el contrato original o una copia?',
+      'Todos los montos reclamados en la demanda',
+      '¿Quién firmó el acta de entrega?',
+      'Diferencias entre el informe pericial y el contrainforme',
+      '¿Hay constancia de la citación al tercero?',
+      'Menciones de la cuenta corriente del acusado',
+      '¿Qué documentos objetó la contraparte?',
+      'Todas las apelaciones presentadas y su resultado',
+      '¿En qué página consta la ratificación del perito?',
+      'Historial de representación del demandante',
+      '¿Se opuso alguna excepción dilatoria?',
+      'Todas las transferencias mencionadas en el expediente',
+      '¿Qué concluyó el informe forense?',
+      'Resumen de lo obrado en el volumen VII',
+      '¿Existe recibo de la suma consignada?',
+      'Menciones de la sociedad matriz y sus filiales',
+      '¿Cuándo prescribe la acción según lo alegado?',
+      'Todas las medidas cautelares solicitadas',
+      '¿Qué testigos declararon más de una vez?',
+      'Documentos incorporados fuera de plazo',
+      '¿Consta vigente la personería del representante?',
+      'Todas las notificaciones practicadas en el proceso',
+      '¿Qué se resolvió sobre la nulidad planteada?',
+      'Menciones del inmueble de calle Bandera',
+      '¿Está firmada cada página del volumen III?',
+      'Cronología completa de la relación contractual',
+      '¿Qué antecedentes bancarios se incorporaron?',
+      'Todas las declaraciones tomadas en sede policial',
+      '¿Coinciden las fechas del parte con las del acta?',
+      'Menciones de la póliza de seguro',
+      '¿Se acreditó el perjuicio patrimonial?',
+      'Todos los oficios remitidos y sus respuestas',
+      '¿Qué se alegó sobre la competencia del tribunal?',
+      'Documentos que carecen de fecha cierta',
+      '¿Cuántas veces se suspendió la audiencia?',
+      'Menciones del identificador tributario 76.412.330-K',
+      '¿Se agregó el certificado de dominio vigente?',
+      'Todas las referencias al artículo 19 del contrato',
+      '¿Quién compareció en la audiencia de formalización?',
+      'Resumen de las alegaciones de la defensa',
+      '¿Hay boletas o facturas duplicadas?',
+      'Menciones del correo del 14 de marzo',
+      '¿Qué bienes se incluyeron en el inventario?',
+      'Todas las páginas donde aparece la firma cuestionada',
+      '¿Se rindió la fianza ordenada por el tribunal?',
+      'Antecedentes laborales del demandante en el expediente',
+      '¿Qué pruebas se declararon inadmisibles?',
+      'Todo lo que ocurrió entre marzo y julio de 2022'
+    ],
+    en: [
+      'What did the witness Ramírez say the first time?',
+      'Every mention of the defendant company',
+      'When was the opposing party served?',
+      'Contradictions between the two statements of the accused',
+      'Where is payment of invoice 4,812 recorded?',
+      'Summary of the documentary evidence filed',
+      'Which expert reports were ordered, and when?',
+      'All hearing dates in the file',
+      "Is the defendant's address on the record?",
+      'Mentions of the vehicle with plate GJ-2481',
+      'What did the defense argue about chain of custody?',
+      'Timeline of the 2023 proceedings',
+      'Was the original contract filed, or a copy?',
+      'All amounts claimed in the complaint',
+      'Who signed the delivery record?',
+      'Differences between the expert report and the counter-report',
+      'Is there proof the third party was summoned?',
+      "Mentions of the defendant's bank account",
+      'Which documents did the opposing party object to?',
+      'All appeals filed and their outcome',
+      'On which page is the expert ratification recorded?',
+      'Representation history of the claimant',
+      'Were any dilatory defences raised?',
+      'All transfers mentioned in the file',
+      'What did the forensic report conclude?',
+      'Summary of what happened in volume VII',
+      'Is there a receipt for the sum deposited?',
+      'Mentions of the parent company and its subsidiaries',
+      'When does the action expire, on the arguments made?',
+      'All precautionary measures requested',
+      'Which witnesses testified more than once?',
+      'Documents filed out of time',
+      'Is the representative authority still valid?',
+      'All service of notice in the proceedings',
+      'How was the nullity claim resolved?',
+      'Mentions of the property on Bandera street',
+      'Is every page of volume III signed?',
+      'Full timeline of the contractual relationship',
+      'Which banking records were filed?',
+      'All statements taken at the police station',
+      'Do the report dates match the record dates?',
+      'Mentions of the insurance policy',
+      'Was the financial loss substantiated?',
+      'All official letters sent and their replies',
+      'What was argued about the court jurisdiction?',
+      'Documents without a certain date',
+      'How many times was the hearing postponed?',
+      'Mentions of tax ID 76.412.330-K',
+      'Was the current title certificate filed?',
+      'Every reference to clause 19 of the contract',
+      'Who appeared at the arraignment hearing?',
+      'Summary of the defense arguments',
+      'Are there duplicate receipts or invoices?',
+      'Mentions of the email of 14 March',
+      'Which assets were listed in the inventory?',
+      'Every page where the disputed signature appears',
+      'Was the bond ordered by the court posted?',
+      'Employment history of the claimant in the file',
+      'Which evidence was ruled inadmissible?',
+      'Everything that happened between March and July 2022'
+    ]
+  };
+
+  /* ---------------- idioma ---------------- */
+
+  var lang = 'es';
+  var esBtn = document.getElementById('lang-es');
+  var enBtn = document.getElementById('lang-en');
+
+  function apply(l) {
+    lang = l;
+    var d = T[l];
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var v = d[el.getAttribute('data-i18n')];
+      if (v !== undefined) { el.textContent = v; }
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var v = d[el.getAttribute('data-i18n-html')];
+      if (v !== undefined) { el.innerHTML = v; }
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+      var v = d[el.getAttribute('data-i18n-ph')];
+      if (v !== undefined) { el.placeholder = v; }
+    });
+
+    var ph = l === 'es' ? 'nombre@estudio.cl' : 'name@firm.com';
+    document.getElementById('correo').placeholder = ph;
+    document.getElementById('ac-mail').placeholder = ph;
+
+    document.title = d['title'];
+    document.documentElement.lang = l;
+    esBtn.setAttribute('aria-pressed', String(l === 'es'));
+    enBtn.setAttribute('aria-pressed', String(l === 'en'));
+
+    pvNum.textContent = PNUMS[l][curHit];
+    refreshIcon();
+    refreshMode();
+    refreshCounters();
+    restartTyping();
+  }
+
+  esBtn.addEventListener('click', function () { apply('es'); });
+  enBtn.addEventListener('click', function () { apply('en'); });
+
+  /* ---------------- tema ---------------- */
+
+  var SUN = 'M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4M8 5.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Z';
+  var MOON = 'M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8 5.6 5.6 0 1 0 13.2 9.6Z';
+  var themeIcon = document.getElementById('theme-icon');
+  var themeBtn = document.getElementById('theme');
+
+  function isDark() {
+    var set = document.documentElement.getAttribute('data-theme');
+    if (set) { return set === 'dark'; }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function refreshIcon() {
+    themeIcon.setAttribute('d', isDark() ? SUN : MOON);
+    themeBtn.setAttribute('aria-label', T[lang][isDark() ? 'theme.light' : 'theme.dark']);
+  }
+
+  themeBtn.addEventListener('click', function () {
+    document.documentElement.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+    refreshIcon();
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refreshIcon);
+  refreshIcon();
+
+  /* ---------------- revelado ---------------- */
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+
+  document.querySelectorAll('.rise, .rise-x, .said').forEach(function (el) { io.observe(el); });
+
+  /* ---------------- visor: la mención elegida abre su página ---------------- */
+
+  var hits = Array.prototype.slice.call(document.querySelectorAll('#viewer .hit'));
+  var pages = Array.prototype.slice.call(document.querySelectorAll('#viewer .page'));
+  var pvNum = document.getElementById('pv-num');
+  var PNUMS = { es: ['p. 312', 'p. 1.187', 'p. 2.044'], en: ['p. 312', 'p. 1,187', 'p. 2,044'] };
+  var curHit = 0;
+
+  function activateHit(i) {
+    curHit = i;
+    hits.forEach(function (h, k) {
+      h.classList.toggle('on', k === i);
+      h.setAttribute('aria-pressed', String(k === i));
+    });
+    pages.forEach(function (p, k) { p.classList.toggle('on', k === i); });
+    pvNum.textContent = PNUMS[lang][i];
+  }
+
+  hits.forEach(function (h, i) {
+    h.addEventListener('mouseenter', function () { activateHit(i); });
+    h.addEventListener('focus', function () { activateHit(i); });
+    h.addEventListener('click', function () { activateHit(i); });
+  });
+
+  /* ---------------- cifras: conteo al entrar ---------------- */
+
+  var counted = false;
+  var counterGen = 0;
+
+  function fmt(n) { return n.toLocaleString(lang === 'es' ? 'es-CL' : 'en-US'); }
+
+  function refreshCounters() {
+    if (!counted) { return; }
+    counterGen++;   // cancela cualquier conteo en vuelo antes de reformatear
+    document.querySelectorAll('#figures .n').forEach(function (el) {
+      el.textContent = fmt(parseInt(el.getAttribute('data-n'), 10));
+    });
+  }
+
+  function countUp(el, target) {
+    var t0 = null, dur = 1100 + Math.min(target, 4000) / 8, gen = counterGen;
+    function step(ts) {
+      if (gen !== counterGen) { return; }
+      if (!t0) { t0 = ts; }
+      var k = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(Math.round(target * eased));
+      if (k < 1) { requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var figs = document.getElementById('figures');
+  var ioFigs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting || counted) { return; }
+      counted = true;
+      ioFigs.unobserve(figs);
+      if (reduced) { refreshCounters(); return; }
+      figs.querySelectorAll('.n').forEach(function (el) {
+        countUp(el, parseInt(el.getAttribute('data-n'), 10));
+      });
+    });
+  }, { threshold: 0.35 });
+
+  ioFigs.observe(figs);
+
+  /* ---------------- escritura ---------------- */
+
+  var out = document.getElementById('typed-text');
+  var timer = null;
+
+  function pickThree() {
+    var pool = POOL[lang].slice(), three = [];
+    for (var i = 0; i < 3; i++) { three.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]); }
+    return three;
+  }
+
+  function restartTyping() {
+    clearTimeout(timer);
+    if (reduced) { out.textContent = POOL[lang][0]; return; }
+    out.textContent = '';
+    run(pickThree(), 0, 0, false);
+  }
+
+  function keyDelay(ch, prev) {
+    var base = 58 + Math.random() * 78;
+    if (ch === ' ') { base *= 0.62; }
+    if (/[,.;:¿?¡!]/.test(prev)) { base += 150 + Math.random() * 180; }
+    if (Math.random() < 0.07) { base += 190 + Math.random() * 260; }
+    return base;
+  }
+
+  function run(list, idx, pos, deleting) {
+    var text = list[idx];
+    var last = idx === list.length - 1;
+
+    if (!deleting) {
+      if (pos <= text.length) {
+        out.textContent = text.slice(0, pos);
+        var prev = pos > 0 ? text.charAt(pos - 1) : '';
+        timer = setTimeout(function () { run(list, idx, pos + 1, false); },
+                           pos === 0 ? 120 : keyDelay(text.charAt(pos), prev));
+        return;
+      }
+      if (last) { return; }
+      timer = setTimeout(function () { run(list, idx, text.length, true); }, 2100);
+      return;
+    }
+
+    if (pos > 0) {
+      out.textContent = text.slice(0, pos - 1);
+      timer = setTimeout(function () { run(list, idx, pos - 1, true); }, 26);
+      return;
+    }
+
+    timer = setTimeout(function () { run(list, idx + 1, 0, false); }, 420);
+  }
+
+  /* ---------------- formulario ---------------- */
+
+  var segCase = document.getElementById('seg-causa');
+  var segEarly = document.getElementById('seg-cotiza');
+  var submit = document.getElementById('submit');
+  var done = document.getElementById('done');
+  var wrapSize = document.getElementById('wrap-size');
+  var earlyInfo = document.getElementById('early-info');
+  var early = false;
+
+  function refreshMode() {
+    segCase.setAttribute('aria-pressed', String(!early));
+    segEarly.setAttribute('aria-pressed', String(early));
+    wrapSize.classList.toggle('hidden', early);
+    earlyInfo.classList.toggle('on', early);
+    document.getElementById('size-sel').required = !early;
+    submit.textContent = T[lang][early ? 'f.submit.q' : 'f.submit'];
+    // una confirmación ya mostrada no se reescribe al cambiar de modo o idioma
+    if (!document.getElementById('apply').classList.contains('sent')) {
+      done.innerHTML = T[lang][early ? 'done.quote' : 'done.case'];
+    }
+  }
+
+  segCase.addEventListener('click', function () { early = false; refreshMode(); });
+  segEarly.addEventListener('click', function () { early = true; refreshMode(); });
+
+  // los enlaces con data-mode preseleccionan el modo del formulario
+  document.querySelectorAll('a[data-mode]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      early = a.getAttribute('data-mode') === 'early';
+      refreshMode();
+    });
+  });
+
+  var form = document.getElementById('apply');
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!form.reportValidity()) { return; }   // el navegador señala el campo y el motivo
+    done.innerHTML = T[lang][early ? 'done.quote' : 'done.case'];
+    form.classList.add('sent');
+    done.classList.add('on');
+    done.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+  });
+
+  /* ---------------- vista de acceso ---------------- */
+
+  var acForm = document.getElementById('access-form');
+  var acDone = document.getElementById('ac-done');
+
+  function showAccess(on) {
+    document.body.classList.toggle('on-access', on);
+    if (on) {
+      // la tarjeta siempre se abre limpia, aunque ya se haya enviado antes
+      acForm.querySelector('.fields').style.display = '';
+      acForm.querySelector('button[type="submit"]').parentNode.style.display = '';
+      acDone.classList.remove('on');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }
+
+  document.getElementById('go-access').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    showAccess(true);
+    history.replaceState(null, '', '#acceso');
+  });
+
+  document.getElementById('back').addEventListener('click', function () {
+    showAccess(false);
+    history.replaceState(null, '', '#top');
+  });
+
+  // el logo siempre vuelve a la página, también desde la vista de acceso
+  document.querySelectorAll('a.mark').forEach(function (a) {
+    a.addEventListener('click', function () { showAccess(false); });
+  });
+
+  acForm.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!acForm.reportValidity()) { return; }
+    acDone.innerHTML = T[lang]['ac.done'];
+    acForm.querySelector('.fields').style.display = 'none';
+    acForm.querySelector('button[type="submit"]').parentNode.style.display = 'none';
+    acDone.classList.add('on');
+  });
+
+  if (location.hash === '#acceso') { showAccess(true); }
+
+  apply('es');
+})();
+</script>
