@@ -1,6 +1,7 @@
 <!--
-  v9 = v8 + tagline final del footer + reorden de secciones
-       (Héroe → Pregunta → Cifras → Tesis → Quejas → Formulario)
+  v10 = v9 + intercambio Cifras/Pregunta
+        (Héroe → Cifras → Pregunta → Tesis → Quejas → Formulario)
+        + bajada del footer suavizada
   2026-07-30 · decisión del dueño vía dirección
 -->
 <title>pin — el expediente completo, respondiendo</title>
@@ -747,21 +748,6 @@
     </div>
   </section>
 
-  <!-- ============ EL PUNTO ABIERTO ============ -->
-  <section>
-    <div class="wrap stack">
-      <p class="eyebrow rise" data-i18n="ask.eyebrow">El expediente queda abierto, esperando</p>
-      <h2 class="rise" style="--d:70ms" data-i18n="ask.h2">Pregunte lo que preguntaría un colega.</h2>
-      <div class="ask rise" style="--d:150ms" aria-hidden="true">
-        <span class="glyph-ask">&gt;</span>
-        <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
-      </div>
-      <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
-        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
-      </p>
-    </div>
-  </section>
-
   <!-- ============ CIFRAS ============ -->
   <section>
     <div class="wrap stack-s">
@@ -788,6 +774,21 @@
           <p class="fig-t" data-i18n="figs.t4">Mejor lectura del manuscrito que un OCR corriente.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ EL PUNTO ABIERTO ============ -->
+  <section>
+    <div class="wrap stack">
+      <p class="eyebrow rise" data-i18n="ask.eyebrow">El expediente queda abierto, esperando</p>
+      <h2 class="rise" style="--d:70ms" data-i18n="ask.h2">Pregunte lo que preguntaría un colega.</h2>
+      <div class="ask rise" style="--d:150ms" aria-hidden="true">
+        <span class="glyph-ask">&gt;</span>
+        <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
+      </div>
+      <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
+        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
+      </p>
     </div>
   </section>
 
@@ -992,7 +993,7 @@
         </p>
         <p class="aside" style="max-width:22rem" data-i18n-html="foot.blurb2">
           Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan,
-          y la noche antes de la audiencia no lo deja solo. <strong>Todo leído, todo citado.</strong>
+          y no lo deja a mitad del expediente. <strong>Todo leído, todo citado.</strong>
         </p>
       </div>
 
@@ -1115,7 +1116,7 @@
       'ac.done': '<strong>Solicitud recibida.</strong> Le escribimos en cinco días hábiles con los pasos y las opciones de instalación.',
       'ac.back': '← Volver',
       'foot.blurb': 'A la altura de su oficio.',
-      'foot.blurb2': 'Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan, y la noche antes de la audiencia no lo deja solo. <strong>Todo leído, todo citado.</strong>',
+      'foot.blurb2': 'Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan, y no lo deja a mitad del expediente. <strong>Todo leído, todo citado.</strong>',
       'foot.h1': 'Producto', 'foot.h2': 'Empresa', 'foot.h3': 'Contacto',
       'foot.l1': 'Analizar un caso', 'foot.l2': 'Acceso anticipado',
       'foot.l4': 'Cómo funciona',
@@ -1204,7 +1205,7 @@
       'ac.done': '<strong>Request received.</strong> We will write within five business days with the next steps and deployment options.',
       'ac.back': '← Back',
       'foot.blurb': 'Built to the standard of your craft.',
-      'foot.blurb2': "You drive it with questions; it answers in milliseconds. Ten thousand pages won't tire it, and the night before a hearing it won't leave you stranded. <strong>Everything read, everything cited.</strong>",
+      'foot.blurb2': "You drive it with questions; it answers in milliseconds. Ten thousand pages won't tire it, and it won't leave you halfway through the file. <strong>Everything read, everything cited.</strong>",
       'foot.h1': 'Product', 'foot.h2': 'Company', 'foot.h3': 'Contact',
       'foot.l1': 'Analyze a case', 'foot.l2': 'Early access',
       'foot.l4': 'How it works',

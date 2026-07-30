@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed (owner final fix, 2026-07-30)
+
+- Figures and Ask swapped: section order is now Hero → Figures → Ask → Thesis →
+  Quotes → Form (was Hero → Ask → Figures → …). Only the component order in
+  `src/pages/index.astro` and `src/pages/en/index.astro` changed.
+- Footer sub-line softened (owner decision — the hearing phrase was
+  compromising): now "…y no lo deja a mitad del expediente." / "…and it won't
+  leave you halfway through the file." The head ("A la altura de su oficio." /
+  "Built to the standard of your craft.") and the emphasized seal ("Todo leído,
+  todo citado." / "Everything read, everything cited.") are unchanged.
+- Fidelity contract advanced to v10 in place
+  (`design/prototype/pin-landing-v8.html`): same two changes, header comment
+  updated (v10 = v9 + Figures/Ask swap + softened footer sub-line).
+- Footer and full-page order evidence regenerated in `design/evidence/`
+  (light/dark × ES/EN).
+
 ### Changed (owner decision via direction, 2026-07-30)
 
 - Final footer tagline, in two levels: head "A la altura de su oficio." /
