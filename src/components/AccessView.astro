@@ -41,6 +41,15 @@ const d = T[lang];
             </select>
           </div>
         </div>
+        {/* Web3Forms honeypot (see ApplyForm.astro) */}
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+          style="display:none"
+        />
         <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:.875rem">
           <button class="btn" type="submit">{d['ac.submit']}</button>
           <span class="aside">{d['ac.note']}</span>

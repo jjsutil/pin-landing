@@ -11,11 +11,14 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------------- idioma: ES/EN navegan entre rutas, conservando el hash ---------------- */
 
+// BASE_URL es '/' en local y '/pin-landing/' bajo GitHub Pages (GHPAGES=true).
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 document.getElementById('lang-es')!.addEventListener('click', () => {
-  if (lang !== 'es') window.location.href = '/' + window.location.hash;
+  if (lang !== 'es') window.location.href = BASE + '/' + window.location.hash;
 });
 document.getElementById('lang-en')!.addEventListener('click', () => {
-  if (lang !== 'en') window.location.href = '/en/' + window.location.hash;
+  if (lang !== 'en') window.location.href = BASE + '/en/' + window.location.hash;
 });
 
 /* ---------------- tema ---------------- */
@@ -195,6 +198,33 @@ function startTyping(): void {
 
 startTyping();
 
+/* ---------------- envío por Web3Forms ---------------- */
+
+// Key pública-por-diseño de Web3Forms, inyectada por entorno (docs/CONFIG.md).
+// Sin key configurada, los formularios quedan en modo degradado: confirmación
+// en pantalla y nada se envía.
+const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || undefined;
+
+async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
+  if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: W3F_KEY,
+        subject,
+        from_name: 'pin landing',
+        ...fields,
+      }),
+    });
+    const data = await res.json();
+    return res.ok && data.success === true;
+  } catch {
+    return false;
+  }
+}
+
 /* ---------------- formulario ---------------- */
 
 const segCase = document.getElementById('seg-causa')!;
@@ -214,8 +244,10 @@ function refreshMode(): void {
   earlyInfo.classList.toggle('on', early);
   sizeSel.required = !early;
   submit.textContent = d[early ? 'f.submit.q' : 'f.submit'];
-  // una confirmación ya mostrada no se reescribe al cambiar de modo
+  // una confirmación ya mostrada no se reescribe al cambiar de modo;
+  // un error visible sí se limpia (pertenece al intento anterior)
   if (!form.classList.contains('sent')) {
+    done.classList.remove('on', 'err');
     done.innerHTML = d[early ? 'done.quote' : 'done.case'];
   }
 }
@@ -237,12 +269,32 @@ document.querySelectorAll<HTMLAnchorElement>('a[data-mode]').forEach((a) => {
   });
 });
 
-form.addEventListener('submit', (ev) => {
+form.addEventListener('submit', async (ev) => {
   ev.preventDefault();
   if (!form.reportValidity()) return; // el navegador señala el campo y el motivo
-  // TODO(backend): captura pendiente de decisión del dueño
-  done.innerHTML = d[early ? 'done.quote' : 'done.case'];
-  form.classList.add('sent');
+  const btn = submit as HTMLButtonElement;
+  btn.disabled = true;
+  const ok = await sendWeb3Forms(
+    early ? 'pin — early access request' : 'pin — case analysis request',
+    {
+      name: (document.getElementById('nombre') as HTMLInputElement).value,
+      email: (document.getElementById('correo') as HTMLInputElement).value,
+      role: (document.getElementById('rol') as HTMLSelectElement).value,
+      ...(early ? {} : { file_size: sizeSel.value }),
+      request: early ? 'early-access' : 'case-analysis',
+      lang,
+      botcheck: form.querySelector<HTMLInputElement>('[name="botcheck"]')!.checked,
+    }
+  );
+  btn.disabled = false;
+  if (ok) {
+    done.innerHTML = d[early ? 'done.quote' : 'done.case'];
+    done.classList.remove('err');
+    form.classList.add('sent');
+  } else {
+    done.innerHTML = d['done.error']; // el formulario queda editable para reintentar
+    done.classList.add('err');
+  }
   done.classList.add('on');
   done.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
 });
@@ -260,7 +312,7 @@ function showAccess(on: boolean): void {
     // la tarjeta siempre se abre limpia, aunque ya se haya enviado antes
     acFields.style.display = '';
     acSubmitRow.style.display = '';
-    acDone.classList.remove('on');
+    acDone.classList.remove('on', 'err');
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 }
@@ -281,13 +333,28 @@ document.querySelectorAll<HTMLAnchorElement>('a.mark').forEach((a) => {
   a.addEventListener('click', () => showAccess(false));
 });
 
-acForm.addEventListener('submit', (ev) => {
+acForm.addEventListener('submit', async (ev) => {
   ev.preventDefault();
   if (!acForm.reportValidity()) return;
-  // TODO(backend): captura pendiente de decisión del dueño
-  acDone.innerHTML = d['ac.done'];
-  acFields.style.display = 'none';
-  acSubmitRow.style.display = 'none';
+  const acBtn = acForm.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+  acBtn.disabled = true;
+  const ok = await sendWeb3Forms('pin — early access request (access view)', {
+    email: (document.getElementById('ac-mail') as HTMLInputElement).value,
+    role: (document.getElementById('ac-role') as HTMLSelectElement).value,
+    request: 'early-access',
+    lang,
+    botcheck: acForm.querySelector<HTMLInputElement>('[name="botcheck"]')!.checked,
+  });
+  acBtn.disabled = false;
+  if (ok) {
+    acDone.innerHTML = d['ac.done'];
+    acDone.classList.remove('err');
+    acFields.style.display = 'none';
+    acSubmitRow.style.display = 'none';
+  } else {
+    acDone.innerHTML = d['done.error']; // los campos quedan visibles para reintentar
+    acDone.classList.add('err');
+  }
   acDone.classList.add('on');
 });
 
