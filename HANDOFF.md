@@ -1,62 +1,50 @@
 # HANDOFF — pin-landing
 
-Updated: 2026-07-30 (session: demo & publish — PR #5 OPEN, awaiting adversarial review)
+Updated: 2026-07-30 (session close: landing PUBLISHED, Web3Forms wired, CI restored)
 
-## This session (demo & publish)
-
-- **PR #5 OPEN (not draft), do NOT merge from here** — the orchestrator runs the
-  adversarial review and merges. Branch `feat/demo-and-publish`:
-  Web3Forms on both forms (degraded without key), `npm run demo` + ngrok-ready
-  preview, GitHub Pages workflow + `GHPAGES` base build, real README,
-  `docs/DEPLOY.md`. Gate bare exit 0 (twice: pre-PR and post-PR with SHA-pinned
-  embed check green); build + astro check exit 0.
-- A local `.env` with a real `PUBLIC_WEB3FORMS_KEY` appeared during the session
-  (owner-created, 36 chars). It is gitignored and verified absent from the
-  tracked tree. It DOES get baked into any local `npm run build`'s `dist/`
-  (dist is gitignored — that is the mechanism, not a leak).
-- **Owner QA on :4321 now serves a `main` worktree at `/tmp/pin-qa-main`**
-  (linked node_modules), so branch rebuilds no longer clobber what the owner
-  sees. If it dies: `cd /tmp/pin-qa-main && npx astro preview --port 4321`.
-  Remove with `git worktree remove --force /tmp/pin-qa-main` when done.
-- Owner steps remaining: enable Pages, set the repo variable
-  (`gh variable set PUBLIC_WEB3FORMS_KEY`), deploy (manual fallback while
-  billing is blocked), ngrok authtoken — all in `docs/DEPLOY.md`.
+> [!IMPORTANT]
+> **The site is live at https://jjsutil.github.io/pin-landing/** (ES) and
+> `/en/` (EN), both verified 200. Publishing is automatic: every push to `main`
+> runs `deploy-pages.yml`. The repo is **public** — which is what restored CI:
+> the account's Actions billing block only affects private repos.
 
 ## Real state
 
-- **PR #2 MERGED to main** (squash `b823470`, 2026-07-30): complete Astro
-  implementation of the landing, contract v10. ES at `/`, EN at `/en/`.
-  Merged under the active autonomous window on explicit owner instruction,
-  with the full liturgy on the PR: adversarial review (APPROVE, 0 blockers),
-  independent visual fidelity review (PASS 66/66, screenshots in
-  `design/evidence/fidelity-v10/`), local gate bare exit 0, and the real
-  `gh pr checks` output ("no checks reported") transcribed. Logged in
-  `~/.claude/autonomous-mode-log.md`.
-- The **fidelity contract** is `design/prototype/pin-landing-v8.html`, header
-  states **v10** (v8 + final tagline + section order Héroe→Cifras→Pregunta→
-  Tesis→Quejas→Oferta + softened footer sub-line). On any doubt, it wins.
-- **PR #1 (Draft, OPEN — do not merge without owner):**
-  `chore/bootstrap-workflow-system` — bootflower v0.1.15 seeding. Owner
-  explicitly kept it in Draft when authorizing the PR #2 merge.
-- **Issue #3** collects the non-blocking review findings for pre-publication
-  hardening (no-JS fallback is the important one) plus form backend, real
-  footer address/email, and the dead footer links.
+- **PR #1, #2 and #5 all merged.** `main` carries the full Astro landing
+  (fidelity contract v10), Web3Forms wiring, ngrok demo config, the Pages
+  workflow, real README and `docs/DEPLOY.md`.
+- **CI is real here**: `check-gates` runs and passes on every PR. It already
+  caught a real defect (a 114-char commit header) that the local gate missed
+  because the gate had been run before the commit existed. Lesson: run the gate
+  **after** committing, not before.
+- **Web3Forms is wired and live.** The owner's key is stored as repo variable
+  `PUBLIC_WEB3FORMS_KEY` and is baked into the published bundle (verified by
+  grepping the served JS). Without the variable the forms degrade to on-screen
+  confirmation.
+- **Not yet verified end-to-end**: that a submission actually lands in the
+  owner's inbox. Web3Forms rejects server-side POSTs on the free plan (client
+  only), and the browser automation hung on this page. **The owner verifies it
+  in ten seconds by submitting the form on the live site.**
 
-## What is missing (deliberate)
+## Open
 
-- **Form backend** — both forms confirm on screen only;
-  `// TODO(backend)` in `src/scripts/main.ts` marks the capture points.
-  Owner decision pending; register the integration in `docs/CONFIG.md` when chosen.
-- **Step 4 — publication** (GitHub Pages / deploy workflow / domain / real
-  email): retained by the owner for a joint session. Nothing configured.
-- **Owner still owes one word**: whether the ask-bar caret hiding (commit
-  `e46a9c3`) was requested in his QA or should be reverted.
+- **Issue #3** — pre-publication hardening: no-JS fallback (`.rise` starts at
+  `opacity:0`, so a bundle failure renders a blank page — the one that matters),
+  favicon, `aria-label` server-rendered in Spanish on `/en/`, viewer keydown
+  handler, meta/OG tags. Plus the review's remaining shoulds: error live region
+  announcement, submit busy state.
+- **PR #4** — Dependabot: typescript 6.0.3 → 7.0.2. Untouched.
+- **Owner decision pending**: whether the ask-bar caret hiding (`e46a9c3`) was
+  requested in his QA or should be reverted.
+- Footer address and `hola@pin.legal` are **placeholders**.
+- Going private again kills Pages on the free plan (documented in DEPLOY.md).
 
 ## Gotchas
 
-- **GitHub Actions is blocked by billing on this account since 2026-07-23.**
-  Workflows are installed (PR #1) but never run. The gate is local:
-  `npm run build`, `npx astro check`, `scripts/check-gates.sh` (once PR #1 merges).
-- Playwright for evidence was borrowed from `~/Projects/foja/web/node_modules`
-  (not a dependency of this repo).
-- Local QA preview: `npm run preview` serves `dist/` on :4321; rebuild first.
+- `main` is checked out in a worktree at `/tmp/pin-qa-main`, serving the owner's
+  QA preview on :4321 (`npx astro preview --port 4321`). Remove with
+  `git worktree remove --force /tmp/pin-qa-main`.
+- `.env` holds the real Web3Forms key locally; gitignored and verified absent
+  from every blob of every branch. It IS baked into local `dist/` builds — that
+  is the mechanism, and `dist/` is gitignored.
+- Playwright for evidence is borrowed from `~/Projects/foja/web/node_modules`.
