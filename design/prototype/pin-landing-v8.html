@@ -1,3 +1,8 @@
+<!--
+  v9 = v8 + tagline final del footer + reorden de secciones
+       (Héroe → Pregunta → Cifras → Tesis → Quejas → Formulario)
+  2026-07-30 · decisión del dueño vía dirección
+-->
 <title>pin — el expediente completo, respondiendo</title>
 
 <style>
@@ -742,6 +747,21 @@
     </div>
   </section>
 
+  <!-- ============ EL PUNTO ABIERTO ============ -->
+  <section>
+    <div class="wrap stack">
+      <p class="eyebrow rise" data-i18n="ask.eyebrow">El expediente queda abierto, esperando</p>
+      <h2 class="rise" style="--d:70ms" data-i18n="ask.h2">Pregunte lo que preguntaría un colega.</h2>
+      <div class="ask rise" style="--d:150ms" aria-hidden="true">
+        <span class="glyph-ask">&gt;</span>
+        <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
+      </div>
+      <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
+        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
+      </p>
+    </div>
+  </section>
+
   <!-- ============ CIFRAS ============ -->
   <section>
     <div class="wrap stack-s">
@@ -768,40 +788,6 @@
           <p class="fig-t" data-i18n="figs.t4">Mejor lectura del manuscrito que un OCR corriente.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ LO QUE YA INTENTÓ ============ -->
-  <section class="band-sec">
-    <div class="wrap">
-      <div class="stack-s">
-        <p class="eyebrow rise" data-i18n="tried.eyebrow">Lo que ya intentó, antes de llegar aquí</p>
-        <h2 class="rise" style="--d:70ms" data-i18n="tried.h2">Ninguna de esas herramientas fue hecha para su expediente.</h2>
-      </div>
-
-      <div class="quotes">
-        <div class="said rise-x">
-          <q data-i18n="tried.q1">Pagué la suscripción más cara y a la mitad del expediente ya no se acordaba de nada.</q>
-          <span class="who" data-i18n="tried.w1">Asistente general de IA</span>
-        </div>
-        <div class="said rise-x" style="--d:120ms">
-          <q data-i18n="tried.q2">Subí los volúmenes tres veces. Tres veces se cayó la carga.</q>
-          <span class="who" data-i18n="tried.w2">Plataforma legal en la nube</span>
-        </div>
-        <div class="said rise-x" style="--d:240ms">
-          <q data-i18n="tried.q3">Me respondió con total seguridad algo que no estaba en ninguna página.</q>
-          <span class="who" data-i18n="tried.w3">Buscador con IA</span>
-        </div>
-        <div class="said rise-x" style="--d:360ms">
-          <q data-i18n="tried.q4">Quinientos dólares después, terminé leyendo el expediente a mano.</q>
-          <span class="who" data-i18n="tried.w4">Todo lo anterior, junto</span>
-        </div>
-      </div>
-
-      <p class="verdict rise" style="--d:150ms" data-i18n-html="tried.verdict">
-        Fueron hechas para documentos limpios y expedientes pequeños.
-        <span class="brand">pin</span> se construyó para el suyo.
-      </p>
     </div>
   </section>
 
@@ -840,17 +826,36 @@
     </div>
   </section>
 
-  <!-- ============ EL PUNTO ABIERTO ============ -->
-  <section>
-    <div class="wrap stack">
-      <p class="eyebrow rise" data-i18n="ask.eyebrow">El expediente queda abierto, esperando</p>
-      <h2 class="rise" style="--d:70ms" data-i18n="ask.h2">Pregunte lo que preguntaría un colega.</h2>
-      <div class="ask rise" style="--d:150ms" aria-hidden="true">
-        <span class="glyph-ask">&gt;</span>
-        <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
+  <!-- ============ LO QUE YA INTENTÓ ============ -->
+  <section class="band-sec">
+    <div class="wrap">
+      <div class="stack-s">
+        <p class="eyebrow rise" data-i18n="tried.eyebrow">Lo que ya intentó, antes de llegar aquí</p>
+        <h2 class="rise" style="--d:70ms" data-i18n="tried.h2">Ninguna de esas herramientas fue hecha para su expediente.</h2>
       </div>
-      <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
-        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
+
+      <div class="quotes">
+        <div class="said rise-x">
+          <q data-i18n="tried.q1">Pagué la suscripción más cara y a la mitad del expediente ya no se acordaba de nada.</q>
+          <span class="who" data-i18n="tried.w1">Asistente general de IA</span>
+        </div>
+        <div class="said rise-x" style="--d:120ms">
+          <q data-i18n="tried.q2">Subí los volúmenes tres veces. Tres veces se cayó la carga.</q>
+          <span class="who" data-i18n="tried.w2">Plataforma legal en la nube</span>
+        </div>
+        <div class="said rise-x" style="--d:240ms">
+          <q data-i18n="tried.q3">Me respondió con total seguridad algo que no estaba en ninguna página.</q>
+          <span class="who" data-i18n="tried.w3">Buscador con IA</span>
+        </div>
+        <div class="said rise-x" style="--d:360ms">
+          <q data-i18n="tried.q4">Quinientos dólares después, terminé leyendo el expediente a mano.</q>
+          <span class="who" data-i18n="tried.w4">Todo lo anterior, junto</span>
+        </div>
+      </div>
+
+      <p class="verdict rise" style="--d:150ms" data-i18n-html="tried.verdict">
+        Fueron hechas para documentos limpios y expedientes pequeños.
+        <span class="brand">pin</span> se construyó para el suyo.
       </p>
     </div>
   </section>
@@ -983,7 +988,11 @@
       <div class="foot-col" style="gap:1.125rem">
         <a class="mark" href="#top" aria-label="pin">pin<span class="dot">.</span></a>
         <p class="foot-tag" data-i18n="foot.blurb">
-          El sistema operativo del trabajo legal en la era de la IA.
+          A la altura de su oficio.
+        </p>
+        <p class="aside" style="max-width:22rem" data-i18n-html="foot.blurb2">
+          Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan,
+          y la noche antes de la audiencia no lo deja solo. <strong>Todo leído, todo citado.</strong>
         </p>
       </div>
 
@@ -1105,7 +1114,8 @@
       'ac.note': 'Le respondemos en cinco días hábiles.',
       'ac.done': '<strong>Solicitud recibida.</strong> Le escribimos en cinco días hábiles con los pasos y las opciones de instalación.',
       'ac.back': '← Volver',
-      'foot.blurb': 'El sistema operativo del trabajo legal en la era de la IA.',
+      'foot.blurb': 'A la altura de su oficio.',
+      'foot.blurb2': 'Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan, y la noche antes de la audiencia no lo deja solo. <strong>Todo leído, todo citado.</strong>',
       'foot.h1': 'Producto', 'foot.h2': 'Empresa', 'foot.h3': 'Contacto',
       'foot.l1': 'Analizar un caso', 'foot.l2': 'Acceso anticipado',
       'foot.l4': 'Cómo funciona',
@@ -1193,7 +1203,8 @@
       'ac.note': 'We reply within five business days.',
       'ac.done': '<strong>Request received.</strong> We will write within five business days with the next steps and deployment options.',
       'ac.back': '← Back',
-      'foot.blurb': 'The operating system of legal work in the AI era.',
+      'foot.blurb': 'Built to the standard of your craft.',
+      'foot.blurb2': "You drive it with questions; it answers in milliseconds. Ten thousand pages won't tire it, and the night before a hearing it won't leave you stranded. <strong>Everything read, everything cited.</strong>",
       'foot.h1': 'Product', 'foot.h2': 'Company', 'foot.h3': 'Contact',
       'foot.l1': 'Analyze a case', 'foot.l2': 'Early access',
       'foot.l4': 'How it works',
