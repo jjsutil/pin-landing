@@ -40,13 +40,14 @@ npm run preview    # serve the built site
   check-gates step 8): hero + form, light and dark, ES and EN.
 - Docs in English (rule 4).
 
-## What this repo deliberately does NOT have
+## Deployment and forms
 
-- **Deployment.** No Pages, no deploy workflow, no domain, no email. Publication
-  is gated on an owner session.
-- **Form backend.** Both forms confirm on screen only; capture is
-  `// TODO(backend)` pending an owner decision (register it in `docs/CONFIG.md`
-  when decided, rule 6).
+- **Deployment**: GitHub Pages via `.github/workflows/deploy-pages.yml`
+  (billing-blocked today — manual fallback and every owner step in
+  `docs/DEPLOY.md`). No custom domain yet.
+- **Form backend**: Web3Forms (owner decision, 2026-07-30). Key =
+  `PUBLIC_WEB3FORMS_KEY` build-time env (`docs/CONFIG.md`, `.env.example`);
+  without it the forms degrade to on-screen confirmation only.
 
 ## Workflow system
 
