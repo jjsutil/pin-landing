@@ -129,6 +129,9 @@ ioFigs.observe(figs);
 /* ---------------- escritura ---------------- */
 
 const out = document.getElementById('typed-text')!;
+// QA del dueño (2026-07-30): al quedar la tercera frase, el caret se oculta —
+// el "|" final sobraba. (Delta deliberado respecto del prototipo v8.)
+const askCaret = document.querySelector<HTMLElement>('.ask .caret')!;
 let timer: ReturnType<typeof setTimeout> | undefined;
 
 function pickThree(): string[] {
@@ -162,7 +165,10 @@ function run(list: string[], idx: number, pos: number, deleting: boolean): void 
       );
       return;
     }
-    if (last) return; // la tercera frase queda
+    if (last) {
+      askCaret.style.display = 'none'; // la tercera frase queda, sin caret
+      return;
+    }
     timer = setTimeout(() => run(list, idx, text.length, true), 2100);
     return;
   }
@@ -180,6 +186,7 @@ function startTyping(): void {
   clearTimeout(timer);
   if (reduced) {
     out.textContent = POOL[lang][0]!;
+    askCaret.style.display = 'none';
     return;
   }
   out.textContent = '';
