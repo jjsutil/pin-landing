@@ -208,9 +208,11 @@ const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || unde
 async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
   if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
   try {
+    // Sin tope de espera, una red colgada dejaría el botón deshabilitado para siempre.
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
       body: JSON.stringify({
         access_key: W3F_KEY,
         subject,

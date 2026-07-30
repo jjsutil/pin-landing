@@ -10,9 +10,8 @@ English at `/en/`, light and dark themes, zero external requests at runtime
 > is merged to `main` with a 66/66 visual-fidelity pass. Both lead-capture
 > forms submit via [Web3Forms](https://web3forms.com) when
 > `PUBLIC_WEB3FORMS_KEY` is set — without it they degrade to on-screen
-> confirmation only. A GitHub Pages deploy workflow is in place but **GitHub
-> Actions is billing-blocked on this account**, so publishing currently follows
-> the manual path in [docs/DEPLOY.md](docs/DEPLOY.md).
+> confirmation only. Publishing runs through the GitHub Pages workflow; every
+> step is in [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ![pin landing — hero, Spanish, light theme](design/evidence/hero-es-light.png)
 
@@ -53,7 +52,7 @@ v8 prototype) runs as a direct PR. Full board: [planning/BOARD.md](planning/BOAR
 | `src/styles/global.css` | Design tokens (both themes) and all styles |
 | `design/prototype/pin-landing-v8.html` | **The visual-fidelity contract** (header states v10) |
 | `design/evidence/` | Committed screenshots: hero/form/footer/full page, light/dark × ES/EN |
-| `.github/workflows/deploy-pages.yml` | GitHub Pages deploy (billing-blocked today; see docs/DEPLOY.md) |
+| `.github/workflows/deploy-pages.yml` | GitHub Pages deploy (live; see docs/DEPLOY.md) |
 
 ### i18n
 
@@ -81,8 +80,9 @@ sent. Failure → localized ES/EN error, form stays editable.
 
 ### Gates
 
-GitHub Actions is billing-blocked, so the gate is **local** and mandatory
-before any PR (run each command bare, read its exit code):
+`check-gates` runs in CI on every PR (this repo is public, so Actions is not
+affected by the account's billing block on private repos). Run the same gate
+locally before opening one — bare, reading each exit code:
 
 ```bash
 scripts/check-gates.sh --base origin/main

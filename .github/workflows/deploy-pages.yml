@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-# NOTE: GitHub Actions is billing-blocked on this account (see CONTRIBUTING).
-# This workflow is correct but will not run until billing is fixed; the manual
-# gh-pages fallback is documented in docs/DEPLOY.md.
+# Actions runs here: the account's billing block only affects private repos, and
+# this one is public. Action versions follow withastro/action@v6's own README
+# (checkout@v7 + deploy-pages@v5). See docs/DEPLOY.md.
 on:
   push:
     branches: [main]
@@ -21,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: withastro/action@v6
         env:
           GHPAGES: 'true'
@@ -37,4 +37,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

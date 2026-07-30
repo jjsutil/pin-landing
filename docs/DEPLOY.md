@@ -9,11 +9,12 @@ tags: [deploy, pages, ngrok, web3forms]
 Owner-facing guide: every step to put the landing online (GitHub Pages), make
 the forms deliver email (Web3Forms), and demo it over the internet (ngrok).
 
-> [!WARNING]
-> **GitHub Actions is billing-blocked on this account (since 2026-07-23).**
-> The Pages workflow (`.github/workflows/deploy-pages.yml`) is correct but may
-> not run until billing is fixed. Until then, use the manual fallback below —
-> it produces the same site at the same URL.
+> [!IMPORTANT]
+> **Actions runs on this repository.** The account-wide billing block (since
+> 2026-07-23) only affects **private** repositories — public ones get free
+> Actions minutes. `pin-landing` was made public on 2026-07-30, and `check-gates`
+> has been running green since. The workflow path below is the live one; the
+> manual fallback is kept only for the day this repo goes private again.
 
 Resulting URL: **https://jjsutil.github.io/pin-landing/**
 
@@ -46,7 +47,7 @@ gh api repos/jjsutil/pin-landing/pages -X POST -f build_type=workflow
 
 ## 3. Deploy
 
-### Preferred: the workflow (needs Actions billing fixed)
+### Preferred: the workflow (live — this is the normal path)
 
 Runs automatically on every push to `main`, or by hand:
 
@@ -58,9 +59,12 @@ gh run watch          # follow it
 It builds with `GHPAGES=true` (site/base for the project URL) and injects
 `PUBLIC_WEB3FORMS_KEY` from the repo variable if set.
 
-### Fallback: manual deploy via `gh-pages` branch (works today)
+### Fallback: manual deploy via `gh-pages` branch (only if this repo goes private)
 
-While Actions is blocked, publish the built `dist/` from your machine:
+Private repos on this account cannot run Actions until billing is fixed. In that
+case, publish the built `dist/` from your machine — note that **GitHub Pages on
+the free plan requires a public repository**, so going private disables Pages
+entirely; this fallback then applies only under a paid plan:
 
 ```bash
 # 1. Build for the Pages URL, with the key
@@ -76,7 +80,7 @@ npx gh-pages -d dist -t
 Then point Pages at the branch: Settings → Pages → Source: **Deploy from a
 branch** → `gh-pages` / root (or `gh api repos/jjsutil/pin-landing/pages -X POST
 -f build_type=legacy -f 'source[branch]=gh-pages' -f 'source[path]=/'`).
-If you later fix billing, switch the source back to GitHub Actions.
+Switch the source back to GitHub Actions once the repo is public again.
 
 ## 4. Demo over the internet (ngrok)
 
