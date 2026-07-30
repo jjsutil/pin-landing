@@ -5,6 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (demo & publish, 2026-07-30)
+
+- Both lead-capture forms (apply + access) now submit via Web3Forms
+  (fetch POST, key from `PUBLIC_WEB3FORMS_KEY` — public-by-design, injected per
+  environment; refs #3). Without a key they keep the previous behavior
+  (on-screen confirmation, nothing sent). New localized ES/EN error state when
+  sending fails (form stays editable), hidden `botcheck` honeypot in both
+  forms, `.env.example`, and the `docs/CONFIG.md` entries.
+- GitHub Pages deployment: `.github/workflows/deploy-pages.yml`
+  (withastro/action, push to main + manual dispatch, key injected from repo
+  vars) and conditional `site`/`base` in `astro.config.mjs` under
+  `GHPAGES=true`. Language-switch links are now base-aware. Actions is
+  billing-blocked, so `docs/DEPLOY.md` documents the full owner path including
+  the manual `gh-pages` fallback and the ngrok demo steps.
+- `npm run demo`: build + preview on all interfaces, with external hosts
+  allowed (`vite.preview.allowedHosts: true`) so an ngrok tunnel works.
+- Real README (two-layer per rule 14): what pin is, state, how to run and
+  demo, evidence capture; depth folded.
+- Evidence: form error state captured in `design/evidence/form-error-*.png`
+  (light/dark × ES/EN).
+
 ### Changed (owner final fix, 2026-07-30)
 
 - Figures and Ask swapped: section order is now Hero → Figures → Ask → Thesis →

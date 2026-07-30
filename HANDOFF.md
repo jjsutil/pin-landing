@@ -1,6 +1,26 @@
 # HANDOFF — pin-landing
 
-Updated: 2026-07-30 (session: contract v10, PR #2 merged to main)
+Updated: 2026-07-30 (session: demo & publish — PR #5 OPEN, awaiting adversarial review)
+
+## This session (demo & publish)
+
+- **PR #5 OPEN (not draft), do NOT merge from here** — the orchestrator runs the
+  adversarial review and merges. Branch `feat/demo-and-publish`:
+  Web3Forms on both forms (degraded without key), `npm run demo` + ngrok-ready
+  preview, GitHub Pages workflow + `GHPAGES` base build, real README,
+  `docs/DEPLOY.md`. Gate bare exit 0 (twice: pre-PR and post-PR with SHA-pinned
+  embed check green); build + astro check exit 0.
+- A local `.env` with a real `PUBLIC_WEB3FORMS_KEY` appeared during the session
+  (owner-created, 36 chars). It is gitignored and verified absent from the
+  tracked tree. It DOES get baked into any local `npm run build`'s `dist/`
+  (dist is gitignored — that is the mechanism, not a leak).
+- **Owner QA on :4321 now serves a `main` worktree at `/tmp/pin-qa-main`**
+  (linked node_modules), so branch rebuilds no longer clobber what the owner
+  sees. If it dies: `cd /tmp/pin-qa-main && npx astro preview --port 4321`.
+  Remove with `git worktree remove --force /tmp/pin-qa-main` when done.
+- Owner steps remaining: enable Pages, set the repo variable
+  (`gh variable set PUBLIC_WEB3FORMS_KEY`), deploy (manual fallback while
+  billing is blocked), ngrok authtoken — all in `docs/DEPLOY.md`.
 
 ## Real state
 

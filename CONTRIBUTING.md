@@ -25,12 +25,12 @@ npm run preview    # serve the built site
 
 ## Gates
 
-> [!WARNING]
-> **GitHub Actions does not run on this account** (billing block since
-> 2026-07-23). The seeded workflows (`check-gates.yml`, `cadence-reminder.yml`)
-> are installed but inert. The gate is **local**: run `scripts/check-gates.sh`,
-> `npm run build` and `npx astro check` before opening a PR, and quote their
-> output in the PR body.
+> [!IMPORTANT]
+> **CI runs here.** The account's billing block (since 2026-07-23) only affects
+> **private** repositories; this one is public, so `check-gates.yml` and
+> `cadence-reminder.yml` execute normally. Still run the same gate locally
+> before opening a PR — `scripts/check-gates.sh`, `npm run build`,
+> `npx astro check` — and quote their exit codes in the PR body.
 
 - Pre-PR gate: `.claude/rules/01-pre-pr-gate.md` (docs-guardian, config-registry,
   cost-guard, security-sweep, pr-writer body, changelog entry).
@@ -40,13 +40,13 @@ npm run preview    # serve the built site
   check-gates step 8): hero + form, light and dark, ES and EN.
 - Docs in English (rule 4).
 
-## What this repo deliberately does NOT have
+## Deployment and forms
 
-- **Deployment.** No Pages, no deploy workflow, no domain, no email. Publication
-  is gated on an owner session.
-- **Form backend.** Both forms confirm on screen only; capture is
-  `// TODO(backend)` pending an owner decision (register it in `docs/CONFIG.md`
-  when decided, rule 6).
+- **Deployment**: GitHub Pages via `.github/workflows/deploy-pages.yml`
+  (live; every owner step in `docs/DEPLOY.md`). No custom domain yet.
+- **Form backend**: Web3Forms (owner decision, 2026-07-30). Key =
+  `PUBLIC_WEB3FORMS_KEY` build-time env (`docs/CONFIG.md`, `.env.example`);
+  without it the forms degrade to on-screen confirmation only.
 
 ## Workflow system
 

@@ -22,6 +22,7 @@
   --accent-chip: #DCE8F5;
 
   --ok:   #1F6D46;
+  --err:  #9C2F1F;
 
   --btn-bg:    #1A1714;
   --btn-fg:    #FBF8F3;
@@ -58,6 +59,7 @@
     --accent-chip: #18293A;
 
     --ok:   #5FB884;
+    --err:  #D98F7E;
 
     --btn-bg:    #EDEAE5;
     --btn-fg:    #0E1012;
@@ -80,7 +82,7 @@
   --line: #E3DCD0; --line-soft: #EDE7DC; --line-hard: #C4BBAA;
   --ink: #1A1714; --ink-muted: #55504A; --ink-faint: #6C665A;
   --accent: #1B5FA8; --accent-deep: #17518F; --accent-chip: #DCE8F5;
-  --ok: #1F6D46;
+  --ok: #1F6D46; --err: #9C2F1F;
   --btn-bg: #1A1714; --btn-fg: #FBF8F3; --btn-hover: #000000;
   --shadow: 0 34px 64px -36px rgba(26,23,20,0.34);
   --shadow-s: 0 2px 4px -2px rgba(26,23,20,0.14);
@@ -93,7 +95,7 @@
   --line: #24272C; --line-soft: #1C1F23; --line-hard: #363B43;
   --ink: #EDEAE5; --ink-muted: #9BA1A9; --ink-faint: #8A919B;
   --accent: #93B8E4; --accent-deep: #4C9AF0; --accent-chip: #18293A;
-  --ok: #5FB884;
+  --ok: #5FB884; --err: #D98F7E;
   --btn-bg: #EDEAE5; --btn-fg: #0E1012; --btn-hover: #FFFFFF;
   --shadow: 0 50px 100px -46px rgba(0,0,0,0.92);
   --shadow-s: 0 2px 6px -2px rgba(0,0,0,0.6);
@@ -525,6 +527,8 @@ select {
 }
 
 .done.on { display: block; }
+/* variante de error (envío Web3Forms fallido): mismo bloque, tono de alerta */
+.done.err { border-color: var(--err); background: color-mix(in srgb, var(--err) 10%, transparent); }
 .apply.sent .fields, .apply.sent .submit-row, .apply.sent .segmented, .apply.sent .mode-info { display: none; }
 
 /* ---------- vista de acceso ---------- */
