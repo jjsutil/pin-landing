@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     consequences that decide professional risk (hallucination as a structural
     consequence, not a rare defect; no persistent memory), and the volume-vs-time
     bottleneck quantified from the GTM's externally sourced reading-rate figures.
-  - `por-que-ninguna-herramienta-te-sirve.md` — "No se olvidó de su expediente.
+  - `por-que-ninguna-herramienta-le-sirvio.md` — "No se olvidó de su expediente.
     Nunca lo leyó entero." Explains the context window and maps each symptom the
     reader actually experienced onto its mechanism (forgetting → truncation, lying
     → compression, stalling → the system announcing its limit), kills the

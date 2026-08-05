@@ -10,7 +10,7 @@ created: 2026-08-05
 
 # Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero."
 
-Shipped title (frontmatter, `src/content/blog/es/por-que-ninguna-herramienta-te-sirve.md`):
+Shipped title (frontmatter, `src/content/blog/es/por-que-ninguna-herramienta-le-sirvio.md`):
 **No se olvidó de su expediente. Nunca lo leyó entero.** Chosen over the working title
 because it follows the landing's negation-then-correction pattern (`thesis.h2`/`h2b`:
 "La cita no la escribe el modelo. / La apunta.") and because it states the post's precise
@@ -34,7 +34,7 @@ market doesn't compare to pin, which is built to solve exactly this problem.
 
 ## Scope
 
-- One Markdown file, `src/content/blog/es/por-que-ninguna-herramienta-te-sirve.md`.
+- One Markdown file, `src/content/blog/es/por-que-ninguna-herramienta-le-sirvio.md`.
 - Opens with the reader's actual experience (named, not softened): paid for ChatGPT/
   Claude/another tool, ran a real case file through it, got confident-sounding nonsense,
   or the tool "forgot" the first half of the document by the time it answered.
@@ -76,5 +76,5 @@ market doesn't compare to pin, which is built to solve exactly this problem.
       reader's own experience, and the argument is the mechanism throughout — the section
       that could have been a feature list is collapsed into one architectural principle.
 - [x] Ships through I-001's pipeline: `npm run build` exits 0 and renders
-      `/blog/por-que-ninguna-herramienta-te-sirve/` via `BlogLayout.astro`. Correctly
+      `/blog/por-que-ninguna-herramienta-le-sirvio/` via `BlogLayout.astro`. Correctly
       **excluded** from the `/blog` listing while `draft: true`, by design.

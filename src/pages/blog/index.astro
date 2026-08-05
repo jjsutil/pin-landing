@@ -30,7 +30,7 @@ const dateFmt = new Intl.DateTimeFormat('es-CL', {
           <ul class="blog-cards">
             {posts.map((post) => (
               <li class="blog-card">
-                <a href={`${base}/blog/${post.data.slug}`}>
+                <a href={`${base}/blog/${post.data.slug}/`}>
                   <h2>{post.data.title}</h2>
                   <p class="lede">{post.data.excerpt}</p>
                   <p class="aside blog-meta">

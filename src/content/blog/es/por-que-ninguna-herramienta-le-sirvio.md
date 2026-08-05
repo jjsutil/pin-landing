@@ -1,6 +1,6 @@
 ---
 title: "No se olvidó de su expediente. Nunca lo leyó entero."
-slug: "por-que-ninguna-herramienta-te-sirve"
+slug: "por-que-ninguna-herramienta-le-sirvio"
 excerpt: "Pagó la suscripción, subió el expediente y la herramienta le falló de tres maneras distintas. Ninguna de las tres fue una falla: las tres son el mismo límite."
 publishDate: 2026-08-05
 author: "Equipo fundador de pin"
@@ -23,10 +23,6 @@ grande.
 
 Esto es lo incómodo: no le fallaron. Hicieron exactamente aquello para lo que fueron
 construidas, y aquello nunca fue esto.
-
-Lo que sigue no es una acusación contra ellas. Es el mecanismo por el que las tres
-fallas que usted vio son, en realidad, una sola —y por qué esa sola no se arregla
-pagando más.
 
 ## Un escritorio de tamaño fijo
 

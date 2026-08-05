@@ -14,8 +14,6 @@ espera que no importe. La diferencia entre ambos no va a estar en el talento de 
 abogados, y este año va a estar cada vez más en otra parte: en si entendieron qué
 compraron, o si compraron una palabra.
 
-Esa palabra se está usando para vender casi cualquier cosa. Conviene desarmarla.
-
 ## La palabra no significa lo que parece significar
 
 «Inteligencia artificial» no nombra una tecnología. Nombra una meta: construir
@@ -79,9 +77,9 @@ profesional con poco tiempo acepta sin verificar. La fluidez no es evidencia de
 exactitud. La fluidez es lo que el sistema tiene garantizado; la exactitud, no.
 
 **La segunda es que el modelo no conserva memoria ni tiene su expediente completo a la
-vista.** Esa es la razón técnica por la que la herramienta que usted pagó «se olvidó»
-de la mitad del documento, y merece su propio artículo:
-[por qué ninguna de esas herramientas le sirvió](../por-que-ninguna-herramienta-te-sirve/).
+vista** — la razón técnica por la que la herramienta que usted pagó «se olvidó» de la
+mitad del documento ([por qué ninguna de esas herramientas le
+sirvió](../por-que-ninguna-herramienta-le-sirvio/)).
 
 ## El cuello de botella nunca fue la inteligencia
 
@@ -89,8 +87,8 @@ Aquí conviene detenerse, porque es donde el mercado se equivoca de discusión.
 
 El problema del litigante frente a una carpeta grande no es que le falte inteligencia.
 Es que la carpeta no cabe en el tiempo que existe. Una lectura profunda avanza a unas
-44 a 100 páginas por hora según el tipo de documento; un expediente del orden de
-cincuenta mil fojas son, por lo tanto, entre quinientas y mil cien horas de lectura
+44 a 100 páginas por hora según el tipo de documento; un expediente de decenas de
+miles de fojas son, por lo tanto, entre quinientas y mil cien horas de lectura
 atenta. Tres a seis meses-persona a jornada completa. Aun a una tarifa modesta de
 revisor, eso es del orden de decenas de miles de dólares de trabajo humano por una
 sola lectura completa.
