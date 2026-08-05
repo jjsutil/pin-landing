@@ -5,6 +5,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog content, 2026-08-05)
+
+- I-002, I-003: the first two blog posts. Shipped `draft: true` pending owner
+  approval of the copy; the owner approved the copy as written (I-002/I-003, PR
+  #11) and both posts are now published (`draft: false`) — no content changed
+  from what was reviewed.
+  - `que-es-machine-learning.md` — "«Inteligencia artificial» no nombra una
+    tecnología. Nombra una promesa." Reframes the AI/ML distinction as a purchasing
+    criterion rather than a dictionary definition: the three words (entrenamiento,
+    modelo, inferencia) a legal reader needs to evaluate any proposal, the two
+    consequences that decide professional risk (hallucination as a structural
+    consequence, not a rare defect; no persistent memory), and the volume-vs-time
+    bottleneck quantified from the GTM's externally sourced reading-rate figures.
+  - `por-que-ninguna-herramienta-le-sirvio.md` — "No se olvidó de su expediente.
+    Nunca lo leyó entero." Explains the context window and maps each symptom the
+    reader actually experienced onto its mechanism (forgetting → truncation, lying
+    → compression, stalling → the system announcing its limit), kills the
+    upgrade objection, and states pin's architecture as one principle rather than a
+    feature list.
+- Both posts carry **no page-volume figure**, per the GTM §10.2 gate (only 2,9% of a
+  test file measured to date). Reading times are computed from real body word counts
+  (1.131 → 6 min; 1.019 → 5 min), not copied.
+- Both posts passed a fresh adversarial review (author != reviewer) against the full
+  editorial spec — 0 blockers. The review's SHOULD-level findings were fixed rather
+  than accepted: two sentences that announced the article's move, an over-developed
+  teaser, one figure softened for safety, and a real defect — the second post's slug
+  tuteaba the reader while its body correctly used *usted* throughout
+  (`por-que-ninguna-herramienta-te-sirve` → `-le-sirvio`) — plus a relative cross-link
+  bug: the `/blog` listing linked each post without a trailing slash, which broke the
+  posts' relative links to each other outside GitHub Pages' redirect
+  (`src/pages/blog/index.astro`). Visual evidence (light/dark, both posts) captured
+  under `design/evidence/`.
+
 ### Changed (fidelity contract v12, 2026-08-05)
 
 - Fidelity contract advanced to v12 in a new file

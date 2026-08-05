@@ -1,21 +1,28 @@
 ---
 id: I-002
 type: feature
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
 created: 2026-08-05
 ---
 
-# Blog post 1 — "¿Qué es machine learning? ¿Es lo mismo que la IA?"
+# Blog post 1 — "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa."
+
+Shipped title (frontmatter, `src/content/blog/es/que-es-machine-learning.md`):
+**«Inteligencia artificial» no nombra una tecnología. Nombra una promesa.** The working
+title above was a search-query question; editorial review replaced it with a thesis that
+states a position, matching the landing's voice (`src/i18n/index.ts` — short, affirmative,
+with a turn). Slug and file path are unchanged.
 
 `impact: high` — first post, sets the editorial voice and the ethical-AI positioning
 the rest of the blog inherits.
 `cost: low` — content only, infra already built by I-001.
 
-`status: backlog`, not `ready` — the copy is being drafted and refined with the owner in
-conversation before it's final. Move to `ready` once the draft is approved.
+`status: staging` — the draft is complete, adversarially reviewed (0 blockers), and the
+owner approved the copy as written in conversation (2026-08-05); PR #11 flips
+`draft: true` → `draft: false` with no content change and merges to `main`.
 
 ## Context
 
@@ -49,9 +56,22 @@ on — the owner explicitly plans to reference it ("si leyeron el blogpost anter
 
 ## Acceptance criteria
 
-- [ ] Draft reviewed and approved by the owner in conversation before merge.
-- [ ] Reading time computed honestly from the final word count.
-- [ ] No unexplained technical jargon — every term a legal reader wouldn't know is
-      defined in-line, in plain language, on first use.
-- [ ] Ships through I-001's pipeline: builds, lists on `/blog`, renders via
-      `BlogLayout.astro`.
+- [x] Draft reviewed and approved by the owner in conversation before merge
+      (2026-08-05, no content changes requested — copy shipped as reviewed).
+- [x] Reading time computed honestly from the final word count. 1.131 words of body
+      (frontmatter excluded) ÷ 200 wpm = `readingMinutes: 6`. The excerpt makes no
+      competing time claim.
+- [x] No unexplained technical jargon — every term a legal reader wouldn't know is
+      defined in-line, in plain language, on first use. Defined on first use:
+      *machine learning*, entrenamiento, modelo, inferencia, modelo de lenguaje,
+      alucinación.
+- [x] Not a product pitch (anti-scope): no feature list, no pricing, no product name in
+      the body — the only pointer to pin is the byline and the closing evaluation
+      question, which names no vendor.
+- [x] No unverified page-volume claim (GTM §10.2 gate). The quantified value used is
+      the externally sourced reading-rate figure (44–100 pp/h → 500–1.100 h for ~50k
+      fojas); the refuted US$8–36 compute figure (§1.1 warning, 29/07) is not used, and
+      the landing's "diez mil páginas" is deliberately not imported.
+- [x] Ships through I-001's pipeline: `npm run build` exits 0 and renders
+      `/blog/que-es-machine-learning/` via `BlogLayout.astro`. Now `draft: false`;
+      confirmed present in the `/blog` listing by a real build ahead of merge (PR #11).
