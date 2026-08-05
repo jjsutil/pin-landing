@@ -8,7 +8,13 @@ epic: E01
 created: 2026-08-05
 ---
 
-# Blog post 2 — "Por qué ninguna de esas herramientas te sirve" (ventana de contexto)
+# Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero."
+
+Shipped title (frontmatter, `src/content/blog/es/por-que-ninguna-herramienta-te-sirve.md`):
+**No se olvidó de su expediente. Nunca lo leyó entero.** Chosen over the working title
+because it follows the landing's negation-then-correction pattern (`thesis.h2`/`h2b`:
+"La cita no la escribe el modelo. / La apunta.") and because it states the post's precise
+technical claim — truncating is not forgetting. Slug and file path are unchanged.
 
 `impact: high` — this is the direct-response post: it names the reader's actual
 frustration (paid tools that hallucinate, stall, forget) and turns the explanation into
@@ -55,8 +61,20 @@ market doesn't compare to pin, which is built to solve exactly this problem.
 ## Acceptance criteria
 
 - [ ] Draft reviewed and approved by the owner in conversation before merge.
-- [ ] Volume/scale claims about pin checked against current, real product state (not
-      aspirational copy) before publishing.
-- [ ] Reading time computed honestly from the final word count.
-- [ ] Ships through I-001's pipeline: builds, lists on `/blog`, renders via
-      `BlogLayout.astro`.
+      **Still pending — the post stays `draft: true` until this happens.**
+- [x] Volume/scale claims about pin checked against current, real product state (not
+      aspirational copy) before publishing. The post carries **no page count at all**:
+      the volume paragraph is qualitative and says explicitly that the figure "corresponde
+      medir sobre el expediente real, no prometerla en un artículo" — which is the GTM
+      §10.2 gate (item 3: only 2,9% of a test file measured) honoured in the copy itself.
+- [x] Reading time computed honestly from the final word count. 1.055 words of body
+      (frontmatter excluded) ÷ 200 wpm = `readingMinutes: 5`.
+- [x] No unexplained technical jargon — defined on first use: ventana de contexto,
+      truncamiento, compresión, procedencia. ML/AI vocabulary is not redefined; the post
+      links back to I-002 instead (anti-scope).
+- [x] Not a competitor bake-off (anti-scope): the named tools appear once, as the
+      reader's own experience, and the argument is the mechanism throughout — the section
+      that could have been a feature list is collapsed into one architectural principle.
+- [x] Ships through I-001's pipeline: `npm run build` exits 0 and renders
+      `/blog/por-que-ninguna-herramienta-te-sirve/` via `BlogLayout.astro`. Correctly
+      **excluded** from the `/blog` listing while `draft: true`, by design.

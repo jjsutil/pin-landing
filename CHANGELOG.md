@@ -5,6 +5,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog content, 2026-08-05)
+
+- I-002, I-003: the first two blog posts, both `draft: true` and therefore **not
+  published** — they build and render but are excluded from the `/blog` listing
+  until the owner approves them in conversation (acceptance criterion of both
+  issues).
+  - `que-es-machine-learning.md` — "«Inteligencia artificial» no nombra una
+    tecnología. Nombra una promesa." Reframes the AI/ML distinction as a purchasing
+    criterion rather than a dictionary definition: the three words (entrenamiento,
+    modelo, inferencia) a legal reader needs to evaluate any proposal, the two
+    consequences that decide professional risk (hallucination as a structural
+    consequence, not a rare defect; no persistent memory), and the volume-vs-time
+    bottleneck quantified from the GTM's externally sourced reading-rate figures.
+  - `por-que-ninguna-herramienta-te-sirve.md` — "No se olvidó de su expediente.
+    Nunca lo leyó entero." Explains the context window and maps each symptom the
+    reader actually experienced onto its mechanism (forgetting → truncation, lying
+    → compression, stalling → the system announcing its limit), kills the
+    upgrade objection, and states pin's architecture as one principle rather than a
+    feature list.
+- Both posts carry **no page-volume figure**, per the GTM §10.2 gate (only 2,9% of a
+  test file measured to date). Reading times are computed from real body word counts
+  (1.149 → 6 min; 1.055 → 5 min), not copied.
+
 ### Added (blog infrastructure, 2026-08-05)
 
 - I-001: `/blog` section infrastructure — Astro content collection
