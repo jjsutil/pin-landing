@@ -3,9 +3,16 @@
 
 # Board — pin-landing
 
-3 issues · **backlog 2 · ready 0 · in-dev 0 · review 1 · staging 0 · production 0**
+4 issues · **backlog 1 · ready 0 · in-dev 0 · review 2 · staging 1 · production 0**
 
 ## review
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-002 | Blog post 1 — "¿Qué es machine learning? ¿Es lo mismo que la IA?" | feature | high | low | E01 | 0d |
+| I-003 | Blog post 2 — "Por qué ninguna de esas herramientas te sirve" | feature | high | low | E01 | 0d |
+
+## staging
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
@@ -15,19 +22,19 @@
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
-| I-002 | Blog post 1 — "¿Qué es machine learning? ¿Es lo mismo que la IA?" | feature | high | low | E01 | 0d |
-| I-003 | Blog post 2 — "Por qué ninguna de esas herramientas te sirve" | feature | high | low | E01 | 0d |
+| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 0d |
 
 ## 2×2 impact/cost matrix
 
 **Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole E01 epic.
+**Low impact / low cost:** I-004 — worth doing when a slot opens, not urgent.
 No other quadrant populated yet.
 
 ## Cost projection
 
 No new runtime dependency, no paid API, static site — cost-guard has nothing to project
-for E01.
+for E01 or for I-004 (client-side FPS self-benchmark, no infra).
 
 ## Staleness alerts
 
-None — all three issues created today.
+None — all four issues created today.
