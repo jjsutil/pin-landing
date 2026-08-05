@@ -137,6 +137,15 @@ a { color: inherit; }
 section { padding-block: clamp(6rem, 15vh, 10rem); scroll-margin-top: 64px; }
 section + section { border-top: 1px solid var(--line-soft); }
 
+/* Mobile amendment to the v12 contract (2026-08-05, owner request): the
+   contract is desktop-first and doesn't specify mobile section rhythm.
+   Below the viewer's own 42rem breakpoint (the site's existing
+   desktop/mobile split), sections carry far less vertical padding so the
+   CTA is reachable without excessive scrolling. */
+@media (max-width: 41.9375rem) {
+  section { padding-block: clamp(2.5rem, 8vh, 4rem); }
+}
+
 /* ---------- tipografía ---------- */
 
 h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; line-height: 1.05; }
@@ -256,6 +265,10 @@ header.bar {
 
 .hero { padding-block: clamp(4.5rem, 11vh, 7rem) clamp(5rem, 12vh, 7.5rem); }
 
+@media (max-width: 41.9375rem) {
+  .hero { padding-block: clamp(2.5rem, 8vh, 4rem) clamp(2.5rem, 8vh, 4rem); }
+}
+
 .hero-grid { display: grid; gap: clamp(3rem, 6vw, 5rem); align-items: center; }
 
 @media (min-width: 64rem) { .hero-grid { grid-template-columns: 0.88fr 1.24fr; } }
@@ -276,6 +289,14 @@ header.bar {
 }
 
 @media (min-width: 42rem) { .viewer { grid-template-columns: 1fr 1fr; } }
+
+/* Mobile amendment to the v12 contract (2026-08-05, owner request): the
+   viewer is dense/noisy at small widths and the contract doesn't address
+   mobile at all. Hidden below the same 42rem breakpoint the viewer itself
+   already uses for its own two-column layout. */
+@media (max-width: 41.9375rem) {
+  .viewer { display: none; }
+}
 
 .viewer-side { padding: 2rem 1.875rem; display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
 .viewer-side + .viewer-side { border-top: 1px solid var(--line); }
