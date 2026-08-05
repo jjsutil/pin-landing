@@ -3,20 +3,15 @@
 
 # Board — pin-landing
 
-3 issues · **backlog 2 · ready 0 · in-dev 0 · review 1 · staging 0 · production 0**
+3 issues · **backlog 0 · ready 0 · in-dev 0 · review 3 · staging 0 · production 0**
 
 ## review
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
 | I-001 | Blog infrastructure — content collection, routes, footer entry | feature | high | low | E01 | 0d |
-
-## backlog
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-002 | Blog post 1 — "¿Qué es machine learning? ¿Es lo mismo que la IA?" | feature | high | low | E01 | 0d |
-| I-003 | Blog post 2 — "Por qué ninguna de esas herramientas te sirve" | feature | high | low | E01 | 0d |
+| I-002 | Blog post 1 — "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa." | feature | high | low | E01 | 0d |
+| I-003 | Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero." | feature | high | low | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 

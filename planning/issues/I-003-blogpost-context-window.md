@@ -1,7 +1,7 @@
 ---
 id: I-003
 type: feature
-status: backlog
+status: review
 impact: high
 cost: low
 epic: E01
@@ -21,8 +21,9 @@ frustration (paid tools that hallucinate, stall, forget) and turns the explanati
 the reason pin is architecturally different.
 `cost: low` — content only, infra already built by I-001.
 
-`status: backlog`, not `ready` — same reason as I-002: drafted and refined with the
-owner in conversation first.
+`status: review` — same reason as I-002: the draft is complete, adversarially reviewed
+(0 blockers), and open in PR #11, pending the owner's approval in conversation
+before the `draft: true` flag comes off and it publishes.
 
 ## Context
 
@@ -67,7 +68,7 @@ market doesn't compare to pin, which is built to solve exactly this problem.
       the volume paragraph is qualitative and says explicitly that the figure "corresponde
       medir sobre el expediente real, no prometerla en un artículo" — which is the GTM
       §10.2 gate (item 3: only 2,9% of a test file measured) honoured in the copy itself.
-- [x] Reading time computed honestly from the final word count. 1.055 words of body
+- [x] Reading time computed honestly from the final word count. 1.019 words of body
       (frontmatter excluded) ÷ 200 wpm = `readingMinutes: 5`.
 - [x] No unexplained technical jargon — defined on first use: ventana de contexto,
       truncamiento, compresión, procedencia. ML/AI vocabulary is not redefined; the post

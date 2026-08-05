@@ -1,7 +1,7 @@
 ---
 id: I-002
 type: feature
-status: backlog
+status: review
 impact: high
 cost: low
 epic: E01
@@ -20,8 +20,9 @@ with a turn). Slug and file path are unchanged.
 the rest of the blog inherits.
 `cost: low` — content only, infra already built by I-001.
 
-`status: backlog`, not `ready` — the copy is being drafted and refined with the owner in
-conversation before it's final. Move to `ready` once the draft is approved.
+`status: review` — the draft is complete, adversarially reviewed (0 blockers), and open
+in PR #11, pending the owner's approval in conversation before the `draft: true`
+flag comes off and it publishes.
 
 ## Context
 
@@ -57,7 +58,7 @@ on — the owner explicitly plans to reference it ("si leyeron el blogpost anter
 
 - [ ] Draft reviewed and approved by the owner in conversation before merge.
       **Still pending — the post stays `draft: true` until this happens.**
-- [x] Reading time computed honestly from the final word count. 1.149 words of body
+- [x] Reading time computed honestly from the final word count. 1.131 words of body
       (frontmatter excluded) ÷ 200 wpm = `readingMinutes: 6`. The excerpt makes no
       competing time claim.
 - [x] No unexplained technical jargon — every term a legal reader wouldn't know is
