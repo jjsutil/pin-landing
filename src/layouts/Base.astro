@@ -7,10 +7,13 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
   lang: Lang;
+  title?: string;
+  description?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, title, description } = Astro.props;
 const d = T[lang];
+const pageTitle = title ?? d['title'];
 ---
 
 <!doctype html>
@@ -18,7 +21,9 @@ const d = T[lang];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{d['title']}</title>
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={Astro.url.href} />
     <script is:inline>
       // Tema: sistema por defecto; la elección del toggle persiste en localStorage.
       // Inline y antes del primer paint para evitar el destello del tema equivocado.

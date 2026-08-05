@@ -92,6 +92,7 @@ export const T = {
     'foot.l1': 'Analizar un caso', 'foot.l2': 'Acceso anticipado',
     'foot.l4': 'Cómo funciona',
     'foot.l5': 'Sobre pin', 'foot.l6': 'Seguridad y confidencialidad',
+    'foot.l7': 'Blog',
     'foot.addr': 'Apoquindo 4501, oficina 3205<br>Las Condes, Santiago<br>Chile',
     'foot.copy': '© 2026 pin. Todos los derechos reservados.'
   },
@@ -182,6 +183,7 @@ export const T = {
     'foot.l1': 'Analyze a case', 'foot.l2': 'Early access',
     'foot.l4': 'How it works',
     'foot.l5': 'About pin', 'foot.l6': 'Security and confidentiality',
+    'foot.l7': 'Blog',
     'foot.addr': 'Apoquindo 4501, office 3205<br>Las Condes, Santiago<br>Chile',
     'foot.copy': '© 2026 pin. All rights reserved.'
   }

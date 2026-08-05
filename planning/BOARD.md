@@ -3,9 +3,9 @@
 
 # Board — pin-landing
 
-3 issues · **backlog 2 · ready 1 · in-dev 0 · review 0 · staging 0 · production 0**
+3 issues · **backlog 2 · ready 0 · in-dev 0 · review 1 · staging 0 · production 0**
 
-## ready
+## review
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|

@@ -5,13 +5,52 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Planned (blog, 2026-08-05)
+### Fixed (adversarial review of I-001, 2026-08-05)
 
-- E01 epic opened: a `/blog` section reachable only from the footer, standardized
-  post format (Astro content collection, no MDX dependency), starting with two
-  posts (ML vs. AI; why general-purpose AI tools fail on a full case file). See
-  `planning/plans/E01-blog.md`. Infra (I-001) is `ready`; both posts (I-002,
-  I-003) are `backlog` pending owner content review.
+- **Blocker:** `main.ts` aborted on every `/blog/**` page — `#figures` only
+  exists on the hero, so `ioFigs.observe(null)` threw and every listener
+  registered after it (including the shared `#go-access` header handler)
+  never ran, breaking "Ingresar" site-wide on the blog. Split the script at
+  its root cause: the hero-only sections (visor, cifras, escritura,
+  formulario) are now wrapped in `if (figs) { … }`; the shared sections (idioma,
+  tema, revelado, Web3Forms helper, vista de acceso) run unconditionally.
+  Verified with Playwright/Chromium against `astro preview`: no `pageerror` on
+  `/blog/` or `/blog/<slug>`, and `#go-access` still opens the access view on
+  `/`.
+- **Blocker:** post dates rendered one day early for any visitor west of UTC
+  — `z.coerce.date()` parses `publishDate` at UTC midnight, but
+  `Intl.DateTimeFormat('es-CL')` formatted in the local zone. Added
+  `timeZone: 'UTC'` to both `Intl.DateTimeFormat` calls
+  (`BlogLayout.astro`, `blog/index.astro`).
+- **Should:** `Base.astro` now takes optional `title`/`description` props
+  (plus a `<link rel="canonical">`), used by the blog pages instead of every
+  page inheriting the landing's `<title>`.
+- **Should:** Footer's "Blog" link now goes through the i18n dictionary
+  (`foot.l7`) and is hidden on `/en/` — the blog is ES-only (epic anti-scope),
+  so it no longer offers Spanish content from the English footer.
+- **Should:** `.blog-post h1` sized down from the inherited hero scale
+  (`clamp(2.6rem, 6.4vw, 4.9rem)`) to `clamp(1.9rem, 3.6vw, 2.6rem)`.
+- **Nit:** dropped `slug` from the blog content schema — the glob loader's
+  `post.id` (derived from the filename) already is the slug; both blog
+  pages now use `post.id`.
+- **Nit:** `draft: z.boolean()` → `z.boolean().default(false)`, so future
+  posts don't have to write it by hand.
+- New evidence in `design/evidence/pr10-review-fixes/`: blog index and post
+  (ES, light/dark), footer ES vs EN, and the hero access view.
+
+### Added (blog infrastructure, 2026-08-05)
+
+- I-001: `/blog` section infrastructure — Astro content collection
+  (`src/content.config.ts`, glob loader over `src/content/blog/es/*.md`, zod
+  schema for title/slug/excerpt/publishDate/author/tags/draft/readingMinutes),
+  listing page (`/blog`, newest first, excludes `draft: true`) and post page
+  (`/blog/<slug>` via `BlogLayout.astro`), reusing the site's existing design
+  tokens. One new footer link, no header/nav entry — `/blog` is reachable only
+  from there. A `draft: true` smoke-test post proves the pipeline end-to-end
+  without being content. No `/en/blog`, no MDX, no comments/newsletter/CMS
+  (out of scope for this issue — see `planning/plans/E01-blog.md`). Content
+  (I-002, I-003) follows separately, in review for tone/positioning before
+  publishing.
 
 ### Added (demo & publish, 2026-07-30)
 

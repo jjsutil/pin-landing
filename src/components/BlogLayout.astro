@@ -1,0 +1,44 @@
+---
+interface Props {
+  title: string;
+  author: string;
+  publishDate: Date;
+  readingMinutes: number;
+  tags: string[];
+}
+
+const { title, author, publishDate, readingMinutes, tags } = Astro.props;
+const dateLabel = new Intl.DateTimeFormat('es-CL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+}).format(publishDate);
+---
+
+<section>
+  <article class="wrap blog-post stack-l">
+    <header class="stack-s">
+      <p class="eyebrow">Blog</p>
+      <h1>{title}</h1>
+      <p class="aside blog-meta">
+        <span>{author}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={publishDate.toISOString()}>{dateLabel}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingMinutes} min de lectura</span>
+      </p>
+      {tags.length > 0 && (
+        <ul class="blog-tags">
+          {tags.map((tag) => (
+            <li class="badge">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    <div class="blog-body">
+      <slot />
+    </div>
+  </article>
+</section>

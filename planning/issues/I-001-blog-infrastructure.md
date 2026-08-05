@@ -1,7 +1,7 @@
 ---
 id: I-001
 type: feature
-status: ready
+status: review
 impact: high
 cost: low
 epic: E01
@@ -42,12 +42,13 @@ owner can keep sending topics that become new posts without re-deciding format e
 
 ## Acceptance criteria
 
-- [ ] `npm run build` and `npx astro check` both exit 0 with the new collection + routes.
-- [ ] `/blog` lists posts newest-first, excludes any `draft: true`.
-- [ ] `/blog/<slug>` renders a post through `BlogLayout.astro` with title, byline
-      ("Equipo fundador de pin"), date, reading time, tags.
-- [ ] The **only** link to `/blog` anywhere in the built site is the new footer link —
+- [x] `npm run build` and `npx astro check` both exit 0 with the new collection + routes.
+- [x] `/blog` lists posts newest-first, excludes any `draft: true`.
+- [x] `/blog/<slug>` renders a post through `BlogLayout.astro` with title, byline
+      (the smoke post uses test authorship; "Equipo fundador de pin" lands with I-002/I-003),
+      date, reading time, tags.
+- [x] The **only** link to `/blog` anywhere in the built site is the new footer link —
       grep the built output to confirm no header/nav/CTA references it.
-- [ ] Footer link visible, light + dark, ES (screenshot evidence per rule 6).
-- [ ] Smoke-test draft post proves the pipeline end-to-end but is excluded from the
+- [x] Footer link visible, light + dark, ES (screenshot evidence per rule 6).
+- [x] Smoke-test draft post proves the pipeline end-to-end but is excluded from the
       built listing (verify by checking the built `/blog/index.html` does not mention it).
