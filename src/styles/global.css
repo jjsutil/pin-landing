@@ -572,6 +572,7 @@ body.on-access main#top, body.on-access footer.site { display: none; }
 /* ---------- blog ---------- */
 
 .blog-post { max-width: 46rem; }
+.blog-post h1 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); }
 .blog-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 
 .blog-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.25rem 0 0; padding: 0; list-style: none; }

@@ -69,6 +69,44 @@ const io = new IntersectionObserver(
 
 document.querySelectorAll('.rise, .rise-x, .said').forEach((el) => io.observe(el));
 
+/* ---------------- envío por Web3Forms: lo usan el form del hero y el de acceso ---------------- */
+
+// Key pública-por-diseño de Web3Forms, inyectada por entorno (docs/CONFIG.md).
+// Sin key configurada, los formularios quedan en modo degradado: confirmación
+// en pantalla y nada se envía.
+const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || undefined;
+
+async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
+  if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
+  try {
+    // Sin tope de espera, una red colgada dejaría el botón deshabilitado para siempre.
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({
+        access_key: W3F_KEY,
+        subject,
+        from_name: 'pin landing',
+        ...fields,
+      }),
+    });
+    const data = await res.json();
+    return res.ok && data.success === true;
+  } catch {
+    return false;
+  }
+}
+
+/* ---------------- bloque del hero: solo existe en index.astro / en/index.astro ----------
+   #figures (Figures.astro) es el guard — visor, cifras, escritura y formulario viven
+   siempre juntos en la página del hero, nunca en /blog/**. Sin este guard, el resto
+   del script (incluido el handler de #go-access más abajo) nunca llega a registrarse
+   en cualquier página que no sea el hero. ---------------------------------------- */
+
+const figs = document.getElementById('figures');
+
+if (figs) {
 /* ---------------- visor: la mención elegida abre su página ---------------- */
 
 const hits = Array.from(document.querySelectorAll<HTMLElement>('#viewer .hit'));
@@ -111,7 +149,6 @@ function countUp(el: HTMLElement, target: number): void {
   requestAnimationFrame(step);
 }
 
-const figs = document.getElementById('figures')!;
 const ioFigs = new IntersectionObserver(
   (entries) => {
     entries.forEach((e) => {
@@ -198,35 +235,6 @@ function startTyping(): void {
 
 startTyping();
 
-/* ---------------- envío por Web3Forms ---------------- */
-
-// Key pública-por-diseño de Web3Forms, inyectada por entorno (docs/CONFIG.md).
-// Sin key configurada, los formularios quedan en modo degradado: confirmación
-// en pantalla y nada se envía.
-const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || undefined;
-
-async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
-  if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
-  try {
-    // Sin tope de espera, una red colgada dejaría el botón deshabilitado para siempre.
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      signal: AbortSignal.timeout(15000),
-      body: JSON.stringify({
-        access_key: W3F_KEY,
-        subject,
-        from_name: 'pin landing',
-        ...fields,
-      }),
-    });
-    const data = await res.json();
-    return res.ok && data.success === true;
-  } catch {
-    return false;
-  }
-}
-
 /* ---------------- formulario ---------------- */
 
 const segCase = document.getElementById('seg-causa')!;
@@ -301,7 +309,9 @@ form.addEventListener('submit', async (ev) => {
   done.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
 });
 
-/* ---------------- vista de acceso ---------------- */
+} // fin del bloque del hero (if (figs))
+
+/* ---------------- vista de acceso: en Base.astro, existe en TODA página ---------------- */
 
 const acForm = document.getElementById('access-form') as HTMLFormElement;
 const acDone = document.getElementById('ac-done')!;

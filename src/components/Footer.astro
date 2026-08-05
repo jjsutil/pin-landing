@@ -24,7 +24,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <a href="#empezar" data-mode="case">{d['foot.l1']}</a>
         <a href="#empezar" data-mode="early">{d['foot.l2']}</a>
         <a href="#top">{d['foot.l4']}</a>
-        <a href={`${base}/blog`}>Blog</a>
+        {/* el blog es solo-ES (anti-scope de la épica) — el link no se ofrece en /en/ */}
+        {lang === 'es' && <a href={`${base}/blog`}>{d['foot.l7']}</a>}
       </div>
 
       <div class="foot-col">
