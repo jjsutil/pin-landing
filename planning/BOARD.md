@@ -3,7 +3,13 @@
 
 # Board — pin-landing
 
-7 issues · **backlog 4 · ready 0 · in-dev 0 · review 0 · staging 3 · production 0**
+8 issues · **backlog 4 · ready 0 · in-dev 1 · review 0 · staging 3 · production 0**
+
+## in-dev
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-008 | Blog post 3 — "A nadie lo sancionan por usar inteligencia artificial. Lo sancionan por firmar lo que no leyó." | feature | high | low | E01 | 0d |
 
 ## staging
 
@@ -24,7 +30,8 @@
 
 ## 2×2 impact/cost matrix
 
-**Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole shipped E01 epic.
+**Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole shipped E01
+epic — plus I-008, in flight (third post of the same epic).
 **High impact / high cost:** I-005 — blog i18n, needs a structural fix (locale-aware
 content collection), not just translated files.
 **Low impact / low cost:** I-004, I-006, I-007 — worth doing when a slot opens, not
@@ -35,9 +42,9 @@ No other quadrant populated yet.
 ## Cost projection
 
 No new runtime dependency, no paid API, static site — cost-guard has nothing to project
-for E01, I-004, I-005, I-006 or I-007 today. Flag if I-006 resolves to an email
+for E01, I-004, I-005, I-006, I-007 or I-008 today. Flag if I-006 resolves to an email
 subscription option: that adds a data-collection surface worth a config-registry entry.
 
 ## Staleness alerts
 
-None — all seven issues created today.
+None — I-008 opened today; the rest unchanged since last regen.
