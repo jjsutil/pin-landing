@@ -26,7 +26,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     feature list.
 - Both posts carry **no page-volume figure**, per the GTM §10.2 gate (only 2,9% of a
   test file measured to date). Reading times are computed from real body word counts
-  (1.149 → 6 min; 1.055 → 5 min), not copied.
+  (1.131 → 6 min; 1.019 → 5 min), not copied.
+- Both posts passed a fresh adversarial review (author != reviewer) against the full
+  editorial spec — 0 blockers. The review's SHOULD-level findings were fixed rather
+  than accepted: two sentences that announced the article's move, an over-developed
+  teaser, one figure softened for safety, and a real defect — the second post's slug
+  tuteaba the reader while its body correctly used *usted* throughout
+  (`por-que-ninguna-herramienta-te-sirve` → `-le-sirvio`) — plus a relative cross-link
+  bug: the `/blog` listing linked each post without a trailing slash, which broke the
+  posts' relative links to each other outside GitHub Pages' redirect
+  (`src/pages/blog/index.astro`). Visual evidence (light/dark, both posts) captured
+  under `design/evidence/`.
 
 ### Added (blog infrastructure, 2026-08-05)
 
