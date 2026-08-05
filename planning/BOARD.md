@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-4 issues · **backlog 1 · ready 0 · in-dev 0 · review 0 · staging 3 · production 0**
+7 issues · **backlog 4 · ready 0 · in-dev 0 · review 0 · staging 3 · production 0**
 
 ## staging
 
@@ -18,18 +18,26 @@
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
 | I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 0d |
+| I-005 | Blog i18n — English posts and a structure that scales past one language | feature | high | high | E01 | 0d |
+| I-006 | CTA / interaction on blog posts | feature | low | low | E01 | 0d |
+| I-007 | Blog listing navigability — tags, timeline, topic grouping | feature | low | low | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 
-**Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole E01 epic.
-**Low impact / low cost:** I-004 — worth doing when a slot opens, not urgent.
+**Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole shipped E01 epic.
+**High impact / high cost:** I-005 — blog i18n, needs a structural fix (locale-aware
+content collection), not just translated files.
+**Low impact / low cost:** I-004, I-006, I-007 — worth doing when a slot opens, not
+urgent. I-006 and I-007 both carry a decision gate (CTA type; listing mockup) that
+blocks implementation regardless of priority.
 No other quadrant populated yet.
 
 ## Cost projection
 
 No new runtime dependency, no paid API, static site — cost-guard has nothing to project
-for E01 or for I-004 (client-side FPS self-benchmark, no infra).
+for E01, I-004, I-005, I-006 or I-007 today. Flag if I-006 resolves to an email
+subscription option: that adds a data-collection surface worth a config-registry entry.
 
 ## Staleness alerts
 
-None — all four issues created today.
+None — all seven issues created today.
