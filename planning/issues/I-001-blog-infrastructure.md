@@ -1,7 +1,7 @@
 ---
 id: I-001
 type: feature
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
