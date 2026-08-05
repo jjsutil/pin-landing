@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import BlogLayout from '../../components/BlogLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+// Builds every post, drafts included — the smoke-test post must render when
+// visited directly even though the listing (blog/index.astro) excludes it.
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base lang="es">
+  <BlogLayout
+    title={post.data.title}
+    author={post.data.author}
+    publishDate={post.data.publishDate}
+    readingMinutes={post.data.readingMinutes}
+    tags={post.data.tags}
+  >
+    <Content />
+  </BlogLayout>
+</Base>

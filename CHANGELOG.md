@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog infrastructure, 2026-08-05)
+
+- I-001: `/blog` section infrastructure — Astro content collection
+  (`src/content.config.ts`, glob loader over `src/content/blog/es/*.md`, zod
+  schema for title/slug/excerpt/publishDate/author/tags/draft/readingMinutes),
+  listing page (`/blog`, newest first, excludes `draft: true`) and post page
+  (`/blog/<slug>` via `BlogLayout.astro`), reusing the site's existing design
+  tokens. One new footer link, no header/nav entry — `/blog` is reachable only
+  from there. A `draft: true` smoke-test post proves the pipeline end-to-end
+  without being content. No `/en/blog`, no MDX, no comments/newsletter/CMS
+  (out of scope for this issue — see `planning/plans/E01-blog.md`). Content
+  (I-002, I-003) follows separately.
+
 ### Planned (blog, 2026-08-05)
 
 - E01 epic opened: a `/blog` section reachable only from the footer, standardized
