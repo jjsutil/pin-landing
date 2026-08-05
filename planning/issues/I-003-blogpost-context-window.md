@@ -1,7 +1,7 @@
 ---
 id: I-003
 type: feature
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
@@ -21,9 +21,9 @@ frustration (paid tools that hallucinate, stall, forget) and turns the explanati
 the reason pin is architecturally different.
 `cost: low` — content only, infra already built by I-001.
 
-`status: review` — same reason as I-002: the draft is complete, adversarially reviewed
-(0 blockers), and open in PR #11, pending the owner's approval in conversation
-before the `draft: true` flag comes off and it publishes.
+`status: staging` — same as I-002: the draft is complete, adversarially reviewed
+(0 blockers), and the owner approved the copy as written in conversation (2026-08-05);
+PR #11 flips `draft: true` → `draft: false` with no content change and merges to `main`.
 
 ## Context
 
@@ -61,8 +61,8 @@ market doesn't compare to pin, which is built to solve exactly this problem.
 
 ## Acceptance criteria
 
-- [ ] Draft reviewed and approved by the owner in conversation before merge.
-      **Still pending — the post stays `draft: true` until this happens.**
+- [x] Draft reviewed and approved by the owner in conversation before merge
+      (2026-08-05, no content changes requested — copy shipped as reviewed).
 - [x] Volume/scale claims about pin checked against current, real product state (not
       aspirational copy) before publishing. The post carries **no page count at all**:
       the volume paragraph is qualitative and says explicitly that the figure "corresponde
@@ -77,5 +77,6 @@ market doesn't compare to pin, which is built to solve exactly this problem.
       reader's own experience, and the argument is the mechanism throughout — the section
       that could have been a feature list is collapsed into one architectural principle.
 - [x] Ships through I-001's pipeline: `npm run build` exits 0 and renders
-      `/blog/por-que-ninguna-herramienta-le-sirvio/` via `BlogLayout.astro`. Correctly
-      **excluded** from the `/blog` listing while `draft: true`, by design.
+      `/blog/por-que-ninguna-herramienta-le-sirvio/` via `BlogLayout.astro`. Now
+      `draft: false`; confirmed present in the `/blog` listing by a real build ahead of
+      merge (PR #11).

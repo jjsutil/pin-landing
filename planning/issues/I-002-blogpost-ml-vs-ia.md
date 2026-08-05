@@ -1,7 +1,7 @@
 ---
 id: I-002
 type: feature
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
@@ -20,9 +20,9 @@ with a turn). Slug and file path are unchanged.
 the rest of the blog inherits.
 `cost: low` — content only, infra already built by I-001.
 
-`status: review` — the draft is complete, adversarially reviewed (0 blockers), and open
-in PR #11, pending the owner's approval in conversation before the `draft: true`
-flag comes off and it publishes.
+`status: staging` — the draft is complete, adversarially reviewed (0 blockers), and the
+owner approved the copy as written in conversation (2026-08-05); PR #11 flips
+`draft: true` → `draft: false` with no content change and merges to `main`.
 
 ## Context
 
@@ -56,8 +56,8 @@ on — the owner explicitly plans to reference it ("si leyeron el blogpost anter
 
 ## Acceptance criteria
 
-- [ ] Draft reviewed and approved by the owner in conversation before merge.
-      **Still pending — the post stays `draft: true` until this happens.**
+- [x] Draft reviewed and approved by the owner in conversation before merge
+      (2026-08-05, no content changes requested — copy shipped as reviewed).
 - [x] Reading time computed honestly from the final word count. 1.131 words of body
       (frontmatter excluded) ÷ 200 wpm = `readingMinutes: 6`. The excerpt makes no
       competing time claim.
@@ -73,6 +73,5 @@ on — the owner explicitly plans to reference it ("si leyeron el blogpost anter
       fojas); the refuted US$8–36 compute figure (§1.1 warning, 29/07) is not used, and
       the landing's "diez mil páginas" is deliberately not imported.
 - [x] Ships through I-001's pipeline: `npm run build` exits 0 and renders
-      `/blog/que-es-machine-learning/` via `BlogLayout.astro`. Correctly **excluded**
-      from the `/blog` listing while `draft: true` — the listing half of this criterion
-      is satisfied by design and is re-verified when the owner lifts the flag.
+      `/blog/que-es-machine-learning/` via `BlogLayout.astro`. Now `draft: false`;
+      confirmed present in the `/blog` listing by a real build ahead of merge (PR #11).

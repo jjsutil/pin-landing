@@ -1,6 +1,5 @@
 ---
 title: "Entrada de prueba (borrador)"
-slug: "entrada-de-prueba"
 excerpt: "Post de humo para verificar el pipeline del blog de punta a punta. No es contenido real."
 publishDate: 2026-08-05
 author: "Equipo de pruebas"

@@ -7,10 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added (blog content, 2026-08-05)
 
-- I-002, I-003: the first two blog posts, both `draft: true` and therefore **not
-  published** — they build and render but are excluded from the `/blog` listing
-  until the owner approves them in conversation (acceptance criterion of both
-  issues).
+- I-002, I-003: the first two blog posts. Shipped `draft: true` pending owner
+  approval of the copy; the owner approved the copy as written (I-002/I-003, PR
+  #11) and both posts are now published (`draft: false`) — no content changed
+  from what was reviewed.
   - `que-es-machine-learning.md` — "«Inteligencia artificial» no nombra una
     tecnología. Nombra una promesa." Reframes the AI/ML distinction as a purchasing
     criterion rather than a dictionary definition: the three words (entrenamiento,
@@ -37,6 +37,78 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   posts' relative links to each other outside GitHub Pages' redirect
   (`src/pages/blog/index.astro`). Visual evidence (light/dark, both posts) captured
   under `design/evidence/`.
+
+### Changed (fidelity contract v12, 2026-08-05)
+
+- Fidelity contract advanced to v12 in a new file
+  (`design/prototype/pin-landing-v12.html`, supersedes v8/v10, which is kept
+  for history and marked superseded). Editorial pass: the privacy promise —
+  previously repeated across hero/thesis/footer/access — is now said once per
+  surface; hero lede, all four figures, and the ask-section closing line
+  rewritten; a fourth thesis point added ("Lo que no hace" / "What it does not
+  do"); a reserve line under the hero CTAs; a single commitments line between
+  the Empezar lede and the form (written record, not shared or used to train,
+  returned/destroyed at close); the early-access toggle shortened to two perks
+  (drops "Plan enterprise" / "Precio de fundador"); 21 of the 60 question-pool
+  entries corrected from civil to penal vocabulary; a provenance note under the
+  figures; cloud copy reconciled ("nunca entra en una nube compartida", both
+  hero and thesis); the seal moved to its own footer line; the footer's second
+  paragraph kept literal to the pre-existing repo text (only the seal moved
+  out of it); footer links point at real anchors (`#tesis`, `#reserva`) and the
+  "Empresa" column / "Sobre pin" link are gone (footer is now 3 columns).
+- `src/scripts/main.ts`: keyboard access on the viewer (Enter/Space activate a
+  hit, closes issue #3 item 4 — already noted done previously but not actually
+  wired in code); a one-time auto-play demo that cycles the viewer's three
+  mentions on first scroll into view, stopped by any reader gesture; the
+  ask-bar caret no longer hides after the third typed phrase — the 2026-07-30
+  QA delta is superseded by the verified v12 contract, which keeps the caret
+  visible.
+- Issue #3 nits closed: real favicon (`public/favicon.svg`, issue item 2);
+  meta description + OG/Twitter tags derived from the approved hero copy
+  (issue item 5); `aria-label="Tema"` on the theme toggle now comes from the
+  ES/EN dictionary instead of a hardcoded Spanish string, fixing the `/en/`
+  route rendering it in Spanish before hydration (issue item 3). Closes #3 —
+  the two remaining open items (footer address/email, dead links) are resolved
+  elsewhere in this PR (real anchors) or intentionally untouched (owner's real
+  address/email, out of scope per instruction).
+- Skip-to-content link and no-JS `<noscript>` fallback added to
+  `src/layouts/Base.astro` (both previously only documented as done in
+  contract comments, not actually present in the repo).
+- Evidence regenerated across `design/evidence/` (hero, form, footer,
+  full-page order, light/dark × ES/EN; mobile full-page ES/EN light).
+
+### Fixed (adversarial review of I-001, 2026-08-05)
+
+- **Blocker:** `main.ts` aborted on every `/blog/**` page — `#figures` only
+  exists on the hero, so `ioFigs.observe(null)` threw and every listener
+  registered after it (including the shared `#go-access` header handler)
+  never ran, breaking "Ingresar" site-wide on the blog. Split the script at
+  its root cause: the hero-only sections (visor, cifras, escritura,
+  formulario) are now wrapped in `if (figs) { … }`; the shared sections (idioma,
+  tema, revelado, Web3Forms helper, vista de acceso) run unconditionally.
+  Verified with Playwright/Chromium against `astro preview`: no `pageerror` on
+  `/blog/` or `/blog/<slug>`, and `#go-access` still opens the access view on
+  `/`.
+- **Blocker:** post dates rendered one day early for any visitor west of UTC
+  — `z.coerce.date()` parses `publishDate` at UTC midnight, but
+  `Intl.DateTimeFormat('es-CL')` formatted in the local zone. Added
+  `timeZone: 'UTC'` to both `Intl.DateTimeFormat` calls
+  (`BlogLayout.astro`, `blog/index.astro`).
+- **Should:** `Base.astro` now takes optional `title`/`description` props
+  (plus a `<link rel="canonical">`), used by the blog pages instead of every
+  page inheriting the landing's `<title>`.
+- **Should:** Footer's "Blog" link now goes through the i18n dictionary
+  (`foot.l7`) and is hidden on `/en/` — the blog is ES-only (epic anti-scope),
+  so it no longer offers Spanish content from the English footer.
+- **Should:** `.blog-post h1` sized down from the inherited hero scale
+  (`clamp(2.6rem, 6.4vw, 4.9rem)`) to `clamp(1.9rem, 3.6vw, 2.6rem)`.
+- **Nit:** dropped `slug` from the blog content schema — the glob loader's
+  `post.id` (derived from the filename) already is the slug; both blog
+  pages now use `post.id`.
+- **Nit:** `draft: z.boolean()` → `z.boolean().default(false)`, so future
+  posts don't have to write it by hand.
+- New evidence in `design/evidence/pr10-review-fixes/`: blog index and post
+  (ES, light/dark), footer ES vs EN, and the hero access view.
 
 ### Added (blog infrastructure, 2026-08-05)
 

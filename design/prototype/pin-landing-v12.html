@@ -1,11 +1,17 @@
 <!--
-  SUPERSEDED 2026-08-05 by design/prototype/pin-landing-v12.html — that file is
-  the visual-fidelity contract now. Kept here for history only.
-
-  v10 = v9 + intercambio Cifras/Pregunta
-        (Héroe → Cifras → Pregunta → Tesis → Quejas → Formulario)
-        + bajada del footer suavizada
-  2026-07-30 · decisión del dueño vía dirección
+  v12 = v11 + PASADA EDITORIAL (mirada CEO).
+        Sistema de tokens, tipografía, paleta y ORDEN DE SECCIONES: intactos.
+        Cambia el copy: la promesa se decía diez veces y se dice una;
+        el espacio recuperado dice lo que la página no decía
+        (qué recibe, qué NO hace, cómo se entrega el material, para quién es).
+        El sello «Todo leído, todo citado» sigue en un solo lugar: el pie.
+  v12.2 = correcciones del dueño: el párrafo del pie vuelve literal al del repo,
+        la sección Empezar recupera su composición original (titular · bajada ·
+        formulario, sin bloque de pasos), y los compromisos sobre el material
+        —constancia de entrega, no compartir ni entrenar, devolución o
+        destrucción al cierre— quedan en una sola línea bajo la bajada.
+        El acceso anticipado invita sin detallar el plan.
+  Adoptado como contrato de fidelidad vigente 2026-08-05 (reemplaza a v8).
 -->
 <title>pin — el expediente completo, respondiendo</title>
 
@@ -583,7 +589,7 @@
 
   .foot-top { display: grid; gap: 2.75rem; padding-block: 4rem 3rem; }
 
-  @media (min-width: 52rem) { .foot-top { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+  @media (min-width: 52rem) { .foot-top { grid-template-columns: 1.6fr 1fr 1fr; } }
 
   .foot-col { display: flex; flex-direction: column; gap: 0.875rem; }
 
@@ -632,7 +638,132 @@
     .caret.blink { animation: none; opacity: 1; }
     .page.on { animation: none; }
   }
+
+  /* ---------- v11: salto al contenido ---------- */
+
+  .skip {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -120%);
+    z-index: 100;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line-hard);
+    border-top: 0;
+    border-radius: 0 0 7px 7px;
+    padding: 0.6875rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-s);
+    transition: transform 180ms cubic-bezier(.22,.7,.24,1);
+  }
+
+  .skip:focus-visible { transform: translate(-50%, 0); }
+
+  /* ---------- v11: procedencia de las cifras ---------- */
+
+  .figs-note {
+    display: flex;
+    gap: 0.625rem;
+    align-items: baseline;
+    margin-top: 1.75rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--ink-faint);
+    max-width: 42rem;
+  }
+
+  .figs-note::before {
+    content: "*";
+    font-family: var(--mono);
+    color: var(--accent);
+    flex: none;
+  }
+
+  /* ---------- el sello, una sola vez, en el pie ---------- */
+
+  .seal {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.375rem;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .seal::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    flex: none;
+  }
+
+  /* ---------- v12: la reserva, dicha donde se decide ---------- */
+
+  .hero-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5625rem;
+    align-self: flex-start;
+    margin-top: -0.375rem;
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 140ms ease, border-color 140ms ease;
+  }
+
+  .hero-note::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  .hero-note:hover { color: var(--ink-muted); border-bottom-color: var(--line-hard); }
+
+
+  /* ---------- v11: afinados de detalle ---------- */
+
+  .fig-t, .figs-note, .foot-col a, .foot-col address { text-wrap: pretty; }
+  .point p { text-wrap: pretty; }
+  .lede, .verdict, .aside { text-wrap: pretty; }
+
+  .foot-bottom span { font-variant-numeric: tabular-nums; }
+
+  /* el enlace del pie merece un blanco de clic, no solo un cambio de color */
+  .foot-col a {
+    align-self: flex-start;
+    border-bottom: 1px solid transparent;
+    transition: color 140ms ease, border-color 140ms ease;
+  }
+
+  .foot-col a:hover { border-bottom-color: var(--line-hard); }
+
+  /* la mención activa del visor se distingue también sin color */
+  .hit.on .pg { font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip { transition: none; }
+  }
 </style>
+
+<!-- v11 · issue #3.1 — sin JS el contenido se ve igual, solo sin animar -->
+<noscript>
+  <style>
+    .rise, .rise-x { opacity: 1; transform: none; }
+    .said::before, .said:last-of-type::after { transform: scaleX(1); }
+    .ask { display: none; }
+  </style>
+</noscript>
+
+<a class="skip" href="#top" data-i18n="skip">Saltar al contenido</a>
 
 <header class="bar">
   <div class="wrap bar-inner">
@@ -662,13 +793,14 @@
         <p class="eyebrow rise" data-i18n="hero.eyebrow">Expedientes penales · escaneados y manuscritos</p>
         <h1 class="rise" style="--d:70ms" data-i18n="hero.h1">Diez mil páginas, leídas antes de que termine la reunión.</h1>
         <p class="lede rise" style="--d:140ms" data-i18n-html="hero.lede">
-          <span class="brand">pin</span> lee el expediente completo —torcido, sellado, a mano— y
-          responde señalando la página exacta.
+          Torcido, sellado y escrito a mano. <span class="brand">pin</span> lee la causa entera y se la
+          devuelve sabida: quién es quién, qué pasó cuándo, y en qué página consta.
         </p>
         <div class="actions rise" style="--d:210ms">
           <a class="btn" href="#empezar" data-mode="case" data-i18n="hero.cta1">Analizar mi caso</a>
           <a class="btn btn-ghost" href="#empezar" data-mode="early" data-i18n="hero.cta2">Acceso anticipado</a>
         </div>
+        <a class="hero-note rise" style="--d:270ms" href="#reserva" data-i18n="hero.note">El expediente nunca entra en una nube compartida</a>
       </div>
 
       <div class="viewer rise" style="--d:290ms" id="viewer">
@@ -752,7 +884,7 @@
   </section>
 
   <!-- ============ CIFRAS ============ -->
-  <section>
+  <section id="cifras">
     <div class="wrap stack-s">
       <p class="eyebrow rise" data-i18n="figs.eyebrow">Expediente tipo · 14 volúmenes · escaneo con manuscritos</p>
       <h2 class="rise" style="--d:70ms" data-i18n="figs.h2">El expediente entero, en lo que dura un café.</h2>
@@ -762,21 +894,28 @@
       <div class="figures" id="figures" style="margin-top:3.75rem">
         <div class="fig rise">
           <p class="fig-n"><span class="n" data-n="10000">10.000</span><span class="u" data-i18n="figs.u1">páginas</span></p>
-          <p class="fig-t" data-i18n="figs.t1">Leídas, indexadas y citables en menos de veinte minutos.</p>
+          <p class="fig-t" data-i18n="figs.t1">Entra completo y queda listo en menos de veinte minutos. Sin tope de tamaño ni carga por partes.</p>
         </div>
         <div class="fig rise" style="--d:90ms">
           <p class="fig-n"><span class="n" data-n="17">17</span><span class="u">ms</span></p>
-          <p class="fig-t" data-i18n="figs.t2">Encontrar una frase en todo el expediente.</p>
+          <p class="fig-t" data-i18n="figs.t2">Lo que tarda en volver con la respuesta, con usted en audiencia.</p>
         </div>
         <div class="fig rise" style="--d:180ms">
           <p class="fig-n"><span class="n" data-n="100">100</span><span class="u">%</span></p>
-          <p class="fig-t" data-i18n="figs.t3">De las menciones, citadas a su página exacta con imagen.</p>
+          <p class="fig-t" data-i18n="figs.t3">De las páginas quedan clasificadas: leídas, o listadas como ilegibles. Ninguna se da por leída sin serlo.</p>
         </div>
         <div class="fig rise" style="--d:270ms">
           <p class="fig-n"><span class="n" data-n="2">2</span><span class="u">×</span></p>
-          <p class="fig-t" data-i18n="figs.t4">Mejor lectura del manuscrito que un OCR corriente.</p>
+          <p class="fig-t" data-i18n="figs.t4">Mejor lectura del manuscrito que un OCR corriente. Las anotaciones al margen también cuentan.</p>
         </div>
       </div>
+    </div>
+
+    <div class="wrap">
+      <p class="figs-note rise" data-i18n="figs.note">
+        Cifras de referencia sobre un expediente tipo, todavía sin verificación independiente.
+        Sobre el suyo las medimos con usted, en el primer caso.
+      </p>
     </div>
   </section>
 
@@ -790,13 +929,13 @@
         <span class="typed"><span id="typed-text"></span><span class="caret"></span></span>
       </div>
       <p class="aside rise" style="--d:220ms" data-i18n="ask.aside">
-        Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.
+        Sin comandos ni sintaxis. Y si la respuesta no está en el expediente, se lo dice: no la inventa.
       </p>
     </div>
   </section>
 
   <!-- ============ TESIS ============ -->
-  <section>
+  <section id="tesis">
     <div class="wrap thesis">
       <div class="stack">
         <p class="eyebrow rise" data-i18n="thesis.eyebrow">Por qué se puede firmar lo que sale de aquí</p>
@@ -818,13 +957,18 @@
         </li>
         <li class="point rise" style="--d:220ms">
           <span class="dot-li" aria-hidden="true"></span>
-          <h3 data-i18n="p2.h">Le decimos qué no pudimos leer</h3>
-          <p data-i18n="p2.b">El mapa de páginas ilegibles, una por una, para saber dónde poner sus propios ojos.</p>
+          <h3 data-i18n="p2.h">No es un buscador. Es la causa ordenada.</h3>
+          <p data-i18n="p2.b">Índice por tomo, cronología y quién es quién, armados desde el expediente mismo. Preguntar viene después.</p>
         </li>
-        <li class="point rise" style="--d:320ms">
+        <li class="point rise" id="reserva" style="--d:320ms">
           <span class="dot-li" aria-hidden="true"></span>
-          <h3 data-i18n="p3.h">El expediente no sale de su oficina</h3>
-          <p data-i18n="p3.b">Puede correr entero en su máquina. El deber de reserva no es un escrúpulo: es exposición.</p>
+          <h3 data-i18n="p3.h">El expediente nunca entra en una nube compartida</h3>
+          <p data-i18n="p3.b">Nube dedicada solo para su estudio, o entero en su propia máquina. El deber de reserva no es un escrúpulo: es exposición.</p>
+        </li>
+        <li class="point rise" style="--d:420ms">
+          <span class="dot-li" aria-hidden="true"></span>
+          <h3 data-i18n="p4.h">Lo que no hace</h3>
+          <p data-i18n="p4.b">No redacta sus escritos ni opina sobre el fondo. Le devuelve el expediente sabido; el criterio sigue siendo suyo.</p>
         </li>
       </ul>
     </div>
@@ -873,8 +1017,12 @@
           <span data-i18n="start.h2">Su primer caso corre por nuestra cuenta</span><span class="caret blink" aria-hidden="true"></span>
         </h2>
         <p class="lede rise" style="--d:70ms" data-i18n="start.lede">
-          Envíe un expediente real. Lo procesamos completo —índice, cronología, menciones, citas a
-          página— y se lo mostramos funcionando sobre su propio caso. Sin costo.
+          Elija una causa real, con todos sus tomos. Nos hacemos cargo del material como esté y le
+          mostramos su propio expediente funcionando, con sus preguntas. Sin costo y sin compromiso.
+        </p>
+        <p class="aside rise" style="--d:140ms;max-width:36rem" data-i18n="start.terms">
+          Del material que entrega queda constancia escrita. No se comparte con nadie ni se usa para
+          entrenar modelos, y al cierre del caso se devuelve o se destruye según usted lo indique.
         </p>
       </div>
 
@@ -887,12 +1035,11 @@
 
         <div class="mode-info" id="early-info">
           <p data-i18n-html="ea.info">
-            Para estudios que quieren <span class="brand">pin</span> dentro del estudio, antes que el resto.
+            Para estudios que quieren <span class="brand">pin</span> antes que el resto.
           </p>
           <ul class="perks">
-            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Plan enterprise</span></li>
-            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Infraestructura propia o nube dedicada</span></li>
-            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p3">Precio de fundador</span></li>
+            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Se instala donde su estudio decida</span></li>
+            <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Condiciones de los primeros estudios</span></li>
           </ul>
         </div>
 
@@ -946,15 +1093,14 @@
       <div class="stack-s">
         <h1 data-i18n="ac.h1">Todavía se entra por invitación.</h1>
         <p class="aside" style="font-size:.9375rem;line-height:1.55" data-i18n-html="ac.lede">
-          <span class="brand">pin</span> se despliega dentro del estudio, no en una nube compartida.
-          Por eso abrimos por tandas: cada instalación se acompaña.
+          <span class="brand">pin</span> corre en una nube dedicada a su estudio, o dentro de él.
+          Nunca en una nube compartida. Por eso abrimos por tandas: cada puesta en marcha se acompaña.
         </p>
       </div>
 
       <ul class="perks">
-        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Plan enterprise</span></li>
-        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Infraestructura propia o nube dedicada</span></li>
-        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p3">Precio de fundador</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p1">Se instala donde su estudio decida</span></li>
+        <li><span class="tick" aria-hidden="true">→</span><span data-i18n="ea.p2">Condiciones de los primeros estudios</span></li>
       </ul>
 
       <form id="access-form" novalidate>
@@ -994,23 +1140,19 @@
         <p class="foot-tag" data-i18n="foot.blurb">
           A la altura de su oficio.
         </p>
-        <p class="aside" style="max-width:22rem" data-i18n-html="foot.blurb2">
+        <p class="aside" style="max-width:22rem" data-i18n="foot.blurb2">
           Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan,
-          y no lo deja a mitad del expediente. <strong>Todo leído, todo citado.</strong>
+          y no lo deja a mitad del expediente.
         </p>
+        <p class="seal" data-i18n="foot.seal">Todo leído, todo citado.</p>
       </div>
 
       <div class="foot-col">
         <p class="foot-h" data-i18n="foot.h1">Producto</p>
         <a href="#empezar" data-mode="case" data-i18n="foot.l1">Analizar un caso</a>
         <a href="#empezar" data-mode="early" data-i18n="foot.l2">Acceso anticipado</a>
-        <a href="#top" data-i18n="foot.l4">Cómo funciona</a>
-      </div>
-
-      <div class="foot-col">
-        <p class="foot-h" data-i18n="foot.h2">Empresa</p>
-        <a href="#top" data-i18n="foot.l5">Sobre pin</a>
-        <a href="#top" data-i18n="foot.l6">Seguridad y confidencialidad</a>
+        <a href="#tesis" data-i18n="foot.l4">Cómo funciona</a>
+        <a href="#reserva" data-i18n="foot.l6">Seguridad y confidencialidad</a>
       </div>
 
       <div class="foot-col">
@@ -1045,9 +1187,11 @@
       'viewer.p1': 'p. 312', 'viewer.p2': 'p. 1.187', 'viewer.p3': 'p. 2.044',
       'viewer.pn2': '1.187', 'viewer.pn3': '2.044',
       'nav.login': 'Ingresar',
+      'skip': 'Saltar al contenido',
       'hero.eyebrow': 'Expedientes penales · escaneados y manuscritos',
       'hero.h1': 'Diez mil páginas, leídas antes de que termine la reunión.',
-      'hero.lede': '<span class="brand">pin</span> lee el expediente completo —torcido, sellado, a mano— y responde señalando la página exacta.',
+      'hero.lede': 'Torcido, sellado y escrito a mano. <span class="brand">pin</span> lee la causa entera y se la devuelve sabida: quién es quién, qué pasó cuándo, y en qué página consta.',
+      'hero.note': 'El expediente nunca entra en una nube compartida',
       'hero.cta1': 'Analizar mi caso',
       'hero.cta2': 'Acceso anticipado',
       'viewer.date': '22 de junio de 2004',
@@ -1063,10 +1207,11 @@
       'figs.eyebrow': 'Expediente tipo · 14 volúmenes · escaneo con manuscritos',
       'figs.h2': 'El expediente entero, en lo que dura un café.',
       'figs.u1': 'páginas',
-      'figs.t1': 'Leídas, indexadas y citables en menos de veinte minutos.',
-      'figs.t2': 'Encontrar una frase en todo el expediente.',
-      'figs.t3': 'De las menciones, citadas a su página exacta con imagen.',
-      'figs.t4': 'Mejor lectura del manuscrito que un OCR corriente.',
+      'figs.t1': 'Entra completo y queda listo en menos de veinte minutos. Sin tope de tamaño ni carga por partes.',
+      'figs.t2': 'Lo que tarda en volver con la respuesta, con usted en audiencia.',
+      'figs.t3': 'De las páginas quedan clasificadas: leídas, o listadas como ilegibles. Ninguna se da por leída sin serlo.',
+      'figs.t4': 'Mejor lectura del manuscrito que un OCR corriente. Las anotaciones al margen también cuentan.',
+      'figs.note': 'Cifras de referencia sobre un expediente tipo, todavía sin verificación independiente. Sobre el suyo las medimos con usted, en el primer caso.',
       'tried.eyebrow': 'Lo que ya intentó, antes de llegar aquí',
       'tried.h2': 'Ninguna de esas herramientas fue hecha para su expediente.',
       'tried.q1': 'Pagué la suscripción más cara y a la mitad del expediente ya no se acordaba de nada.',
@@ -1084,21 +1229,23 @@
       'thesis.lede': 'Una cita generada puede inventarse. Un puntero, no. Cada mención guarda su documento, su página y sus coordenadas desde que se lee, con la imagen al lado para confirmarlo.',
       'p1.h': 'Donde Ctrl-F no encuentra nada',
       'p1.b': 'Escaneos torcidos, timbres, sellos y letra a mano. El material real, no el PDF limpio.',
-      'p2.h': 'Le decimos qué no pudimos leer',
-      'p2.b': 'El mapa de páginas ilegibles, una por una, para saber dónde poner sus propios ojos.',
-      'p3.h': 'El expediente no sale de su oficina',
-      'p3.b': 'Puede correr entero en su máquina. El deber de reserva no es un escrúpulo: es exposición.',
+      'p2.h': 'No es un buscador. Es la causa ordenada.',
+      'p2.b': 'Índice por tomo, cronología y quién es quién, armados desde el expediente mismo. Preguntar viene después.',
+      'p3.h': 'El expediente nunca entra en una nube compartida',
+      'p3.b': 'Nube dedicada solo para su estudio, o entero en su propia máquina. El deber de reserva no es un escrúpulo: es exposición.',
+      'p4.h': 'Lo que no hace',
+      'p4.b': 'No redacta sus escritos ni opina sobre el fondo. Le devuelve el expediente sabido; el criterio sigue siendo suyo.',
       'ask.eyebrow': 'El expediente queda abierto, esperando',
       'ask.h2': 'Pregunte lo que preguntaría un colega.',
-      'ask.aside': 'Sin comandos, sin sintaxis. Y toda respuesta llega con las páginas donde consta.',
+      'ask.aside': 'Sin comandos ni sintaxis. Y si la respuesta no está en el expediente, se lo dice: no la inventa.',
       'start.h2': 'Su primer caso corre por nuestra cuenta',
-      'start.lede': 'Envíe un expediente real. Lo procesamos completo —índice, cronología, menciones, citas a página— y se lo mostramos funcionando sobre su propio caso. Sin costo.',
+      'start.lede': 'Elija una causa real, con todos sus tomos. Nos hacemos cargo del material como esté y le mostramos su propio expediente funcionando, con sus preguntas. Sin costo y sin compromiso.',
+      'start.terms': 'Del material que entrega queda constancia escrita. No se comparte con nadie ni se usa para entrenar modelos, y al cierre del caso se devuelve o se destruye según usted lo indique.',
       'seg.case': 'Analizar un caso',
       'seg.early': 'Acceso anticipado',
-      'ea.info': 'Para estudios que quieren <span class="brand">pin</span> dentro del estudio, antes que el resto.',
-      'ea.p1': 'Plan enterprise',
-      'ea.p2': 'Infraestructura propia o nube dedicada',
-      'ea.p3': 'Precio de fundador',
+      'ea.info': 'Para estudios que quieren <span class="brand">pin</span> antes que el resto.',
+      'ea.p1': 'Se instala donde su estudio decida',
+      'ea.p2': 'Condiciones de los primeros estudios',
       'f.name': 'Nombre', 'f.name.ph': 'Nombre y apellido',
       'f.mail': 'Correo', 'f.role': 'Rol',
       'f.role.1': 'Socio', 'f.role.2': 'Asociado',
@@ -1109,21 +1256,22 @@
       'f.submit': 'Analizar mi caso',
       'f.submit.q': 'Solicitar acceso',
       'done.case': '<strong>Recibido.</strong> Le escribimos para coordinar la entrega del material y agendar la sesión sobre su caso.',
-      'done.quote': '<strong>Solicitud recibida.</strong> Le escribimos con la propuesta y los pasos de instalación.',
+      'done.quote': '<strong>Solicitud recibida.</strong> Le escribimos con la propuesta y los pasos de puesta en marcha.',
       'ac.badge': 'Acceso anticipado',
       'ac.h1': 'Todavía se entra por invitación.',
-      'ac.lede': '<span class="brand">pin</span> se despliega dentro del estudio, no en una nube compartida. Por eso abrimos por tandas: cada instalación se acompaña.',
+      'ac.lede': '<span class="brand">pin</span> corre en una nube dedicada a su estudio, o dentro de él. Nunca en una nube compartida. Por eso abrimos por tandas: cada puesta en marcha se acompaña.',
       'ac.mail': 'Correo del estudio', 'ac.role': 'Rol',
       'ac.submit': 'Solicitar acceso',
       'ac.note': 'Le respondemos en cinco días hábiles.',
-      'ac.done': '<strong>Solicitud recibida.</strong> Le escribimos en cinco días hábiles con los pasos y las opciones de instalación.',
+      'ac.done': '<strong>Solicitud recibida.</strong> Le escribimos en cinco días hábiles con los pasos y las opciones de puesta en marcha.',
       'ac.back': '← Volver',
       'foot.blurb': 'A la altura de su oficio.',
-      'foot.blurb2': 'Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan, y no lo deja a mitad del expediente. <strong>Todo leído, todo citado.</strong>',
-      'foot.h1': 'Producto', 'foot.h2': 'Empresa', 'foot.h3': 'Contacto',
+      'foot.blurb2': 'Se conduce con preguntas y responde en milisegundos. Diez mil páginas no lo cansan, y no lo deja a mitad del expediente.',
+      'foot.seal': 'Todo leído, todo citado.',
+      'foot.h1': 'Producto', 'foot.h3': 'Contacto',
       'foot.l1': 'Analizar un caso', 'foot.l2': 'Acceso anticipado',
       'foot.l4': 'Cómo funciona',
-      'foot.l5': 'Sobre pin', 'foot.l6': 'Seguridad y confidencialidad',
+      'foot.l6': 'Seguridad y confidencialidad',
       'foot.addr': 'Apoquindo 4501, oficina 3205<br>Las Condes, Santiago<br>Chile',
       'foot.copy': '© 2026 pin. Todos los derechos reservados.'
     },
@@ -1134,9 +1282,11 @@
       'viewer.p1': 'p. 312', 'viewer.p2': 'p. 1,187', 'viewer.p3': 'p. 2,044',
       'viewer.pn2': '1,187', 'viewer.pn3': '2,044',
       'nav.login': 'Sign in',
+      'skip': 'Skip to content',
       'hero.eyebrow': 'Criminal case files · scanned and handwritten',
       'hero.h1': 'Ten thousand pages, read before the meeting ends.',
-      'hero.lede': '<span class="brand">pin</span> reads the entire file —skewed, stamped, handwritten— and answers pointing at the exact page.',
+      'hero.lede': 'Skewed, stamped and handwritten. <span class="brand">pin</span> reads the whole case and hands it back known: who is who, what happened when, and the page where it is recorded.',
+      'hero.note': 'The file never goes into a shared cloud',
       'hero.cta1': 'Analyze my case',
       'hero.cta2': 'Early access',
       'viewer.date': '22 June 2004',
@@ -1152,10 +1302,11 @@
       'figs.eyebrow': 'Typical file · 14 volumes · scanned with handwriting',
       'figs.h2': 'The whole file, read over a coffee.',
       'figs.u1': 'pages',
-      'figs.t1': 'Read, indexed and citable in under twenty minutes.',
-      'figs.t2': 'Finding a phrase across the entire file.',
-      'figs.t3': 'Of all mentions, cited to their exact page with the image.',
-      'figs.t4': 'Better handwriting recognition than ordinary OCR.',
+      'figs.t1': 'It goes in whole and is ready in under twenty minutes. No size cap, no uploading in parts.',
+      'figs.t2': 'How long it takes to come back with the answer, with you in the hearing.',
+      'figs.t3': 'Of the pages end up classified: read, or listed as unreadable. None is taken as read without being read.',
+      'figs.t4': 'Better handwriting recognition than ordinary OCR. Margin notes count too.',
+      'figs.note': 'Reference figures on a typical file, not yet independently verified. On yours we measure them with you, on the first case.',
       'tried.eyebrow': 'What you already tried, before getting here',
       'tried.h2': 'None of those tools was built for your file.',
       'tried.q1': 'I paid for the most expensive plan and halfway through the file it had forgotten everything.',
@@ -1173,21 +1324,23 @@
       'thesis.lede': 'A generated citation can be invented. A pointer cannot. Every mention keeps its document, its page and its coordinates from the moment it is read, with the image alongside to confirm it.',
       'p1.h': 'Where Ctrl-F finds nothing',
       'p1.b': 'Skewed scans, stamps, seals and handwriting. The real material, not the clean PDF.',
-      'p2.h': 'We tell you what we could not read',
-      'p2.b': 'The map of unreadable pages, one by one, so you know where to put your own eyes.',
-      'p3.h': 'The file never leaves your office',
-      'p3.b': 'It can run entirely on your machine. Professional privilege is not a scruple: it is exposure.',
+      'p2.h': 'Not a search box. The case, in order.',
+      'p2.b': 'Index by volume, timeline and who is who, built from the file itself. Asking comes afterwards.',
+      'p3.h': 'The file never enters a shared cloud',
+      'p3.b': 'A cloud dedicated to your firm alone, or entirely on your own machine. Professional privilege is not a scruple: it is exposure.',
+      'p4.h': 'What it does not do',
+      'p4.b': 'It does not draft your filings or opine on the merits. It hands the file back known; the judgement stays yours.',
       'ask.eyebrow': 'The file stays open, waiting',
       'ask.h2': 'Ask what you would ask a colleague.',
-      'ask.aside': 'No commands, no syntax. And every answer arrives with the pages where it is recorded.',
+      'ask.aside': 'No commands, no syntax. And if the answer is not in the file, it tells you: it does not invent one.',
       'start.h2': 'Your first case is on us',
-      'start.lede': 'Send a real file. We process it in full —index, timeline, mentions, page-anchored citations— and show it working on your own case. At no cost.',
+      'start.lede': 'Pick a real case, with all its volumes. We take on the material as it is and show you your own file working, with your own questions. At no cost and no commitment.',
+      'start.terms': 'The material you hand over is recorded in writing. It is not shared with anyone, nor used to train models, and when the case closes it is returned or destroyed as you instruct.',
       'seg.case': 'Analyze a case',
       'seg.early': 'Early access',
-      'ea.info': 'For firms that want <span class="brand">pin</span> inside, before everyone else.',
-      'ea.p1': 'Enterprise plan',
-      'ea.p2': 'Your own infrastructure or a dedicated cloud',
-      'ea.p3': 'Founder pricing',
+      'ea.info': 'For firms that want <span class="brand">pin</span> before the rest.',
+      'ea.p1': 'Installed wherever your firm decides',
+      'ea.p2': 'Terms for the first firms',
       'f.name': 'Name', 'f.name.ph': 'First and last name',
       'f.mail': 'Email', 'f.role': 'Role',
       'f.role.1': 'Partner', 'f.role.2': 'Associate',
@@ -1198,21 +1351,22 @@
       'f.submit': 'Analyze my case',
       'f.submit.q': 'Request access',
       'done.case': '<strong>Received.</strong> We will write to arrange the handover and schedule the session on your case.',
-      'done.quote': '<strong>Request received.</strong> We will write with the proposal and the deployment steps.',
+      'done.quote': '<strong>Request received.</strong> We will write with the proposal and the setup steps.',
       'ac.badge': 'Early access',
       'ac.h1': 'Entry is still by invitation.',
-      'ac.lede': '<span class="brand">pin</span> is deployed inside the firm, not on a shared cloud. That is why we open in batches: every deployment is accompanied.',
+      'ac.lede': '<span class="brand">pin</span> runs on a cloud dedicated to your firm, or inside it. Never on a shared one. That is why we open in batches: every setup is accompanied.',
       'ac.mail': 'Firm email', 'ac.role': 'Role',
       'ac.submit': 'Request access',
       'ac.note': 'We reply within five business days.',
-      'ac.done': '<strong>Request received.</strong> We will write within five business days with the next steps and deployment options.',
+      'ac.done': '<strong>Request received.</strong> We will write within five business days with the next steps and setup options.',
       'ac.back': '← Back',
       'foot.blurb': 'Built to the standard of your craft.',
-      'foot.blurb2': "You drive it with questions; it answers in milliseconds. Ten thousand pages won't tire it, and it won't leave you halfway through the file. <strong>Everything read, everything cited.</strong>",
-      'foot.h1': 'Product', 'foot.h2': 'Company', 'foot.h3': 'Contact',
+      'foot.blurb2': "You drive it with questions; it answers in milliseconds. Ten thousand pages won't tire it, and it won't leave you halfway through the file.",
+      'foot.seal': 'Everything read, everything cited.',
+      'foot.h1': 'Product', 'foot.h3': 'Contact',
       'foot.l1': 'Analyze a case', 'foot.l2': 'Early access',
       'foot.l4': 'How it works',
-      'foot.l5': 'About pin', 'foot.l6': 'Security and confidentiality',
+      'foot.l6': 'Security and confidentiality',
       'foot.addr': 'Apoquindo 4501, office 3205<br>Las Condes, Santiago<br>Chile',
       'foot.copy': '© 2026 pin. All rights reserved.'
     }
@@ -1221,32 +1375,32 @@
   var POOL = {
     es: [
       '¿Qué declaró el testigo Ramírez la primera vez?',
-      'Todas las menciones de la empresa demandada',
-      '¿Cuándo se notificó a la contraparte?',
+      'Todas las menciones de la sociedad investigada',
+      '¿Cuándo se notificó la formalización?',
       'Contradicciones entre las dos declaraciones del imputado',
       '¿Dónde consta el pago de la factura 4.812?',
       'Resumen de la prueba documental acompañada',
       '¿Qué peritajes se decretaron y en qué fecha?',
       'Todas las fechas de audiencia del expediente',
-      '¿Consta el domicilio del demandado en el expediente?',
+      '¿Consta el domicilio del imputado en el expediente?',
       'Menciones del vehículo patente GJ-2481',
       '¿Qué alegó la defensa sobre la cadena de custodia?',
       'Cronología de las diligencias del año 2023',
-      '¿Se acompañó el contrato original o una copia?',
-      'Todos los montos reclamados en la demanda',
+      '¿Se acompañó el original del acta o una copia?',
+      'Todos los montos incautados en el procedimiento',
       '¿Quién firmó el acta de entrega?',
       'Diferencias entre el informe pericial y el contrainforme',
-      '¿Hay constancia de la citación al tercero?',
+      '¿Hay constancia de la citación al testigo?',
       'Menciones de la cuenta corriente del acusado',
-      '¿Qué documentos objetó la contraparte?',
+      '¿Qué prueba objetó el Ministerio Público?',
       'Todas las apelaciones presentadas y su resultado',
       '¿En qué página consta la ratificación del perito?',
-      'Historial de representación del demandante',
-      '¿Se opuso alguna excepción dilatoria?',
+      'Historial de representación del imputado',
+      '¿Se opuso alguna excepción de previo pronunciamiento?',
       'Todas las transferencias mencionadas en el expediente',
       '¿Qué concluyó el informe forense?',
       'Resumen de lo obrado en el volumen VII',
-      '¿Existe recibo de la suma consignada?',
+      '¿Existe acta de entrega de la especie incautada?',
       'Menciones de la sociedad matriz y sus filiales',
       '¿Cuándo prescribe la acción según lo alegado?',
       'Todas las medidas cautelares solicitadas',
@@ -1257,7 +1411,7 @@
       '¿Qué se resolvió sobre la nulidad planteada?',
       'Menciones del inmueble de calle Bandera',
       '¿Está firmada cada página del volumen III?',
-      'Cronología completa de la relación contractual',
+      'Cronología completa de la investigación',
       '¿Qué antecedentes bancarios se incorporaron?',
       'Todas las declaraciones tomadas en sede policial',
       '¿Coinciden las fechas del parte con las del acta?',
@@ -1268,47 +1422,47 @@
       'Documentos que carecen de fecha cierta',
       '¿Cuántas veces se suspendió la audiencia?',
       'Menciones del identificador tributario 76.412.330-K',
-      '¿Se agregó el certificado de dominio vigente?',
-      'Todas las referencias al artículo 19 del contrato',
+      '¿Se agregó el extracto de filiación del imputado?',
+      'Todas las referencias al informe policial',
       '¿Quién compareció en la audiencia de formalización?',
       'Resumen de las alegaciones de la defensa',
       '¿Hay boletas o facturas duplicadas?',
       'Menciones del correo del 14 de marzo',
       '¿Qué bienes se incluyeron en el inventario?',
       'Todas las páginas donde aparece la firma cuestionada',
-      '¿Se rindió la fianza ordenada por el tribunal?',
-      'Antecedentes laborales del demandante en el expediente',
+      '¿Se cumplió la orden de detención despachada?',
+      'Antecedentes penales del imputado en el expediente',
       '¿Qué pruebas se declararon inadmisibles?',
       'Todo lo que ocurrió entre marzo y julio de 2022'
     ],
     en: [
       'What did the witness Ramírez say the first time?',
-      'Every mention of the defendant company',
-      'When was the opposing party served?',
+      'Every mention of the company under investigation',
+      'When was the charge formally notified?',
       'Contradictions between the two statements of the accused',
       'Where is payment of invoice 4,812 recorded?',
       'Summary of the documentary evidence filed',
       'Which expert reports were ordered, and when?',
       'All hearing dates in the file',
-      "Is the defendant's address on the record?",
+      "Is the accused's address on the record?",
       'Mentions of the vehicle with plate GJ-2481',
       'What did the defense argue about chain of custody?',
       'Timeline of the 2023 proceedings',
-      'Was the original contract filed, or a copy?',
-      'All amounts claimed in the complaint',
+      'Was the original record filed, or a copy?',
+      'All amounts seized during the operation',
       'Who signed the delivery record?',
       'Differences between the expert report and the counter-report',
-      'Is there proof the third party was summoned?',
-      "Mentions of the defendant's bank account",
-      'Which documents did the opposing party object to?',
+      'Is there proof the witness was summoned?',
+      "Mentions of the accused's bank account",
+      'Which evidence did the prosecution object to?',
       'All appeals filed and their outcome',
       'On which page is the expert ratification recorded?',
-      'Representation history of the claimant',
-      'Were any dilatory defences raised?',
+      'Representation history of the accused',
+      'Were any preliminary objections raised?',
       'All transfers mentioned in the file',
       'What did the forensic report conclude?',
       'Summary of what happened in volume VII',
-      'Is there a receipt for the sum deposited?',
+      'Is there a handover record for the seized item?',
       'Mentions of the parent company and its subsidiaries',
       'When does the action expire, on the arguments made?',
       'All precautionary measures requested',
@@ -1319,7 +1473,7 @@
       'How was the nullity claim resolved?',
       'Mentions of the property on Bandera street',
       'Is every page of volume III signed?',
-      'Full timeline of the contractual relationship',
+      'Full timeline of the investigation',
       'Which banking records were filed?',
       'All statements taken at the police station',
       'Do the report dates match the record dates?',
@@ -1331,15 +1485,15 @@
       'How many times was the hearing postponed?',
       'Mentions of tax ID 76.412.330-K',
       'Was the current title certificate filed?',
-      'Every reference to clause 19 of the contract',
+      'Every reference to the police report',
       'Who appeared at the arraignment hearing?',
       'Summary of the defense arguments',
       'Are there duplicate receipts or invoices?',
       'Mentions of the email of 14 March',
       'Which assets were listed in the inventory?',
       'Every page where the disputed signature appears',
-      'Was the bond ordered by the court posted?',
-      'Employment history of the claimant in the file',
+      'Was the arrest warrant issued by the court carried out?',
+      'Criminal record of the accused in the file',
       'Which evidence was ruled inadmissible?',
       'Everything that happened between March and July 2022'
     ]
@@ -1441,11 +1595,49 @@
     pvNum.textContent = PNUMS[lang][i];
   }
 
+  /* v11 · issue #3.4 — role="button" ahora responde a Enter y Espacio */
   hits.forEach(function (h, i) {
-    h.addEventListener('mouseenter', function () { activateHit(i); });
-    h.addEventListener('focus', function () { activateHit(i); });
-    h.addEventListener('click', function () { activateHit(i); });
+    function take() { stopDemo(); activateHit(i); }
+    h.addEventListener('mouseenter', take);
+    h.addEventListener('focus', take);
+    h.addEventListener('click', take);
+    h.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+        ev.preventDefault();   // el espacio, si no, desplaza la página
+        take();
+      }
+    });
   });
+
+  /* v11 · el visor se muestra solo la primera vez: recorre las tres menciones
+     y vuelve a la primera. Cualquier gesto del lector lo detiene para siempre. */
+
+  var demoTimer = null;
+  var demoDone = false;
+
+  function stopDemo() {
+    demoDone = true;
+    clearTimeout(demoTimer);
+  }
+
+  function runDemo(i) {
+    if (demoDone) { return; }
+    activateHit(i % hits.length);
+    if (i >= hits.length) { demoDone = true; return; }
+    demoTimer = setTimeout(function () { runDemo(i + 1); }, 2200);
+  }
+
+  if (!reduced) {
+    var viewerEl = document.getElementById('viewer');
+    var ioDemo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting || demoDone) { return; }
+        ioDemo.unobserve(viewerEl);
+        demoTimer = setTimeout(function () { runDemo(1); }, 1400);
+      });
+    }, { threshold: 0.5 });
+    ioDemo.observe(viewerEl);
+  }
 
   /* ---------------- cifras: conteo al entrar ---------------- */
 
@@ -1632,3 +1824,4 @@
   apply('es');
 })();
 </script>
+

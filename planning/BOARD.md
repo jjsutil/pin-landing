@@ -3,9 +3,9 @@
 
 # Board — pin-landing
 
-3 issues · **backlog 0 · ready 0 · in-dev 0 · review 3 · staging 0 · production 0**
+4 issues · **backlog 1 · ready 0 · in-dev 0 · review 0 · staging 3 · production 0**
 
-## review
+## staging
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
@@ -13,16 +13,23 @@
 | I-002 | Blog post 1 — "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa." | feature | high | low | E01 | 0d |
 | I-003 | Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero." | feature | high | low | E01 | 0d |
 
+## backlog
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 0d |
+
 ## 2×2 impact/cost matrix
 
 **Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole E01 epic.
+**Low impact / low cost:** I-004 — worth doing when a slot opens, not urgent.
 No other quadrant populated yet.
 
 ## Cost projection
 
 No new runtime dependency, no paid API, static site — cost-guard has nothing to project
-for E01.
+for E01 or for I-004 (client-side FPS self-benchmark, no infra).
 
 ## Staleness alerts
 
-None — all three issues created today.
+None — all four issues created today.

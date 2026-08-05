@@ -1,5 +1,5 @@
-// Comportamiento del prototipo (design/prototype/pin-landing-v8.html) portado tal
-// cual. Diferencias deliberadas respecto del prototipo, y solo estas:
+// Comportamiento del prototipo (design/prototype/pin-landing-v12.html) portado
+// tal cual. Diferencias deliberadas respecto del prototipo, y solo estas:
 //   - el idioma es de la ruta (Astro i18n): los botones ES/EN navegan entre / y /en/
 //     en lugar de re-traducir el DOM;
 //   - el toggle de tema persiste en localStorage (única mejora autorizada).
@@ -69,6 +69,44 @@ const io = new IntersectionObserver(
 
 document.querySelectorAll('.rise, .rise-x, .said').forEach((el) => io.observe(el));
 
+/* ---------------- envío por Web3Forms: lo usan el form del hero y el de acceso ---------------- */
+
+// Key pública-por-diseño de Web3Forms, inyectada por entorno (docs/CONFIG.md).
+// Sin key configurada, los formularios quedan en modo degradado: confirmación
+// en pantalla y nada se envía.
+const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || undefined;
+
+async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
+  if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
+  try {
+    // Sin tope de espera, una red colgada dejaría el botón deshabilitado para siempre.
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({
+        access_key: W3F_KEY,
+        subject,
+        from_name: 'pin landing',
+        ...fields,
+      }),
+    });
+    const data = await res.json();
+    return res.ok && data.success === true;
+  } catch {
+    return false;
+  }
+}
+
+/* ---------------- bloque del hero: solo existe en index.astro / en/index.astro ----------
+   #figures (Figures.astro) es el guard — visor, cifras, escritura y formulario viven
+   siempre juntos en la página del hero, nunca en /blog/**. Sin este guard, el resto
+   del script (incluido el handler de #go-access más abajo) nunca llega a registrarse
+   en cualquier página que no sea el hero. ---------------------------------------- */
+
+const figs = document.getElementById('figures');
+
+if (figs) {
 /* ---------------- visor: la mención elegida abre su página ---------------- */
 
 const hits = Array.from(document.querySelectorAll<HTMLElement>('#viewer .hit'));
@@ -84,11 +122,58 @@ function activateHit(i: number): void {
   pvNum.textContent = PNUMS[lang][i] ?? PNUMS[lang][0];
 }
 
+/* issue #3.4 — role="button" now responds to Enter and Space, not just pointer/focus */
 hits.forEach((h, i) => {
-  h.addEventListener('mouseenter', () => activateHit(i));
-  h.addEventListener('focus', () => activateHit(i));
-  h.addEventListener('click', () => activateHit(i));
+  function take(): void {
+    stopDemo();
+    activateHit(i);
+  }
+  h.addEventListener('mouseenter', take);
+  h.addEventListener('focus', take);
+  h.addEventListener('click', take);
+  h.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+      ev.preventDefault(); // space would otherwise scroll the page
+      take();
+    }
+  });
 });
+
+/* the viewer plays itself once — cycles the three mentions and returns to the
+   first. Any reader gesture on a hit (above) stops it for good via stopDemo(). */
+
+let demoTimer: ReturnType<typeof setTimeout> | undefined;
+let demoDone = false;
+
+function stopDemo(): void {
+  demoDone = true;
+  clearTimeout(demoTimer);
+}
+
+function runDemo(i: number): void {
+  if (demoDone) return;
+  activateHit(i % hits.length);
+  if (i >= hits.length) {
+    demoDone = true;
+    return;
+  }
+  demoTimer = setTimeout(() => runDemo(i + 1), 2200);
+}
+
+if (!reduced) {
+  const viewerEl = document.getElementById('viewer')!;
+  const ioDemo = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting || demoDone) return;
+        ioDemo.unobserve(viewerEl);
+        demoTimer = setTimeout(() => runDemo(1), 1400);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  ioDemo.observe(viewerEl);
+}
 
 /* ---------------- cifras: conteo al entrar ---------------- */
 
@@ -111,7 +196,6 @@ function countUp(el: HTMLElement, target: number): void {
   requestAnimationFrame(step);
 }
 
-const figs = document.getElementById('figures')!;
 const ioFigs = new IntersectionObserver(
   (entries) => {
     entries.forEach((e) => {
@@ -132,9 +216,6 @@ ioFigs.observe(figs);
 /* ---------------- escritura ---------------- */
 
 const out = document.getElementById('typed-text')!;
-// QA del dueño (2026-07-30): al quedar la tercera frase, el caret se oculta —
-// el "|" final sobraba. (Delta deliberado respecto del prototipo v8.)
-const askCaret = document.querySelector<HTMLElement>('.ask .caret')!;
 let timer: ReturnType<typeof setTimeout> | undefined;
 
 function pickThree(): string[] {
@@ -168,10 +249,7 @@ function run(list: string[], idx: number, pos: number, deleting: boolean): void 
       );
       return;
     }
-    if (last) {
-      askCaret.style.display = 'none'; // la tercera frase queda, sin caret
-      return;
-    }
+    if (last) return; // the third phrase stays on screen, caret included
     timer = setTimeout(() => run(list, idx, text.length, true), 2100);
     return;
   }
@@ -189,7 +267,6 @@ function startTyping(): void {
   clearTimeout(timer);
   if (reduced) {
     out.textContent = POOL[lang][0]!;
-    askCaret.style.display = 'none';
     return;
   }
   out.textContent = '';
@@ -197,35 +274,6 @@ function startTyping(): void {
 }
 
 startTyping();
-
-/* ---------------- envío por Web3Forms ---------------- */
-
-// Key pública-por-diseño de Web3Forms, inyectada por entorno (docs/CONFIG.md).
-// Sin key configurada, los formularios quedan en modo degradado: confirmación
-// en pantalla y nada se envía.
-const W3F_KEY: string | undefined = import.meta.env.PUBLIC_WEB3FORMS_KEY || undefined;
-
-async function sendWeb3Forms(subject: string, fields: Record<string, string | boolean>): Promise<boolean> {
-  if (!W3F_KEY) return true; // modo degradado: se comporta como éxito, no envía
-  try {
-    // Sin tope de espera, una red colgada dejaría el botón deshabilitado para siempre.
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      signal: AbortSignal.timeout(15000),
-      body: JSON.stringify({
-        access_key: W3F_KEY,
-        subject,
-        from_name: 'pin landing',
-        ...fields,
-      }),
-    });
-    const data = await res.json();
-    return res.ok && data.success === true;
-  } catch {
-    return false;
-  }
-}
 
 /* ---------------- formulario ---------------- */
 
@@ -301,7 +349,9 @@ form.addEventListener('submit', async (ev) => {
   done.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
 });
 
-/* ---------------- vista de acceso ---------------- */
+} // fin del bloque del hero (if (figs))
+
+/* ---------------- vista de acceso: en Base.astro, existe en TODA página ---------------- */
 
 const acForm = document.getElementById('access-form') as HTMLFormElement;
 const acDone = document.getElementById('ac-done')!;
