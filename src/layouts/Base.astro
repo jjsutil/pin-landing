@@ -14,6 +14,7 @@ interface Props {
 const { lang, title, description } = Astro.props;
 const d = T[lang];
 const pageTitle = title ?? d['title'];
+const pageDescription = description ?? d['meta.desc'];
 ---
 
 <!doctype html>
@@ -22,8 +23,24 @@ const pageTitle = title ?? d['title'];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_CL' : 'en_US'} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <link rel="canonical" href={Astro.url.href} />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <!-- issue #3.1 — sin JS el contenido se ve igual, solo sin animar -->
+    <noscript>
+      <style>
+        .rise, .rise-x { opacity: 1; transform: none; }
+        .said::before, .said:last-of-type::after { transform: scaleX(1); }
+        .ask { display: none; }
+      </style>
+    </noscript>
     <script is:inline>
       // Tema: sistema por defecto; la elección del toggle persiste en localStorage.
       // Inline y antes del primer paint para evitar el destello del tema equivocado.
@@ -38,6 +55,7 @@ const pageTitle = title ?? d['title'];
     </script>
   </head>
   <body>
+    <a class="skip" href="#top">{d['skip']}</a>
     <Header lang={lang} />
     <main id="top">
       <slot />

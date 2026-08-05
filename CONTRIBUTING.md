@@ -6,7 +6,7 @@ site, two languages (ES at `/`, EN at `/en/`), two themes, zero external
 requests at runtime.
 
 > [!IMPORTANT]
-> `design/prototype/pin-landing-v8.html` is the **visual-fidelity contract**.
+> `design/prototype/pin-landing-v12.html` is the **visual-fidelity contract**.
 > The implementation must reproduce it: exact color tokens (both themes),
 > system font stacks, layout, verbatim ES/EN copy, animations and
 > interactions. On any doubt, the prototype wins.

@@ -5,6 +5,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed (fidelity contract v12, 2026-08-05)
+
+- Fidelity contract advanced to v12 in a new file
+  (`design/prototype/pin-landing-v12.html`, supersedes v8/v10, which is kept
+  for history and marked superseded). Editorial pass: the privacy promise —
+  previously repeated across hero/thesis/footer/access — is now said once per
+  surface; hero lede, all four figures, and the ask-section closing line
+  rewritten; a fourth thesis point added ("Lo que no hace" / "What it does not
+  do"); a reserve line under the hero CTAs; a single commitments line between
+  the Empezar lede and the form (written record, not shared or used to train,
+  returned/destroyed at close); the early-access toggle shortened to two perks
+  (drops "Plan enterprise" / "Precio de fundador"); 21 of the 60 question-pool
+  entries corrected from civil to penal vocabulary; a provenance note under the
+  figures; cloud copy reconciled ("nunca entra en una nube compartida", both
+  hero and thesis); the seal moved to its own footer line; the footer's second
+  paragraph kept literal to the pre-existing repo text (only the seal moved
+  out of it); footer links point at real anchors (`#tesis`, `#reserva`) and the
+  "Empresa" column / "Sobre pin" link are gone (footer is now 3 columns).
+- `src/scripts/main.ts`: keyboard access on the viewer (Enter/Space activate a
+  hit, closes issue #3 item 4 — already noted done previously but not actually
+  wired in code); a one-time auto-play demo that cycles the viewer's three
+  mentions on first scroll into view, stopped by any reader gesture; the
+  ask-bar caret no longer hides after the third typed phrase — the 2026-07-30
+  QA delta is superseded by the verified v12 contract, which keeps the caret
+  visible.
+- Issue #3 nits closed: real favicon (`public/favicon.svg`, issue item 2);
+  meta description + OG/Twitter tags derived from the approved hero copy
+  (issue item 5); `aria-label="Tema"` on the theme toggle now comes from the
+  ES/EN dictionary instead of a hardcoded Spanish string, fixing the `/en/`
+  route rendering it in Spanish before hydration (issue item 3). Closes #3 —
+  the two remaining open items (footer address/email, dead links) are resolved
+  elsewhere in this PR (real anchors) or intentionally untouched (owner's real
+  address/email, out of scope per instruction).
+- Skip-to-content link and no-JS `<noscript>` fallback added to
+  `src/layouts/Base.astro` (both previously only documented as done in
+  contract comments, not actually present in the repo).
+- Evidence regenerated across `design/evidence/` (hero, form, footer,
+  full-page order, light/dark × ES/EN; mobile full-page ES/EN light).
+
 ### Fixed (adversarial review of I-001, 2026-08-05)
 
 - **Blocker:** `main.ts` aborted on every `/blog/**` page — `#figures` only

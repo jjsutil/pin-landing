@@ -37,8 +37,8 @@ workflow_version: 0.1.15
   two seeded workflows are installed but will not run. The gate is LOCAL:
   `scripts/check-gates.sh`, `npm run build` and `npx astro check` before every PR.
 - Deployment is deliberately not configured (owner-gated; see README).
-- `design/prototype/pin-landing-v8.html` is the visual-fidelity CONTRACT for the
-  landing. On any doubt, the prototype wins.
+- `design/prototype/pin-landing-v12.html` is the visual-fidelity CONTRACT for the
+  landing (supersedes v8). On any doubt, the prototype wins.
 
 ## Issue frontmatter schema
 
