@@ -3,13 +3,19 @@
 
 # Board — pin-landing
 
-8 issues · **backlog 4 · ready 0 · in-dev 1 · review 0 · staging 3 · production 0**
+8 issues · **backlog 3 · ready 1 · in-dev 1 · review 0 · staging 3 · production 0**
 
 ## in-dev
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
 | I-008 | Blog post 3 — "A nadie lo sancionan por usar inteligencia artificial. Lo sancionan por firmar lo que no leyó." | feature | high | low | E01 | 0d |
+
+## ready
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-006 | CTA / interaction on blog posts — share (X/LinkedIn) + copy-link, no comment box | feature | low | low | E01 | 0d |
 
 ## staging
 
@@ -25,7 +31,6 @@
 |---|---|---|---|---|---|---|
 | I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 0d |
 | I-005 | Blog i18n — English posts and a structure that scales past one language | feature | high | high | E01 | 0d |
-| I-006 | CTA / interaction on blog posts | feature | low | low | E01 | 0d |
 | I-007 | Blog listing navigability — tags, timeline, topic grouping | feature | low | low | E01 | 0d |
 
 ## 2×2 impact/cost matrix
@@ -35,15 +40,16 @@ epic — plus I-008, in flight (third post of the same epic).
 **High impact / high cost:** I-005 — blog i18n, needs a structural fix (locale-aware
 content collection), not just translated files.
 **Low impact / low cost:** I-004, I-006, I-007 — worth doing when a slot opens, not
-urgent. I-006 and I-007 both carry a decision gate (CTA type; listing mockup) that
-blocks implementation regardless of priority.
+urgent. I-006's decision gate cleared (05/08: share buttons, no comment box) and is
+now `ready`; I-007 still carries one (listing mockup) that blocks implementation
+regardless of priority.
 No other quadrant populated yet.
 
 ## Cost projection
 
 No new runtime dependency, no paid API, static site — cost-guard has nothing to project
-for E01, I-004, I-005, I-006, I-007 or I-008 today. Flag if I-006 resolves to an email
-subscription option: that adds a data-collection surface worth a config-registry entry.
+for E01, I-004, I-005, I-006, I-007 or I-008 today. I-006 resolved to share/copy-link
+only (no email subscription), so no new data-collection surface.
 
 ## Staleness alerts
 
