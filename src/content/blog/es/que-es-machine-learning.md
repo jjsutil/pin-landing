@@ -5,7 +5,7 @@ excerpt: "Le van a vender «inteligencia artificial» este año. Tres palabras a
 publishDate: 2026-08-05
 author: "Equipo fundador de pin"
 tags: ["Inteligencia artificial", "Fundamentos", "Criterio profesional"]
-draft: true
+draft: false
 readingMinutes: 6
 ---
 

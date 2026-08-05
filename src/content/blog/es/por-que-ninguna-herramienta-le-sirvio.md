@@ -5,7 +5,7 @@ excerpt: "Pagó la suscripción, subió el expediente y la herramienta le falló
 publishDate: 2026-08-05
 author: "Equipo fundador de pin"
 tags: ["Ventana de contexto", "Herramientas de IA", "Verificabilidad"]
-draft: true
+draft: false
 readingMinutes: 5
 ---
 
