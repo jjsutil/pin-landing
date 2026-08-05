@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Planned (blog, 2026-08-05)
+
+- E01 epic opened: a `/blog` section reachable only from the footer, standardized
+  post format (Astro content collection, no MDX dependency), starting with two
+  posts (ML vs. AI; why general-purpose AI tools fail on a full case file). See
+  `planning/plans/E01-blog.md`. Infra (I-001) is `ready`; both posts (I-002,
+  I-003) are `backlog` pending owner content review.
+
 ### Added (demo & publish, 2026-07-30)
 
 - Both lead-capture forms (apply + access) now submit via Web3Forms
