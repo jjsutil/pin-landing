@@ -600,7 +600,7 @@ footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
 
 .foot-top { display: grid; gap: 2.75rem; padding-block: 4rem 3rem; }
 
-@media (min-width: 52rem) { .foot-top { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+@media (min-width: 52rem) { .foot-top { grid-template-columns: 1.6fr 1fr 1fr; } }
 
 .foot-col { display: flex; flex-direction: column; gap: 0.875rem; }
 
@@ -649,3 +649,97 @@ footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
   .caret.blink { animation: none; opacity: 1; }
   .page.on { animation: none; }
 }
+
+/* ---------- salto al contenido (issue #3.1) ---------- */
+
+.skip {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line-hard);
+  border-top: 0;
+  border-radius: 0 0 7px 7px;
+  padding: 0.6875rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-s);
+  transition: transform 180ms cubic-bezier(.22,.7,.24,1);
+}
+
+.skip:focus-visible { transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { transition: none; }
+}
+
+/* ---------- procedencia de las cifras ---------- */
+
+.figs-note {
+  display: flex;
+  gap: 0.625rem;
+  align-items: baseline;
+  margin-top: 1.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+  max-width: 42rem;
+  text-wrap: pretty;
+}
+
+.figs-note::before {
+  content: "*";
+  font-family: var(--mono);
+  color: var(--accent);
+  flex: none;
+}
+
+/* ---------- el sello, una sola vez, en el pie ---------- */
+
+.seal {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.375rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.seal::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  flex: none;
+}
+
+/* ---------- la reserva, dicha donde se decide ---------- */
+
+.hero-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5625rem;
+  align-self: flex-start;
+  margin-top: -0.375rem;
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.hero-note::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.hero-note:hover { color: var(--ink-muted); border-bottom-color: var(--line-hard); }

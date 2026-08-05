@@ -16,7 +16,7 @@ architecture & design SSoT, maintained by the `obsidian-vault` skill.
 |---|---|
 | [[README]] | The front door: what pin-landing is, deployment status |
 | [[CONTRIBUTING]] | How to work in this repo — skills, rules, PR flow, conventions |
-| `design/prototype/pin-landing-v8.html` | **The visual-fidelity contract** — the approved v8 prototype the Astro implementation must reproduce |
+| `design/prototype/pin-landing-v12.html` | **The visual-fidelity contract** — the approved v12 prototype the Astro implementation must reproduce (supersedes v8) |
 
 ## Registries and generated views
 

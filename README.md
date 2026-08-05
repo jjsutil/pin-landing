@@ -51,7 +51,7 @@ pending owner content. Full board: [planning/BOARD.md](planning/BOARD.md)
 | `src/scripts/main.ts` | All client behavior: theme, reveals, viewer, typing, forms (Web3Forms submit) |
 | `src/i18n/index.ts` | Verbatim ES/EN dictionaries copied from the fidelity contract |
 | `src/styles/global.css` | Design tokens (both themes) and all styles |
-| `design/prototype/pin-landing-v8.html` | **The visual-fidelity contract** (header states v10) |
+| `design/prototype/pin-landing-v12.html` | **The visual-fidelity contract** (supersedes v8/v10) |
 | `design/evidence/` | Committed screenshots: hero/form/footer/full page, light/dark × ES/EN |
 | `.github/workflows/deploy-pages.yml` | GitHub Pages deploy (live; see docs/DEPLOY.md) |
 | `src/content.config.ts`, `src/content/blog/es/*.md` | Blog content collection (ES only, plain Markdown, no MDX/CMS) |
@@ -65,13 +65,14 @@ Copy is verbatim from the contract — never rewrite it in place.
 
 ### Fidelity contract
 
-`design/prototype/pin-landing-v8.html` — the header comment records v10
-(v8 + final tagline + section order Hero→Figures→Ask→Thesis→Quotes→Offer +
-softened footer sub-line). On any doubt, the prototype wins. Deliberate deltas
-from the prototype, and only these: language switch navigates routes instead of
-re-translating the DOM; theme toggle persists in localStorage; ask-bar caret
-hides after the third phrase (owner QA); Web3Forms submission with a localized
-error state (the prototype had no backend at all).
+`design/prototype/pin-landing-v12.html` — adopted 2026-08-05, supersedes the v8/v10
+contract (editorial pass: the privacy promise said once instead of ten times,
+rewritten figures, a fourth thesis point — "what it does not do" — real footer
+anchors, a skip link and no-JS fallback, keyboard access on the viewer). On any
+doubt, the prototype wins. Deliberate deltas from the prototype, and only these:
+language switch navigates routes instead of re-translating the DOM; theme toggle
+persists in localStorage; Web3Forms submission with a localized error state (the
+prototype had no backend at all).
 
 ### Forms / Web3Forms
 

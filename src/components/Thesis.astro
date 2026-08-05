@@ -9,7 +9,7 @@ const { lang } = Astro.props;
 const d = T[lang];
 ---
 
-<section>
+<section id="tesis">
   <div class="wrap thesis">
     <div class="stack">
       <p class="eyebrow rise">{d['thesis.eyebrow']}</p>
@@ -30,10 +30,15 @@ const d = T[lang];
         <h3>{d['p2.h']}</h3>
         <p>{d['p2.b']}</p>
       </li>
-      <li class="point rise" style="--d:320ms">
+      <li class="point rise" id="reserva" style="--d:320ms">
         <span class="dot-li" aria-hidden="true"></span>
         <h3>{d['p3.h']}</h3>
         <p>{d['p3.b']}</p>
+      </li>
+      <li class="point rise" style="--d:420ms">
+        <span class="dot-li" aria-hidden="true"></span>
+        <h3>{d['p4.h']}</h3>
+        <p>{d['p4.b']}</p>
       </li>
     </ul>
   </div>
