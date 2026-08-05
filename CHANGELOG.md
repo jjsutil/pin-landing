@@ -16,15 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   from there. A `draft: true` smoke-test post proves the pipeline end-to-end
   without being content. No `/en/blog`, no MDX, no comments/newsletter/CMS
   (out of scope for this issue — see `planning/plans/E01-blog.md`). Content
-  (I-002, I-003) follows separately.
-
-### Planned (blog, 2026-08-05)
-
-- E01 epic opened: a `/blog` section reachable only from the footer, standardized
-  post format (Astro content collection, no MDX dependency), starting with two
-  posts (ML vs. AI; why general-purpose AI tools fail on a full case file). See
-  `planning/plans/E01-blog.md`. Infra (I-001) is `ready`; both posts (I-002,
-  I-003) are `backlog` pending owner content review.
+  (I-002, I-003) follows separately, in review for tone/positioning before
+  publishing.
 
 ### Added (demo & publish, 2026-07-30)
 
