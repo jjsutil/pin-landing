@@ -69,8 +69,8 @@ silently extended.
 - [x] Owner-authored copy shipped verbatim (delivery of drafts = approval, I-008
       precedent); typos/deviations from the draft listed in the PR body.
 - [x] Tags reused from the existing set where possible; two additions flagged above.
-- [ ] `npx astro check` exits 0.
-- [ ] `npm run build` exits 0.
-- [ ] `scripts/check-gates.sh --base origin/main` run bare, exit 0.
-- [ ] All 3 posts render at `/blog` (listing) and their own `/blog/<slug>` route locally.
-- [ ] Visual evidence committed under `design/evidence/` (light + dark).
+- [x] `npx astro check` exits 0.
+- [x] `npm run build` exits 0.
+- [x] `scripts/check-gates.sh --base origin/main` run bare, exit 0.
+- [x] All 3 posts render at `/blog` (listing) and their own `/blog/<slug>` route locally.
+- [x] Visual evidence committed under `design/evidence/` (light + dark).
