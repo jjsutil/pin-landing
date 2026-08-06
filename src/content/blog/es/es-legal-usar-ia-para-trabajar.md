@@ -5,7 +5,7 @@ excerpt: "Un abogado ingresó 38.477 escritos en un fin de semana y los jueces c
 publishDate: 2026-08-05
 author: "Equipo fundador de pin"
 tags: ["Responsabilidad profesional", "Regulación", "Verificabilidad"]
-draft: true
+draft: false
 readingMinutes: 10
 ---
 
