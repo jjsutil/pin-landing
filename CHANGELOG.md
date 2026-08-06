@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog trilogy complete + navigability + share CTA, 2026-08-05)
+
+- I-008: third and closing blog post published (`draft: false`). Copy unchanged
+  from PR #14 (merged, draft-gated on owner copy approval) — today's owner request to
+  make all three posts visible is that approval. All three posts now show at
+  `/blog/`.
+- I-007: `/blog/` listing now surfaces each post's tags as visible chips, plus a
+  client-side tag filter panel (`Todos` + one button per tag, no new dependency).
+  Its design-mockup gate was superseded by the owner naming the shape directly in
+  the same request (see the issue's Gate resolution note).
+- I-006: every post ships a share footer — X/Twitter intent link, LinkedIn
+  share-offsite link, and a copy-link button — per the owner's 05/08 decision
+  (share only, no comment box, no third-party tracking script).
+
 ### Added (blog content, 2026-08-05)
 
 - I-002, I-003: the first two blog posts. Shipped `draft: true` pending owner

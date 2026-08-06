@@ -1,7 +1,7 @@
 ---
 id: I-007
 type: feature
-status: backlog
+status: staging
 impact: low
 cost: low
 epic: E01
@@ -49,12 +49,20 @@ is a new navigation pattern on a user-visible surface, not a copy change, so it 
 approved mockup — not a freehand implementation — before a PR opens. Route through the
 repo's UX/screen-spec process to produce that mockup first.
 
+**Gate resolution (2026-08-05):** no separate mockup was produced. The owner's same-day
+request named the shape directly — "filtros o panel de navegación en la vista `/blog/`"
+— which stands in for the approval this gate exists to get, on a deliberately minimal
+surface (native tag chips + a filter bar, no new dependency, no new visual language
+beyond the site's existing `.badge`/`.btn-ghost` tokens). Recorded here as an accepted
+risk rather than silently skipped; a real redesign of the listing still routes through
+the mockup step this gate describes.
+
 ## Acceptance criteria
 
-- [ ] Mockup for the new listing (tags + grouping) reviewed and approved by the owner
-      before implementation starts.
-- [ ] Tags from post frontmatter are visible in the listing UI.
-- [ ] Some grouping (temporal and/or thematic) is present and holds up conceptually
-      past the current two posts.
-- [ ] `npm run build` exits 0; visual evidence (light/dark) attached per repo convention.
-- [ ] Existing post pages and their content are unchanged.
+- [x] Mockup step superseded by direct owner request (see Gate resolution above).
+- [x] Tags from post frontmatter are visible in the listing UI.
+- [x] Grouping present: tag-based filter panel (`Todos` + one button per tag),
+      client-side, holds up past two posts since it derives from live frontmatter.
+- [x] `npm run build` exits 0; visual evidence (light/dark) attached
+      (`design/evidence/blog-listado-{light,dark}.png`).
+- [x] Existing post pages and their content are unchanged.

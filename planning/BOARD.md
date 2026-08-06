@@ -3,19 +3,7 @@
 
 # Board — pin-landing
 
-8 issues · **backlog 3 · ready 1 · in-dev 1 · review 0 · staging 3 · production 0**
-
-## in-dev
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-008 | Blog post 3 — "A nadie lo sancionan por usar inteligencia artificial. Lo sancionan por firmar lo que no leyó." | feature | high | low | E01 | 0d |
-
-## ready
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-006 | CTA / interaction on blog posts — share (X/LinkedIn) + copy-link, no comment box | feature | low | low | E01 | 0d |
+8 issues · **backlog 2 · ready 0 · in-dev 0 · review 0 · staging 6 · production 0**
 
 ## staging
 
@@ -24,6 +12,9 @@
 | I-001 | Blog infrastructure — content collection, routes, footer entry | feature | high | low | E01 | 0d |
 | I-002 | Blog post 1 — "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa." | feature | high | low | E01 | 0d |
 | I-003 | Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero." | feature | high | low | E01 | 0d |
+| I-006 | CTA / interaction on blog posts — share (X/LinkedIn) + copy-link, no comment box | feature | low | low | E01 | 0d |
+| I-007 | Blog listing navigability — tags, timeline, topic grouping | feature | low | low | E01 | 0d |
+| I-008 | Blog post 3 — "A nadie lo sancionan por usar inteligencia artificial. Lo sancionan por firmar lo que no leyó." | feature | high | low | E01 | 0d |
 
 ## backlog
 
@@ -31,18 +22,18 @@
 |---|---|---|---|---|---|---|
 | I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 0d |
 | I-005 | Blog i18n — English posts and a structure that scales past one language | feature | high | high | E01 | 0d |
-| I-007 | Blog listing navigability — tags, timeline, topic grouping | feature | low | low | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 
-**Quick wins (high impact / low cost):** I-001, I-002, I-003 — the whole shipped E01
-epic — plus I-008, in flight (third post of the same epic).
+**Quick wins (high impact / low cost):** I-001, I-002, I-003, I-008 — the whole E01
+blog trilogy, all three posts now published (draft:false) and in the listing.
 **High impact / high cost:** I-005 — blog i18n, needs a structural fix (locale-aware
 content collection), not just translated files.
-**Low impact / low cost:** I-004, I-006, I-007 — worth doing when a slot opens, not
-urgent. I-006's decision gate cleared (05/08: share buttons, no comment box) and is
-now `ready`; I-007 still carries one (listing mockup) that blocks implementation
-regardless of priority.
+**Low impact / low cost:** I-004, I-006, I-007 — done (I-006, I-007) or parked
+(I-004), nothing urgent left in this quadrant. I-006 shipped share/copy-link on every
+post; I-007 shipped tag chips + a tag filter on the listing, its mockup gate
+superseded by the owner's own same-day request naming the shape directly (see the
+issue's Gate resolution note).
 No other quadrant populated yet.
 
 ## Cost projection
@@ -53,4 +44,4 @@ only (no email subscription), so no new data-collection surface.
 
 ## Staleness alerts
 
-None — I-008 opened today; the rest unchanged since last regen.
+None — I-006, I-007, I-008 all moved today.
