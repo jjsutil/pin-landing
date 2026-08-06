@@ -113,7 +113,23 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Scrollbar visible on purpose (I-011) — some platforms hide overlay
+     scrollbars entirely, which reads as "the page doesn't scroll". */
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-hard) transparent;
+}
+html::-webkit-scrollbar { width: 10px; }
+html::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb {
+  background: var(--line-hard);
+  border-radius: 999px;
+  border: 2px solid var(--base);
+  background-clip: padding-box;
+}
+html::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
 
 body {
   margin: 0;
@@ -626,13 +642,36 @@ body.on-access main#top, body.on-access footer.site { display: none; }
 .blog-body pre { background: var(--band); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; }
 .blog-body pre code { background: none; padding: 0; }
 
-.blog-cards { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
-.blog-card { padding-block: 2rem; border-top: 1px solid var(--line-soft); }
-.blog-card:first-child { padding-top: 0; border-top: 0; }
+.blog-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.blog-card {
+  padding: 1.5rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.blog-card:hover { border-color: var(--line-hard); box-shadow: var(--shadow-s); transform: translateY(-2px); }
 .blog-card a { text-decoration: none; display: flex; flex-direction: column; gap: 0.625rem; }
-.blog-card h2 { font-size: clamp(1.375rem, 2.6vw, 1.75rem); }
+.blog-card h2 { font-size: 1.1875rem; line-height: 1.32; }
+.blog-card .lede {
+  font-size: 0.9375rem;
+  color: var(--ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.blog-card .blog-meta { flex-wrap: wrap; row-gap: 0.25rem; }
 .blog-card > .blog-tags { margin-top: 0.75rem; }
 .blog-empty { color: var(--ink-faint); }
+#blog-more { margin-top: 0.5rem; align-self: flex-start; }
 
 /* ---------- pie ---------- */
 
@@ -686,6 +725,7 @@ footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
   .rise, .rise-x { opacity: 1; transform: none; transition: none; }
   .said::before, .said:last-of-type::after { transform: scaleX(1); transition: none; }
   .btn { transition: none; }
+  .blog-card { transition: none; }
   .caret.blink { animation: none; opacity: 1; }
   .page.on { animation: none; }
 }
