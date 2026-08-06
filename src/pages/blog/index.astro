@@ -8,6 +8,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 
+// Unique tags across published posts, in first-seen order (already sorted by
+// date above, so this reads newest-post-first — no extra sort needed).
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
 const dateFmt = new Intl.DateTimeFormat('es-CL', {
   year: 'numeric',
   month: 'long',
@@ -28,27 +32,77 @@ const dateFmt = new Intl.DateTimeFormat('es-CL', {
         posts.length === 0 ? (
           <p class="blog-empty">Pronto vamos a publicar acá.</p>
         ) : (
-          <ul class="blog-cards">
-            {posts.map((post) => (
-              <li class="blog-card">
-                <a href={`${base}/blog/${post.id}`}>
-                  <h2>{post.data.title}</h2>
-                  <p class="lede">{post.data.excerpt}</p>
-                  <p class="aside blog-meta">
-                    <span>{post.data.author}</span>
-                    <span aria-hidden="true">·</span>
-                    <time datetime={post.data.publishDate.toISOString()}>
-                      {dateFmt.format(post.data.publishDate)}
-                    </time>
-                    <span aria-hidden="true">·</span>
-                    <span>{post.data.readingMinutes} min de lectura</span>
-                  </p>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <Fragment>
+            {tags.length > 0 && (
+              <div class="blog-filters" role="group" aria-label="Filtrar por tema">
+                <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
+                  Todos
+                </button>
+                {tags.map((tag) => (
+                  <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <ul class="blog-cards" id="blog-cards">
+              {posts.map((post) => (
+                <li class="blog-card" data-tags={post.data.tags.join('|')}>
+                  <a href={`${base}/blog/${post.id}`}>
+                    <h2>{post.data.title}</h2>
+                    <p class="lede">{post.data.excerpt}</p>
+                    <p class="aside blog-meta">
+                      <span>{post.data.author}</span>
+                      <span aria-hidden="true">·</span>
+                      <time datetime={post.data.publishDate.toISOString()}>
+                        {dateFmt.format(post.data.publishDate)}
+                      </time>
+                      <span aria-hidden="true">·</span>
+                      <span>{post.data.readingMinutes} min de lectura</span>
+                    </p>
+                  </a>
+                  {post.data.tags.length > 0 && (
+                    <ul class="blog-tags">
+                      {post.data.tags.map((tag) => (
+                        <li class="badge">{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <p class="blog-empty" id="blog-empty" hidden>
+              Ningún post usa ese tema todavía.
+            </p>
+          </Fragment>
         )
       }
     </div>
   </section>
 </Base>
+
+<script>
+  // Tag filter, client-side only — no build-time route explosion, no new
+  // dependency. `Todos` (data-tag="") always shows every card.
+  const filters = document.querySelectorAll<HTMLButtonElement>('.blog-filter');
+  const cards = document.querySelectorAll<HTMLLIElement>('#blog-cards .blog-card');
+  const empty = document.getElementById('blog-empty');
+
+  filters.forEach((button) => {
+    button.addEventListener('click', () => {
+      const tag = button.dataset.tag ?? '';
+      filters.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const cardTags = (card.dataset.tags ?? '').split('|');
+        const show = tag === '' || cardTags.includes(tag);
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (empty) empty.hidden = visible > 0;
+    });
+  });
+</script>

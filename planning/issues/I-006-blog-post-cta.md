@@ -1,7 +1,7 @@
 ---
 id: I-006
 type: feature
-status: ready
+status: staging
 impact: low
 cost: low
 epic: E01
@@ -39,7 +39,7 @@ per the owner's 05/08 decision above — not a placeholder pending a future call
 
 ## Acceptance criteria
 
-- [ ] Share block renders X repost, LinkedIn repost, and copy-link — no comment box.
-- [ ] CTA renders on both existing posts (I-002, I-003) and any future post via
-      `BlogLayout.astro`, light/dark and ES/EN (once I-005 ships).
-- [ ] Visual evidence attached per repo convention (`ui_surface_glob: src`).
+- [x] Share block renders X repost, LinkedIn repost, and copy-link — no comment box.
+- [x] CTA renders on every existing post (I-002, I-003, I-008) via `BlogLayout.astro`,
+      light/dark — ES only for now, EN still pending I-005 (not yet shipped).
+- [x] Visual evidence attached per repo convention (`design/evidence/blog-post3-share-closeup-{light,dark}.png`).
