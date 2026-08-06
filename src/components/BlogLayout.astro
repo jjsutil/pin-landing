@@ -14,6 +14,12 @@ const dateLabel = new Intl.DateTimeFormat('es-CL', {
   day: 'numeric',
   timeZone: 'UTC',
 }).format(publishDate);
+
+// Share CTA (I-006): repost on X/LinkedIn + copy-link. Owner decision
+// 2026-08-05 — sharing only, no comment box, no third-party tracking script.
+const shareUrl = Astro.url.href;
+const xShareHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`;
+const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
 ---
 
 <section>
@@ -40,5 +46,57 @@ const dateLabel = new Intl.DateTimeFormat('es-CL', {
     <div class="blog-body">
       <slot />
     </div>
+
+    <footer class="blog-share" aria-label="Compartir este post">
+      <span class="blog-share-label">Compartir:</span>
+      <a
+        class="btn btn-ghost blog-share-btn"
+        href={xShareHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Compartir este post en X (Twitter)"
+      >
+        X / Twitter
+      </a>
+      <a
+        class="btn btn-ghost blog-share-btn"
+        href={linkedinShareHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Compartir este post en LinkedIn"
+      >
+        LinkedIn
+      </a>
+      <button
+        type="button"
+        class="btn btn-ghost blog-share-btn"
+        id="blog-copy-link"
+        data-url={shareUrl}
+        aria-label="Copiar el enlace de este post"
+      >
+        Copiar enlace
+      </button>
+    </footer>
   </article>
 </section>
+
+<script>
+  // Copy-link fallback for the share CTA (I-006) — no external service, no
+  // tracking script.
+  const copyBtn = document.getElementById('blog-copy-link');
+  copyBtn?.addEventListener('click', async () => {
+    const url = copyBtn.dataset.url ?? '';
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      return;
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = 'Enlace copiado';
+    copyBtn.dataset.copied = 'true';
+    setTimeout(() => {
+      copyBtn.textContent = original;
+      delete copyBtn.dataset.copied;
+    }, 2000);
+  });
+</script>
