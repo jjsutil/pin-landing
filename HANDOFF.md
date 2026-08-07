@@ -1,12 +1,31 @@
 # HANDOFF — pin-landing
 
-## Checkpoint — 07/08, I-016 (corrección del timeline I-013) — PR #34 abierto
+## Checkpoint — 07/08, I-016 mergeado (PR #34) — sesión cerrada acá
 
 **El dueño revisó el timeline que dejó I-013 y listó cinco defectos en la misma
-superficie. Los cinco están corregidos en `feat/i-016-blog-timeline-refinement`,
-[PR #34](https://github.com/jjsutil/pin-landing/pull/34) (draft). Gate local y CI
-en verde. Falta lo único que falta: revisión independiente (autor ≠ revisor) y la
-decisión del dueño.**
+superficie. Los cinco corregidos y en `main` (squash `c432a5b`), más un sexto pedido
+llegado durante la revisión (zoom a la mitad). Nada pendiente de esta unidad.**
+
+**Cómo se cerró el gate de UI (regla de modo autónomo, autor ≠ revisor):**
+
+- **Revisión de código independiente — approve, 0 blockers.** Verificó en vivo
+  (Playwright contra el build, no contra el diff) que el filtro de tags y la
+  paginación sobreviven a mover la barra de filtros fuera de `#blog-view-grid`, la
+  trampa `[hidden]` vs. clase con `display`, la a11y del switch icon-only, y
+  reduced-motion. Dejó un `should` **pre-existente**: bajo reduced-motion el handler
+  sale temprano, así que nunca se aplica `.is-active` y el post centrado no tiene
+  ningún marcador. Riesgo aceptado en el PR, candidato a issue propio.
+- **Fidelidad visual, ronda 1 — approve.** 113 capturas, ES/EN × claro/oscuro ×
+  1280/390, con scroll real y close-ups a 4x del switch.
+- **Fidelidad visual, ronda 2 (delta: zoom nuevo + rebase) — request-changes, y tenía
+  razón.** Al entrar en static mode **sin volver a scrollear**, las filas quedaban
+  congeladas a media transformación: la limpieza dependía de un evento de scroll que
+  puede no llegar nunca. Corregido en la raíz — el disparo real es el cambio de clase,
+  así que un `MutationObserver` sobre la clase de `<html>` llama al mismo
+  `queueTimelineUpdate()` guardado que usa el resize.
+- **Ronda 3 (revisor fresco, solo el fix) — approve**, y encontró de paso que el
+  comentario del observer mentía: el toggle de tema escribe `data-theme`, no `class`.
+  Comentario corregido antes del merge.
 
 Qué cambió, en una línea cada uno:
 
@@ -25,6 +44,10 @@ Qué cambió, en una línea cada uno:
   También se fue el `scroll-snap` y la rampa de `opacity` (solo zoom y blur).
 - **Scrollbar del componente oculto** (`scrollbar-width: none` + pseudo WebKit),
   verificado `offsetWidth - clientWidth === 0`, sin tocar el scroll real.
+- **Zoom a la mitad** (pedido del dueño durante la revisión): `0.989 → 1.012` en vez
+  de `0.978 → 1.025`, misma desviación a cada lado de 1. El blur no se tocó — es el
+  que carga el foco, y el revisor confirmó que la fila centrada sigue leyéndose sin
+  ambigüedad al zoom reducido.
 
 Verificado contra el build de producción con Playwright (no contra el diff):
 valores inline por fila, posición de la marca, round-trip del toggle, y
@@ -36,9 +59,26 @@ un solo item y el switch se estiraba a todo el ancho.
 que documenta `.claude/repo-conventions.md` ya no aplica; conviene actualizar esa
 nota en un PR aparte.
 
-Sigue pendiente lo de antes: I-012, I-014 (fichados, sin implementar), I-015 (spike
-sin arrancar), el "from → to" animado del header del blog, y PR #33 (I-004)
-esperando su revisión independiente.
+**Rebase sobre I-004 (PR #33), resuelto a mano.** #33 mergeó mientras esto estaba
+abierto y toca los mismos dos archivos: reemplazó el `@media (prefers-reduced-motion)`
+por la clase `html.perf-lite` y llevó ahí las reglas del timeline. Tres de esas reglas
+murieron con I-016 (transiciones de fila, `scroll-snap`, el override del `:has(:hover)`)
+y **no** se arrastraron; lo que static mode todavía hace acá es esconder la marca.
+`clearTimelineFocus()` de #33 se adaptó — reseteaba el `height` de la marca, que ya no
+la mueve — y se le re-armó el flag, que quedaba latcheado y en una segunda entrada a
+static mode habría dejado la lista congelada.
+
+**Pendiente para la próxima sesión** (ninguno bloquea nada):
+
+- I-012 y I-014 — fichados con approach decidido, sin implementar. I-015 — spike sin
+  arrancar. El "from → to" animado del header del blog — nunca se tomó.
+- El `should` de reduced-motion (sin marcador para el post centrado) — merece su issue.
+- `.claude/repo-conventions.md` sigue diciendo que Actions está bloqueado por billing;
+  **es falso en este repo público**, CI corrió verde en #33 y #34. Corregir esa nota es
+  un PR propio y trivial.
+
+---
+
 ## Checkpoint — 07/08, I-004 revisado y mergeado (PR #33) — sesión cerrada aquí
 
 **I-004 quedó en `main` (squash `dc61299`). La revisión independiente no fue un
