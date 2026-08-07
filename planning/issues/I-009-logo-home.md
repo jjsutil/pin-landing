@@ -1,7 +1,7 @@
 ---
 id: I-009
 type: bug
-status: review
+status: staging
 impact: low
 cost: low
 created: 2026-08-06
