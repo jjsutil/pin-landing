@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-16 issues · **backlog 3 · ready 0 · in-dev 0 · review 0 · staging 13 · production 0**
+19 issues · **backlog 6 · ready 0 · in-dev 0 · review 0 · staging 13 · production 0**
 
 Nothing sits in `review`: both issues that entered it today left it the same day
 (I-004 via PR #33, I-016 via PR #34).
@@ -33,6 +33,9 @@ Nothing sits in `review`: both issues that entered it today left it the same day
 | I-012 | Blog pagination doesn't scale past ~20 posts | feature | low | medium | E01 | 0d |
 | I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 0d |
 | I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | high | E01 | 0d |
+| I-017 | Blog timeline: under reduced motion no post is marked at all | bug | low | low | E01 | 0d |
+| I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 0d |
+| I-019 | Blog header: animated "from → to" — request recorded, scope never captured | spike | low | low | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 
@@ -51,7 +54,11 @@ mode (high impact) built on genuinely new interaction code — scroll-driven foc
 animated progress fill — validated through three rounds of a shared design Artifact,
 then through a code-review round that caught and fixed 2 real geometry/spacing
 blockers before merge (high cost, earned).
-**Low impact / low cost:** I-004, I-006, I-007, I-009, I-014 — I-006/I-007/I-009 done,
+**Low impact / low cost:** I-004, I-006, I-007, I-009, I-014, I-017, I-018 —
+I-017 (no marker under reduced motion, found by I-016's review) and I-018 (the stale
+"CI is blocked by billing" note, false since this repo is public) are both small,
+independent and unblocked; I-019 sits here nominally but is a spike whose scope the
+owner still has to state, so its classification is provisional — I-006/I-007/I-009 done,
 I-004 shipped too (PR #33, staging), I-014 (pinned ordering) next up, small and
 independent.
 **Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch
