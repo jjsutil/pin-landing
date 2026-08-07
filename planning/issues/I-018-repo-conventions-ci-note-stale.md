@@ -1,7 +1,7 @@
 ---
 id: I-018
 type: chore
-status: backlog
+status: review
 impact: low
 cost: low
 created: 2026-08-07
@@ -48,6 +48,10 @@ local gate as the only signal and may not wait for, or check, the real one.
 
 ## Acceptance criteria
 
-- [ ] `.claude/repo-conventions.md` no longer claims Actions will not run in this repo.
-- [ ] No other doc in the repo still makes that claim.
-- [ ] The local-gate instruction survives, with its real justification.
+- [x] `.claude/repo-conventions.md` no longer claims Actions will not run in this repo.
+- [x] No other doc in the repo still makes that claim — `CONTRIBUTING.md`,
+      `README.md` and `docs/DEPLOY.md` already had the correct version;
+      `CHANGELOG.md`'s mention is a dated historical entry, left as-is (it recorded
+      what was true at the time, not a standing claim).
+- [x] The local-gate instruction survives, with its real justification (catches
+      issues before CI, not because CI can't run).
