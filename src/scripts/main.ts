@@ -4,10 +4,49 @@
 //     en lugar de re-traducir el DOM;
 //   - el toggle de tema persiste en localStorage (única mejora autorizada).
 import { T, POOL, PNUMS, type Lang } from '../i18n';
+import {
+  PERF_LITE_MAX_FRAME_GAP_MS,
+  PERF_LITE_SAMPLE_FRAMES,
+  fpsFromSample,
+  shouldGoStatic,
+} from './perf-lite';
 
 const lang: Lang = document.documentElement.lang === 'en' ? 'en' : 'es';
 const d = T[lang];
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- modo estático (I-004) ----------------
+   prefers-reduced-motion es una preferencia explícita y gana siempre, sin excepción.
+   Donde no está seteada, un self-benchmark de FPS corto decide. Ambos casos terminan
+   en la misma clase `perf-lite` en <html>, que global.css apaga tal como ya apagaba
+   bajo prefers-reduced-motion (ver PERF_LITE_FPS_THRESHOLD en ./perf-lite.ts). */
+
+if (reduced) {
+  document.documentElement.classList.add('perf-lite');
+} else {
+  let frame = 0;
+  let start = 0;
+  let last = 0;
+  const sampleFrame = (ts: number): void => {
+    // Un hueco enorme entre frames es la pestaña en background (rAF congelado), no
+    // hardware lento: descartamos la muestra y volvemos a empezar en vez de medir el
+    // congelamiento y marcar `perf-lite` en una máquina capaz.
+    if (last && ts - last > PERF_LITE_MAX_FRAME_GAP_MS) {
+      frame = 0;
+      start = 0;
+    }
+    last = ts;
+    if (!start) start = ts;
+    frame++;
+    if (frame < PERF_LITE_SAMPLE_FRAMES) {
+      requestAnimationFrame(sampleFrame);
+      return;
+    }
+    const fps = fpsFromSample(frame, ts - start);
+    if (shouldGoStatic(fps)) document.documentElement.classList.add('perf-lite');
+  };
+  requestAnimationFrame(sampleFrame);
+}
 
 /* ---------------- idioma: ES/EN navegan entre rutas, conservando el hash ---------------- */
 

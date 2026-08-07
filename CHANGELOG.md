@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (I-004)
+
+- Static mode for low-end hardware, fully automatic — no visible control (owner
+  decision: "auto, no buttons"). `prefers-reduced-motion` still wins unconditionally;
+  where it isn't set, a short FPS self-benchmark (`src/scripts/perf-lite.ts`) decides,
+  adding a `perf-lite` class to `<html>` that `global.css` turns off the same
+  animations/transitions/`backdrop-filter` it already turned off for
+  `prefers-reduced-motion` — one reused block, not a second copy.
+
 ### Added (blog timeline view, I-013)
 
 - `/blog` and `/en/blog` now offer a second way to browse posts: a vertical,
