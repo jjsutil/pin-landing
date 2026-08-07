@@ -621,18 +621,16 @@ body.on-access main#top, body.on-access footer.site { display: none; }
 .blog-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.25rem 0 0; padding: 0; list-style: none; }
 
 .blog-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-/* .blog-view-btn (the grid/timeline toggle, I-013) is the same pill button
-   as the tag filter — shared ruleset, kept as a separate class so the tag-
-   filter's own JS selector (.blog-filter) never picks it up by accident. */
-.blog-filter, .blog-view-btn {
+.blog-filters[hidden] { display: none; }
+.blog-filter {
   font: inherit; font-size: 0.8125rem; font-weight: 600;
   color: var(--ink-muted); background: transparent;
   border: 1px solid var(--line-hard); border-radius: 999px;
   padding: 0.375rem 0.875rem; cursor: pointer;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
-.blog-filter:hover, .blog-view-btn:hover { background: var(--band); color: var(--ink); }
-.blog-filter[aria-pressed="true"], .blog-view-btn[aria-pressed="true"] {
+.blog-filter:hover { background: var(--band); color: var(--ink); }
+.blog-filter[aria-pressed="true"] {
   background: var(--accent-chip); border-color: var(--accent); color: var(--accent-deep);
 }
 
@@ -682,7 +680,23 @@ body.on-access main#top, body.on-access footer.site { display: none; }
 .blog-empty { color: var(--ink-faint); }
 #blog-more { margin-top: 0.5rem; align-self: flex-start; }
 
-.blog-view-toggle { display: flex; gap: 0.5rem; margin-bottom: 0.25rem; }
+/* One control row for the whole listing: tag filters left, view switch right.
+   The switch is the site's existing `.segmented` control, icon-only — a
+   second row of pills read as more tags (owner, 2026-08-07). */
+/* Grid, not flex: the filters wrap to several lines on a narrow viewport, and
+   with flex-wrap the switch would drop below them — which is the two-rows-of-
+   buttons problem this replaced. In a `1fr auto` grid it stays top-right, on
+   the first line of filters, whatever they do. */
+.blog-toolbar {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 0.75rem 1rem; align-items: start;
+}
+/* Pinned to the second column explicitly: in the timeline view the filters are
+   display:none and leave the grid with a single item, which would otherwise be
+   placed in the 1fr column and stretch across the page. */
+.blog-view-toggle { grid-column: 2; justify-self: end; padding: 3px; gap: 2px; }
+.blog-view-btn { display: grid; place-items: center; padding: 0.375rem; color: var(--ink-faint); }
+.blog-view-btn:hover { color: var(--ink); }
 /* Reusing .stack-l's rule here (rather than the class itself) on purpose:
    an element toggled via the `hidden` attribute can't also carry a class
    that sets `display` — [hidden] and a same-specificity class rule tie,
@@ -690,7 +704,7 @@ body.on-access main#top, body.on-access footer.site { display: none; }
    the class's `display` silently overrides `hidden` and the element never
    actually hides. The `[hidden]` selector below is a notch more specific,
    so it wins instead, in both directions. */
-#blog-view-grid { display: flex; flex-direction: column; gap: 3.5rem; }
+#blog-view-grid { display: flex; flex-direction: column; gap: 1.5rem; }
 #blog-view-grid[hidden] { display: none; }
 
 /* ---------- blog timeline (I-013) ---------- */
@@ -704,11 +718,16 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   position: relative;
   height: 34rem;
   overflow-y: auto;
-  scroll-snap-type: y proximity;
+  /* No scrollbar and no scroll-snap: the component's own chrome is the moving
+     highlight, and snapping fought the continuous zoom/blur (owner, 2026-08-07).
+     Scrolling itself is untouched — wheel, touch, keys and the mask edges all
+     still say the list continues. */
+  scrollbar-width: none;
   padding: 2rem 0;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
 }
+.blog-timeline-viewport::-webkit-scrollbar { width: 0; height: 0; }
 
 .blog-timeline-list { position: relative; list-style: none; margin: 0; padding: 0; }
 .blog-timeline-list::before {
@@ -719,10 +738,13 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   /* Sibling of .blog-timeline-list, not a descendant (a <div> can't be a
      direct child of <ul>) — so its containing block is .blog-timeline-viewport,
      whose own padding-top (2rem, above) sits ABOVE that. top must match that
-     padding exactly, or the fill starts 2rem short of the divider's origin
-     and undershoots the active row's real position by the same amount. */
-  position: absolute; left: 5.25rem; top: 2rem; width: 1px; height: 0;
-  background: var(--accent); opacity: 0.6; transition: height 140ms ease;
+     padding exactly, or the mark starts 2rem short of the divider's origin
+     and undershoots the active row's real position by the same amount.
+     A short segment, not a fill growing from the top: it marks WHICH post is
+     centred, which a 400px-long bar never did (owner, 2026-08-07). */
+  position: absolute; left: calc(5.25rem - 0.5px); top: 2rem; width: 2px; height: 2.25rem;
+  border-radius: 1px; background: var(--accent); opacity: 0.85;
+  transition: transform 200ms cubic-bezier(.22,.7,.24,1);
   z-index: 0;
 }
 
@@ -731,12 +753,13 @@ body.on-access main#top, body.on-access footer.site { display: none; }
    since the scroll handler also sets transform/filter on every row, which
    would promote a stacking context on its own but does NOT run at all
    under prefers-reduced-motion. The explicit z-index has to hold either way. */
+/* No transition on transform/filter: the scroll handler rewrites both every
+   animation frame, so a transition only makes the highlight trail the scroll. */
 .blog-timeline-row {
   position: relative;
   z-index: 1;
   padding: 1.5rem 0;
-  scroll-snap-align: center;
-  transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease;
+  will-change: transform, filter;
 }
 .blog-timeline-row:first-child { padding-top: 0; }
 .blog-timeline-row:last-child { padding-bottom: 0; }
@@ -767,17 +790,11 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-/* Hover focus — native :has(), no JS: hovering one row pulls it forward,
-   dims the rest just slightly. Same magnitudes as the scroll-driven values
-   in BlogList.astro. Both are skipped under reduced motion, see below. */
-@media (prefers-reduced-motion: no-preference) {
-  .blog-timeline-list:has(.blog-timeline-row:hover) .blog-timeline-row {
-    transform: scale(0.99) !important; filter: blur(0.3px) !important; opacity: 0.7 !important;
-  }
-  .blog-timeline-list:has(.blog-timeline-row:hover) .blog-timeline-row:hover {
-    transform: scale(1.012) !important; filter: blur(0) !important; opacity: 1 !important;
-  }
-}
+/* Hover no longer re-runs the focus effect: its `!important` transforms fought
+   the per-frame scroll values and made the motion stutter (owner: "el movimiento
+   no es fluido"). Scroll position is the single driver; hover just marks the
+   link as a link. */
+.blog-timeline-link:hover .blog-timeline-content h2 { color: var(--ink); }
 
 /* ---------- pie ---------- */
 
@@ -843,20 +860,14 @@ html.perf-lite .page.on { animation: none; }
 /* backdrop-filter is a continuous GPU compositing cost on a sticky element —
    drop it in static mode; the opaque background alone still reads fine (I-004). */
 html.perf-lite header.bar { backdrop-filter: none; background: var(--base); }
-/* Timeline del blog (I-013), traído a esta clase junto con el resto: el handler de
-   scroll de BlogList.astro también lee `perf-lite` y deja de setear
-   transform/filter/opacity, así que esto solo saca la transición y el snap que ya
-   no se usan. */
-html.perf-lite .blog-timeline-row, html.perf-lite .blog-timeline-fill { transition: none; }
-html.perf-lite .blog-timeline-viewport { scroll-snap-type: none; }
-/* El efecto de foco por hover vive en un `@media (prefers-reduced-motion:
-   no-preference)`, que sigue activo cuando `perf-lite` viene del benchmark y no de la
-   preferencia del SO: blur + scale por hover es justo el costo de compositing que este
-   modo evita, así que se anula acá (más específico, mismo !important). */
-html.perf-lite .blog-timeline-list:has(.blog-timeline-row:hover) .blog-timeline-row,
-html.perf-lite .blog-timeline-list:has(.blog-timeline-row:hover) .blog-timeline-row:hover {
-  transform: none !important; filter: none !important; opacity: 1 !important;
-}
+/* Blog timeline (I-013/I-016) in static mode. Three of the rules that used to live
+   here died with I-016 and are deliberately NOT carried over: the row transitions
+   (rows no longer have any — the scroll handler writes every frame), the viewport's
+   `scroll-snap-type` (dropped), and the `:has(:hover)` focus override (that block is
+   gone, so there is nothing left to override). What remains is the mark: the scroll
+   handler stops updating it in static mode, so it would sit frozen at the top of the
+   divider pointing at nothing — hide it rather than lie. */
+html.perf-lite .blog-timeline-fill { display: none; }
 
 /* ---------- salto al contenido (issue #3.1) ---------- */
 

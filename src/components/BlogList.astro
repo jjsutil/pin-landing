@@ -79,18 +79,13 @@ const STR =
       <p class="blog-empty">{STR.empty}</p>
     ) : (
       <Fragment>
-        <div class="blog-view-toggle" role="group" aria-label={STR.viewLabel}>
-          <button type="button" class="blog-view-btn" data-view="grid" aria-pressed="true">
-            {STR.viewGrid}
-          </button>
-          <button type="button" class="blog-view-btn" data-view="timeline" aria-pressed="false">
-            {STR.viewTimeline}
-          </button>
-        </div>
-
-        <div id="blog-view-grid">
-          {tags.length > 0 && (
-            <div class="blog-filters" role="group" aria-label={STR.filterLabel}>
+        {/* One control row: tag filters on the left, the view switch on the
+            right. The switch is icon-only and reuses the site's existing
+            `.segmented` control (as in the pricing toggle) so it never reads
+            as one more tag chip — owner: two rows of pills was confusing. */}
+        <div class="blog-toolbar">
+          {tags.length > 0 ? (
+            <div class="blog-filters" id="blog-filters" role="group" aria-label={STR.filterLabel}>
               <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
                 {STR.all}
               </button>
@@ -100,8 +95,45 @@ const STR =
                 </button>
               ))}
             </div>
+          ) : (
+            <span />
           )}
 
+          <div class="segmented blog-view-toggle" role="group" aria-label={STR.viewLabel}>
+            <button
+              type="button"
+              class="seg blog-view-btn"
+              data-view="grid"
+              aria-pressed="true"
+              aria-label={STR.viewGrid}
+              title={STR.viewGrid}
+            >
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+                <rect x="2" y="2" width="5" height="5" rx="1" />
+                <rect x="9" y="2" width="5" height="5" rx="1" />
+                <rect x="2" y="9" width="5" height="5" rx="1" />
+                <rect x="9" y="9" width="5" height="5" rx="1" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="seg blog-view-btn"
+              data-view="timeline"
+              aria-pressed="false"
+              aria-label={STR.viewTimeline}
+              title={STR.viewTimeline}
+            >
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+                <path d="M3.25 2v12" />
+                <path d="M6 4.25h7" />
+                <path d="M6 8h5" />
+                <path d="M6 11.75h7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="blog-view-grid">
           <ul class="blog-cards" id="blog-cards">
             {posts.map((post, i) => (
               <li class="blog-card" data-tags={post.data.tags.join('|')} data-index={i} hidden={i >= PAGE_SIZE}>
@@ -214,23 +246,30 @@ const STR =
   const viewButtons = document.querySelectorAll<HTMLButtonElement>('.blog-view-btn');
   const viewGrid = document.getElementById('blog-view-grid');
   const viewTimeline = document.getElementById('blog-view-timeline');
+  // The tag filter belongs to the grid only (the timeline is chronological by
+  // design, I-013), but it now lives in the shared toolbar — so it hides with it.
+  const filterBar = document.getElementById('blog-filters');
 
   viewButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const isTimeline = button.dataset.view === 'timeline';
       viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
       if (viewGrid) viewGrid.hidden = isTimeline;
+      if (filterBar) filterBar.hidden = isTimeline;
       if (viewTimeline) viewTimeline.hidden = !isTimeline;
       if (isTimeline) updateTimelineFocus();
     });
   });
 
-  // Timeline scroll-focus (I-013) — the centered row gets closer to full
-  // scale/opacity, the rest scaled down and lightly blurred; same effect on
-  // hover, handled entirely by CSS `:has()` in global.css. The divider's
-  // accent-colored fill grows to track the active row: that growth is the
-  // "animated spine," no per-post markers needed. All of it is skipped in
-  // static mode — see the guard below.
+  // Timeline scroll-focus (I-013, reshaped in I-016) — only zoom and blur are
+  // animated, and the falloff is measured in row-heights, not viewport-halves:
+  // one row away from the centre the effect is already gone, so exactly one post
+  // reads as highlighted instead of the whole column. The accent mark on the
+  // divider is a short segment that slides to the active row (it used to be a
+  // fill growing from the top — long, and it never pointed at anything). Rows
+  // carry no CSS transition: these values are written every animation frame, and
+  // a transition on top of that lags behind the scroll instead of smoothing it.
+  // All of it is skipped in static mode — see the guard below (I-004).
   const timelineViewport = document.getElementById('blog-timeline-viewport');
   const timelineList = document.getElementById('blog-timeline-list');
   const timelineFill = document.getElementById('blog-timeline-fill');
@@ -244,17 +283,19 @@ const STR =
   const isStatic = () => document.documentElement.classList.contains('perf-lite');
 
   // Static mode can start mid-session (see above), and by then rows carry inline
-  // transform/filter/opacity from earlier passes — bailing without clearing them
-  // would freeze half the list blurred forever.
+  // transform/filter from earlier passes — bailing without clearing them would
+  // freeze half the list blurred forever. The mark is moved with `transform`
+  // since I-016 (it used to grow via `height`), so that is what has to be reset;
+  // `html.perf-lite` also hides it in CSS, and clearing the inline value keeps
+  // the two from disagreeing if the class is ever removed again.
   function clearTimelineFocus() {
     if (!timelineList || !timelineFill) return;
     for (const row of timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row')) {
       row.style.transform = '';
       row.style.filter = '';
-      row.style.opacity = '';
       row.classList.remove('is-active');
     }
-    timelineFill.style.height = '';
+    timelineFill.style.transform = '';
   }
 
   function updateTimelineFocus() {
@@ -267,23 +308,31 @@ const STR =
       }
       return;
     }
+    // Re-arm the one-shot clear: static mode can be entered more than once in a
+    // session, and a latched flag would skip the cleanup on the second entry.
+    timelineFocusCleared = false;
     // Plain for-of, not .forEach: TS can't narrow a `let` reassigned inside a
     // callback's separate scope, so `active` stayed `never` post-loop there.
     const rows = Array.from(timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row'));
     const vRect = timelineViewport.getBoundingClientRect();
     const centerY = vRect.top + vRect.height / 2;
     let active: HTMLLIElement | null = null;
-    let bestFocus = -1;
+    let bestDist = Infinity;
 
     for (const row of rows) {
       const r = row.getBoundingClientRect();
       const dist = Math.abs(r.top + r.height / 2 - centerY);
-      const focus = Math.max(0, 1 - dist / (vRect.height / 2));
-      row.style.transform = `scale(${(0.985 + focus * 0.03).toFixed(3)})`;
-      row.style.filter = `blur(${((1 - focus) * 0.35).toFixed(2)}px)`;
-      row.style.opacity = (0.65 + focus * 0.35).toFixed(2);
-      if (focus > bestFocus) {
-        bestFocus = focus;
+      // Linear ramp over one row-height, then smoothstep so the highlight
+      // eases in and out instead of arriving with a visible kink.
+      const t = Math.max(0, 1 - dist / r.height);
+      const focus = t * t * (3 - 2 * t);
+      // Half the amplitude the first build shipped (0.978→1.025), owner's call
+      // 2026-08-07: same deviation either side of 1, just half of it. The blur
+      // is what carries the focus; the zoom only has to hint at it.
+      row.style.transform = `scale(${(0.989 + focus * 0.023).toFixed(3)})`;
+      row.style.filter = `blur(${((1 - focus) * 0.9).toFixed(2)}px)`;
+      if (dist < bestDist) {
+        bestDist = dist;
         active = row;
       }
     }
@@ -291,10 +340,14 @@ const STR =
     for (const row of rows) row.classList.toggle('is-active', row === active);
 
     if (active) {
+      // Content-space coordinates: the mark is absolutely positioned inside the
+      // scrolling viewport, so it scrolls with the list; `top: 2rem` in CSS is
+      // the viewport's own padding, i.e. the list's origin.
       const listTop = timelineList.getBoundingClientRect().top;
       const r = active.getBoundingClientRect();
-      const fillPx = r.top + r.height / 2 - listTop;
-      timelineFill.style.height = `${Math.max(0, fillPx)}px`;
+      const markH = timelineFill.offsetHeight;
+      const y = r.top + r.height / 2 - listTop - markH / 2;
+      timelineFill.style.transform = `translateY(${Math.max(0, y).toFixed(1)}px)`;
     }
   }
 
@@ -311,4 +364,17 @@ const STR =
   window.addEventListener('resize', () => {
     if (!viewTimeline?.hidden) queueTimelineUpdate();
   });
+
+  // The FPS benchmark (I-004) adds `perf-lite` ~300ms after load, which is a state
+  // change with no event of its own: without this, the cleanup below waits for the
+  // next scroll, and a visitor who simply stops scrolling is left looking at rows
+  // frozen mid-effect — half the list blurred, a stale row still marked active.
+  // Watching the class is what makes the transition self-healing in both directions.
+  // `perf-lite` is the only writer of this attribute today — the theme toggle uses
+  // `data-theme` (main.ts), so it never fires this — but the callback still goes
+  // through the same guards as the resize handler: rAF-coalesced, and skipped while
+  // the timeline is hidden, so a future class write costs nothing.
+  new MutationObserver(() => {
+    if (!viewTimeline?.hidden) queueTimelineUpdate();
+  }).observe(document.documentElement, { attributeFilter: ['class'] });
 </script>

@@ -3,7 +3,17 @@
 
 # Board — pin-landing
 
-15 issues · **backlog 3 · ready 0 · in-dev 0 · review 0 · staging 12 · production 0**
+16 issues · **backlog 3 · ready 0 · in-dev 0 · review 1 · staging 12 · production 0**
+
+## review
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-016 | Blog listing: icon-only view switch, single-item timeline focus | feature | high | low | E01 | 0d |
+
+Objective criteria win over frontmatter here (roadmap-board's own rule): I-016 is
+`review` because PR #34 (`feat/i-016-blog-timeline-refinement`) is open and
+references it. I-004 left this table the same day it entered it — PR #33 merged.
 
 ## staging
 
@@ -33,7 +43,10 @@
 ## 2×2 impact/cost matrix
 
 **Quick wins (high impact / low cost):** I-001, I-002, I-003, I-008, I-010 — the full
-blog content trilogy-plus-three, all published and in the listing.
+blog content trilogy-plus-three, all published and in the listing — plus **I-016**
+(in `review`), the owner's five-defect correction of the I-013 timeline: the controls
+a visitor touches first (high impact), fixed by reusing the existing `.segmented`
+component and deleting the code that fought itself, not by adding any (low cost).
 **High impact / high cost:** I-005 (superseded — see its Gate resolution note), I-011 —
 the structural i18n work: locale-aware content collection, condensed listing, English
 blog. **I-013 shipped in this quadrant** — the timeline view, a second full browsing
@@ -63,5 +76,5 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — nothing sits in `review`: I-004 merged the same day it entered it (PR #33,
-2026-08-07).
+None — I-016 entered `review` on 2026-08-07 (PR #34), well under the 7-day
+threshold; I-004 merged the same day it entered it (PR #33).

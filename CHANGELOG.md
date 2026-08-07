@@ -5,6 +5,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed (blog listing controls and timeline motion, I-016)
+
+- The grid/timeline switch is now a single icon-only control at the right of the
+  tag-filter row, reusing the site's existing `.segmented` component — it used to
+  be a second row of pills that read as more tags. The labels "Grilla" / "Línea de
+  tiempo" remain as `aria-label`/`title` only.
+- The timeline's accent mark is now a short segment that slides to the centred
+  post instead of a bar filling from the top of the divider, and the zoom/blur
+  falloff is measured in row-heights, so exactly one post reads as highlighted.
+- Only zoom and blur are animated now: the per-row opacity ramp, the `:has()`
+  hover variant and the row CSS transitions are gone — writing transformed values
+  every frame *and* transitioning them is what made the motion lag the scroll.
+  Scroll-snap dropped for the same reason. The static-mode rules I-004 had added
+  for those three things went with them; what static mode still does here is hide
+  the accent mark.
+- Entering static mode now takes effect immediately instead of at the next scroll.
+  I-004's FPS benchmark adds `perf-lite` ~300ms after load — a state change with no
+  event — so the timeline watches the class and flushes its focus state there. A
+  visitor who stopped scrolling used to be left with the list frozen mid-effect.
+- The timeline's own scrollbar is hidden (`scrollbar-width: none`); scrolling,
+  keyboard access and the fade mask are unchanged.
+
 ### Added (I-004)
 
 - Static mode for low-end hardware, fully automatic — no visible control (owner
