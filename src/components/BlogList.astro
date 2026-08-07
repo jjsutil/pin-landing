@@ -369,9 +369,11 @@ const STR =
   // change with no event of its own: without this, the cleanup below waits for the
   // next scroll, and a visitor who simply stops scrolling is left looking at rows
   // frozen mid-effect — half the list blurred, a stale row still marked active.
-  // Watching the class is what makes the transition self-healing in both directions;
-  // the theme toggle also writes to this attribute, hence the cheap re-entrant guard
-  // in queueTimelineUpdate() and the same hidden-check the resize handler uses.
+  // Watching the class is what makes the transition self-healing in both directions.
+  // `perf-lite` is the only writer of this attribute today — the theme toggle uses
+  // `data-theme` (main.ts), so it never fires this — but the callback still goes
+  // through the same guards as the resize handler: rAF-coalesced, and skipped while
+  // the timeline is hidden, so a future class write costs nothing.
   new MutationObserver(() => {
     if (!viewTimeline?.hidden) queueTimelineUpdate();
   }).observe(document.documentElement, { attributeFilter: ['class'] });
