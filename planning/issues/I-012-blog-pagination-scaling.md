@@ -28,10 +28,13 @@ ship time).
 
 ## Scope
 
-- Decide the actual fix once the post count is close enough to matter: real
-  pagination (`/blog/page/2`, etc., astro-native `paginate()`) is the most likely
-  candidate since it needs no new dependency and Astro supports it natively for
-  content collections.
+- **Owner decision (2026-08-07):** approach confirmed — Astro-native `paginate()`,
+  build-time (routes like `/blog/2`, `/en/blog/2`), no server. "Backend" is the
+  build/routing layer `paginate()` generates; "frontend" is the prev/next controls on
+  the listing page. The site stays 100% static either way.
+- Still not scheduled — 6 posts today, well under the ~20-post threshold this issue set
+  (see Acceptance criteria). The approach is settled so implementation can start on
+  short notice whenever the owner says go, but this issue doesn't schedule that work.
 - Applies to both `/blog` and `/en/blog` (and the tag-filtered view, which I-011
   explicitly exempted from pagination — revisit whether that still holds at scale).
 
@@ -46,6 +49,7 @@ ship time).
 
 - [ ] Revisit once the blog approaches ~20 published posts (`draft: false` count in
       `src/content/blog/es/`), or sooner if the owner asks.
-- [ ] Chosen approach documented here before implementation (astro `paginate()` vs.
-      alternative) with a one-line reason.
+- [x] Chosen approach documented here before implementation — Astro-native
+      `paginate()`, decided 2026-08-07: no new dependency, native content-collection
+      support, keeps the site static.
 - [ ] `npm run build` exits 0; both locales and the tag filter still work post-change.
