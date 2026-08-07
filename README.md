@@ -48,6 +48,10 @@ roadmap-board — never hand-edit).
 <details>
 <summary>Structure, i18n, fidelity contract, gates and evidence — the full map</summary>
 
+For the deeper architecture reference — stack, i18n/routing internals, the
+Web3Forms integration seam and how to swap it, blog content collections — see
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What follows here is the summary.
+
 ### Structure
 
 | Path | What |
@@ -87,6 +91,14 @@ with `access_key` = `PUBLIC_WEB3FORMS_KEY` (build-time env, see
 `docs/CONFIG.md` and `.env.example`). Hidden `botcheck` honeypot in both.
 No key → degraded mode: browser validation + on-screen confirmation, nothing
 sent. Failure → localized ES/EN error, form stays editable.
+
+**Adapter check (2026-08):** both forms call through one function,
+`sendWeb3Forms()` in `src/scripts/main.ts` — every provider-specific detail
+(endpoint, auth field, response shape) is confined there. Swapping providers
+means editing that one function, not the forms themselves; a provider needing
+a private secret would additionally need a new server endpoint, since this
+site has none today. Confirmed clean, no refactor needed — full breakdown in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#form-submission--the-web3forms-seam).
 
 ### Gates
 
