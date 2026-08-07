@@ -9,6 +9,12 @@ created: 2026-08-05
 
 # Static mode for low-end hardware — detect or offer a no-animation experience
 
+**Partial extraction (2026-08-07, PR #27, Refs I-004):** the one piece of this issue's
+Recommendation that didn't need the benchmark/toggle machinery — gating
+`backdrop-filter` on the sticky header — shipped standalone under
+`prefers-reduced-motion: reduce` (existing signal, no new state). This issue stays
+`backlog`: the FPS self-benchmark and the visible manual toggle are still unbuilt.
+
 `impact: low` — improves the experience for a subset of visitors on weak/old hardware;
 not a core flow, doesn't unblock other issues, but is user-visible and directly requested
 by the owner.
