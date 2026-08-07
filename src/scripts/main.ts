@@ -4,10 +4,35 @@
 //     en lugar de re-traducir el DOM;
 //   - el toggle de tema persiste en localStorage (única mejora autorizada).
 import { T, POOL, PNUMS, type Lang } from '../i18n';
+import { PERF_LITE_SAMPLE_FRAMES, shouldGoStatic } from './perf-lite';
 
 const lang: Lang = document.documentElement.lang === 'en' ? 'en' : 'es';
 const d = T[lang];
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- modo estático (I-004) ----------------
+   prefers-reduced-motion es una preferencia explícita y gana siempre, sin excepción.
+   Donde no está seteada, un self-benchmark de FPS corto decide. Ambos casos terminan
+   en la misma clase `perf-lite` en <html>, que global.css apaga tal como ya apagaba
+   bajo prefers-reduced-motion (ver PERF_LITE_FPS_THRESHOLD en ./perf-lite.ts). */
+
+if (reduced) {
+  document.documentElement.classList.add('perf-lite');
+} else {
+  let frame = 0;
+  let start = 0;
+  const sampleFrame = (ts: number): void => {
+    if (!start) start = ts;
+    frame++;
+    if (frame < PERF_LITE_SAMPLE_FRAMES) {
+      requestAnimationFrame(sampleFrame);
+      return;
+    }
+    const fps = (frame * 1000) / (ts - start);
+    if (shouldGoStatic(fps)) document.documentElement.classList.add('perf-lite');
+  };
+  requestAnimationFrame(sampleFrame);
+}
 
 /* ---------------- idioma: ES/EN navegan entre rutas, conservando el hash ---------------- */
 

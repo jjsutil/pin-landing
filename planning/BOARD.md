@@ -3,7 +3,13 @@
 
 # Board — pin-landing
 
-15 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 10 · production 0**
+15 issues · **backlog 4 · ready 0 · in-dev 0 · review 1 · staging 10 · production 0**
+
+## review
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
 
 ## staging
 
@@ -24,7 +30,6 @@
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
-| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
 | I-012 | Blog pagination doesn't scale past ~20 posts | feature | low | medium | E01 | 0d |
 | I-013 | Blog timeline view — vertical, scroll-driven, no dots | feature | high | high | E01 | 0d |
 | I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 0d |
@@ -41,8 +46,8 @@ blog. I-013 joins this quadrant next: the timeline view is a second full browsin
 progress fill — validated through three rounds of a shared design Artifact before
 implementation (high cost).
 **Low impact / low cost:** I-004, I-006, I-007, I-009, I-014 — I-006/I-007/I-009 done,
-I-004 parked (partially extracted via PR #27), I-014 (pinned ordering) next up, small
-and independent.
+I-004 in review (FPS self-benchmark + `perf-lite` class, PR pending), I-014 (pinned
+ordering) next up, small and independent.
 **Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch
 shape, not just CSS), I-015 (picking and wiring an actual view-tracking mechanism for a
 currently backend-free static site is an architecture decision, not a quick add) — both
@@ -62,4 +67,4 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — no issue is in `in-dev` or `review` right now.
+None — I-004 just entered `review` (0d), well under the 7-day threshold.

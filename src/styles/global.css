@@ -726,18 +726,23 @@ footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
 
 .rise-x.seen { opacity: 1; transform: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .rise, .rise-x { opacity: 1; transform: none; transition: none; }
-  .said::before, .said:last-of-type::after { transform: scaleX(1); transition: none; }
-  .btn { transition: none; }
-  .blog-card { transition: none; }
-  .caret.blink { animation: none; opacity: 1; }
-  .page.on { animation: none; }
-  /* backdrop-filter is a continuous GPU compositing cost on a sticky element —
-     drop it for reduced-motion users; the opaque background alone still reads fine (I-004). */
-  header.bar { backdrop-filter: none; background: var(--base); }
+/* Static mode (I-004): triggered by an explicit prefers-reduced-motion preference
+   OR by main.ts detecting low FPS on load — there's no media feature for "this
+   hardware is slow", so both cases are folded into one class on <html> instead of
+   a media query, and this one block covers both (main.ts adds the class for the
+   reduced-motion case too, so it never needs a second copy of these rules). */
+html.perf-lite {
+  scroll-behavior: auto;
 }
+html.perf-lite .rise, html.perf-lite .rise-x { opacity: 1; transform: none; transition: none; }
+html.perf-lite .said::before, html.perf-lite .said:last-of-type::after { transform: scaleX(1); transition: none; }
+html.perf-lite .btn { transition: none; }
+html.perf-lite .blog-card { transition: none; }
+html.perf-lite .caret.blink { animation: none; opacity: 1; }
+html.perf-lite .page.on { animation: none; }
+/* backdrop-filter is a continuous GPU compositing cost on a sticky element —
+   drop it in static mode; the opaque background alone still reads fine (I-004). */
+html.perf-lite header.bar { backdrop-filter: none; background: var(--base); }
 
 /* ---------- salto al contenido (issue #3.1) ---------- */
 

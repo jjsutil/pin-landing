@@ -1,13 +1,26 @@
 ---
 id: I-004
 type: feature
-status: backlog
+status: review
 impact: low
 cost: low
 created: 2026-08-05
 ---
 
 # Static mode for low-end hardware — detect or offer a no-animation experience
+
+**Implemented (2026-08-07, PR TBD, Closes I-004):** Option B shipped as scoped by the
+owner's "auto, no buttons" decision below — an FPS self-benchmark in
+`src/scripts/main.ts` (`src/scripts/perf-lite.ts` holds the pure decision logic and its
+tunable threshold), plus a `perf-lite` class on `<html>` that `src/styles/global.css`
+turns off the same way it already turned off `prefers-reduced-motion` — same block,
+reused, not duplicated. `prefers-reduced-motion` still wins unconditionally: it sets
+the class immediately, before any benchmark runs. Scope stayed to the CSS-driven
+suppression (transitions/animations/backdrop-filter); the JS-driven effects (typing,
+count-up, viewer demo) stay gated on `prefers-reduced-motion` only, as they already
+were — wiring them to the benchmark too would mean delaying their start until the
+~300ms measurement resolves, which the owner's "deliberately minimal" scope for this
+PR did not ask for. Flagged for the reviewer, not decided silently.
 
 **Partial extraction (2026-08-07, PR #27, Refs I-004):** the one piece of this issue's
 Recommendation that didn't need the benchmark machinery — gating `backdrop-filter` on
@@ -169,15 +182,16 @@ C) but rejected by the owner in favor of a fully automatic experience. The
 
 ## Acceptance criteria (tentative — for the eventual implementation PR)
 
-- [ ] `prefers-reduced-motion: reduce` continues to force static mode unconditionally
+- [x] `prefers-reduced-motion: reduce` continues to force static mode unconditionally
       (never overridden by the benchmark).
-- [ ] Without that preference set, an FPS self-benchmark runs once on load and sets
+- [x] Without that preference set, an FPS self-benchmark runs once on load and sets
       static mode when it comes in under an agreed threshold; the decision doesn't
       cause a visible flash of animated-then-static content.
-- [ ] No visible control is added — detection is fully automatic, nothing for a visitor
+- [x] No visible control is added — detection is fully automatic, nothing for a visitor
       to click or toggle.
 - [ ] Verified on a throttled/low-end profile (e.g., Chrome DevTools CPU throttling)
       that static mode measurably reduces main-thread/compositor work, not just that
-      the class gets applied.
-- [ ] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
+      the class gets applied. **Not verified** — no throttled-hardware profiling was
+      run this session; see the PR's `unverified` note.
+- [x] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
       visible difference between animated and static mode.
