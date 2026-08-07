@@ -3,7 +3,7 @@ id: I-015
 type: spike
 status: backlog
 impact: low
-cost: medium
+cost: high
 epic: E01
 created: 2026-08-07
 ---
@@ -11,9 +11,11 @@ created: 2026-08-07
 `impact: low` — no visitor-facing change until a follow-up issue implements whatever
 this investigation recommends; today's ordering (I-014, pinned-first) covers the
 owner's near-term need.
-`cost: medium` — evaluating and likely integrating a real analytics/view-counting
+`cost: high` — evaluating and likely integrating a real analytics/view-counting
 service is a genuine architecture change for a currently 100%-static, backend-free
-site (I-011's own decision) — not a config tweak.
+site (I-011's own decision) — not a config tweak. Schema is binary
+(`.claude/repo-conventions.md:50-51`); this clears `high`, not a `medium` the schema
+doesn't have.
 
 # Investigate view tracking, for future "most-viewed" ordering
 

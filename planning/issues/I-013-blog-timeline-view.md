@@ -2,17 +2,19 @@
 id: I-013
 type: feature
 status: backlog
-impact: medium
-cost: medium
+impact: high
+cost: high
 epic: E01
 created: 2026-08-07
 ---
 
-`impact: medium` — a second, owner-requested way to browse the blog, reachable via a
-toggle from the main listing; directly shapes how visitors experience the archive.
-`cost: medium` — new scroll-driven component (CSS + JS), no new dependency, touches
-`BlogList.astro` and `global.css` only, but it's genuinely new interaction code, not a
-copy/config change.
+`impact: high` — a second, owner-requested way to browse the blog, reachable via a
+toggle from the main listing; directly shapes how visitors experience the archive
+(schema is binary per `.claude/repo-conventions.md:50-51` — this clears the "user-visible,
+shapes a core flow" bar for `high`, not a `medium` tier the schema doesn't have).
+`cost: high` — new scroll-driven component (CSS + JS), no new dependency, but genuinely
+new interaction code (scroll-position math, focus/blur state, hover behavior), not a
+copy/config change — clears `high` on the same binary schema.
 
 # Blog timeline view — vertical, scroll-driven, no dots
 
@@ -69,7 +71,7 @@ effect subtle.
 - [ ] Zoom/blur focus effect present but subtle: consistent with the tuned prototype
       values (small scale delta, low blur ceiling), not the first, stronger pass.
 - [ ] `prefers-reduced-motion: reduce` disables the scroll-focus transform/blur
-      animation (site-wide convention, `global.css:619-626` and I-004's investigation).
+      animation (site-wide convention, `global.css:729-739` and I-004's investigation).
 - [ ] Verified on `npx astro check` + `npm run build`, both locales.
 - [ ] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
       timeline view and the toggle control.
