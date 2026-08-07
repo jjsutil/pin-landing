@@ -9,7 +9,7 @@ created: 2026-08-05
 
 # Static mode for low-end hardware — detect or offer a no-animation experience
 
-**Implemented (2026-08-07, PR TBD, Closes I-004):** Option B shipped as scoped by the
+**Implemented (2026-08-07, PR #33, Closes I-004):** Option B shipped as scoped by the
 owner's "auto, no buttons" decision below — an FPS self-benchmark in
 `src/scripts/main.ts` (`src/scripts/perf-lite.ts` holds the pure decision logic and its
 tunable threshold), plus a `perf-lite` class on `<html>` that `src/styles/global.css`
