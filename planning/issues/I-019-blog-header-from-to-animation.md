@@ -102,7 +102,7 @@ than sitting beside it; short enough that the swap reads instantly.
 |---|---|---|
 | 1 | expediente | respuesta |
 | 2 | papel | precedente |
-| 3 | la foja | el hallazgo |
+| 3 | foja | hallazgo |
 | 4 | escaneo | certeza |
 | 5 | carpeta | criterio |
 | 6 | archivo | evidencia verificable |
@@ -116,7 +116,7 @@ than sitting beside it; short enough that the swap reads instantly.
 | 3 | scanned | searchable |
 | 4 | backlog | brief |
 | 5 | stack | structure |
-| 6 | evidence | verified |
+| 6 | evidence | verification |
 
 Pairs 1 and 2 in each language read as the strongest defaults if the owner wants a
 single one rather than a cycling set — 1 names the product's core mechanic
