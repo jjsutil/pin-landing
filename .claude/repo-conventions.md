@@ -33,9 +33,12 @@ workflow_version: 0.1.15
 
 ## Repo gotchas
 
-- **GitHub Actions is blocked by billing on this account (since 2026-07-23).** The
-  two seeded workflows are installed but will not run. The gate is LOCAL:
-  `scripts/check-gates.sh`, `npm run build` and `npx astro check` before every PR.
+- **This repo is public, so CI runs.** The account's billing block (since
+  2026-07-23) only affects private repositories; `pin-landing` was made public on
+  2026-07-30, so `check-gates.yml` and `cadence-reminder.yml` execute normally on
+  every PR. Still run the same gate LOCAL before opening one — it catches issues
+  faster than waiting on CI, not because CI can't run: `scripts/check-gates.sh`,
+  `npm run build` and `npx astro check`.
 - Deployment is deliberately not configured (owner-gated; see README).
 - `design/prototype/pin-landing-v12.html` is the visual-fidelity CONTRACT for the
   landing (supersedes v8). On any doubt, the prototype wins.

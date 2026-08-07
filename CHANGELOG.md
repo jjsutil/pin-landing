@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Docs (I-018)
+
+- `.claude/repo-conventions.md` no longer claims Actions is blocked by billing on
+  this repo — it's public, so CI runs. `CONTRIBUTING.md`/`README.md`/`docs/DEPLOY.md`
+  already had the correct version; only this file was stale.
+
 ### Changed (blog listing controls and timeline motion, I-016)
 
 - The grid/timeline switch is now a single icon-only control at the right of the

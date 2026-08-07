@@ -3,10 +3,13 @@
 
 # Board — pin-landing
 
-20 issues · **backlog 7 · ready 0 · in-dev 0 · review 0 · staging 13 · production 0**
+20 issues · **backlog 6 · ready 0 · in-dev 0 · review 1 · staging 13 · production 0**
 
-Nothing sits in `review`: both issues that entered it today left it the same day
-(I-004 via PR #33, I-016 via PR #34).
+## review
+
+| id | title | type | impact | cost | epic | age |
+|---|---|---|---|---|---|---|
+| I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 0d |
 
 ## staging
 
@@ -34,7 +37,6 @@ Nothing sits in `review`: both issues that entered it today left it the same day
 | I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 0d |
 | I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | high | E01 | 0d |
 | I-017 | Blog timeline: under reduced motion no post is marked at all | bug | low | low | E01 | 0d |
-| I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 0d |
 | I-019 | Blog header: animated "from → to" — word set to pick, ES and EN | spike | low | low | E01 | 0d |
 | I-020 | Blog post — OCR: what we learned, and what the literature actually says | feature | high | high | E01 | 0d |
 
@@ -59,9 +61,10 @@ animated progress fill — validated through three rounds of a shared design Art
 then through a code-review round that caught and fixed 2 real geometry/spacing
 blockers before merge (high cost, earned).
 **Low impact / low cost:** I-004, I-006, I-007, I-009, I-014, I-017, I-018 —
-I-017 (no marker under reduced motion, found by I-016's review) and I-018 (the stale
-"CI is blocked by billing" note, false since this repo is public) are both small,
-independent and unblocked; I-019 sits here nominally — the owner has now stated the
+I-017 (no marker under reduced motion, found by I-016's review) is small and
+independent; I-018 (the stale "CI is blocked by billing" note, false since this repo
+is public) is in `review`, its PR open. I-019 sits here nominally — the owner has now
+stated the
 mechanic (a word swap, ES and EN sets to pick), so it is a copy decision waiting on
 him, not an unknown — I-006/I-007/I-009 done,
 I-004 shipped too (PR #33, staging), I-014 (pinned ordering) next up, small and
@@ -85,4 +88,5 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — nothing is in `in-dev` or `review`.
+None — I-018 entered `review` today (0d < 7d threshold), nothing else in `in-dev` or
+`review`.
