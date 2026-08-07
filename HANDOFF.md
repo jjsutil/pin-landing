@@ -68,14 +68,21 @@ y **no** se arrastraron; lo que static mode todavía hace acá es esconder la ma
 la mueve — y se le re-armó el flag, que quedaba latcheado y en una segunda entrada a
 static mode habría dejado la lista congelada.
 
-**Pendiente para la próxima sesión** (ninguno bloquea nada):
+**Pendiente para la próxima sesión — todo fichado, nada suelto** (`backlog`, 6):
 
-- I-012 y I-014 — fichados con approach decidido, sin implementar. I-015 — spike sin
-  arrancar. El "from → to" animado del header del blog — nunca se tomó.
-- El `should` de reduced-motion (sin marcador para el post centrado) — merece su issue.
-- `.claude/repo-conventions.md` sigue diciendo que Actions está bloqueado por billing;
-  **es falso en este repo público**, CI corrió verde en #33 y #34. Corregir esa nota es
-  un PR propio y trivial.
+| id | qué | estado real |
+|---|---|---|
+| I-012 | Paginación del blog (`paginate()` + dots) | approach decidido, sin implementar |
+| I-014 | Posts pinneados/featured en la grilla | approach decidido, sin implementar |
+| I-015 | Spike: view-tracking sin backend | sin arrancar |
+| I-017 | Bajo reduced-motion el timeline no marca ningún post | nuevo, del `should` de la revisión de I-016 |
+| I-018 | La nota de "CI bloqueado por billing" es falsa en este repo | nuevo, trivial, doc-only |
+| I-019 | "from → to" animado del header del blog | nuevo, **bloqueado**: el pedido nunca se escribió, hace falta una línea del dueño |
+
+I-017, I-018 y I-014 son los tres independientes y desbloqueados; I-019 no se puede
+planificar sin el dueño (el issue lista las lecturas posibles para que responda una
+sola línea). Único ítem histórico sin resolver: **PR #25** (sitemap/robots, draft
+permanente, no mergear sin aprobación del dueño al lanzar).
 
 ---
 
