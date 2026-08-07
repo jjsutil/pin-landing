@@ -14,11 +14,17 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // BASE_URL es '/' en local y '/pin-landing/' bajo GitHub Pages (GHPAGES=true).
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// Desde una página del blog (I-011), ES/EN navegan entre las dos listas del
+// blog en vez de ir siempre al home — el post exacto se enlaza aparte, desde
+// BlogLayout, vía translations.ts.
+const path = window.location.pathname.slice(BASE.length);
+const inBlog = path.startsWith('/blog') || path.startsWith('/en/blog');
+
 document.getElementById('lang-es')!.addEventListener('click', () => {
-  if (lang !== 'es') window.location.href = BASE + '/' + window.location.hash;
+  if (lang !== 'es') window.location.href = BASE + (inBlog ? '/blog' : '/') + window.location.hash;
 });
 document.getElementById('lang-en')!.addEventListener('click', () => {
-  if (lang !== 'en') window.location.href = BASE + '/en/' + window.location.hash;
+  if (lang !== 'en') window.location.href = BASE + (inBlog ? '/en/blog' : '/en/') + window.location.hash;
 });
 
 /* ---------------- tema ---------------- */

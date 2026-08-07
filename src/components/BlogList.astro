@@ -1,0 +1,164 @@
+---
+// Shared blog-listing markup for /blog (ES) and /en/blog (EN) — condensed
+// card grid, tag filter, "ver más"/"show more" reveal past PAGE_SIZE (I-011).
+// No visit counter by design: static site, no backend — order is by
+// publishDate only (owner decision, issue I-011).
+import { getCollection } from 'astro:content';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const blogBase = lang === 'en' ? `${base}/en/blog` : `${base}/blog`;
+
+const posts = (
+  await getCollection(lang === 'en' ? 'blogEn' : 'blog', ({ data }) => !data.draft)
+).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Unique tags, first-seen order — posts are already date-sorted above.
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+const dateFmt = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+
+const PAGE_SIZE = 10;
+
+const STR =
+  lang === 'en'
+    ? {
+        eyebrow: 'Blog',
+        h1: 'Ideas and guides from pin',
+        empty: 'We will publish here soon.',
+        filterLabel: 'Filter by topic',
+        all: 'All',
+        emptyTag: 'No post uses that topic yet.',
+        minRead: 'min read',
+        more: 'Show more',
+      }
+    : {
+        eyebrow: 'Blog',
+        h1: 'Ideas y guías de pin',
+        empty: 'Pronto vamos a publicar acá.',
+        filterLabel: 'Filtrar por tema',
+        all: 'Todos',
+        emptyTag: 'Ningún post usa ese tema todavía.',
+        minRead: 'min de lectura',
+        more: 'Ver más',
+      };
+---
+
+<div class="wrap stack-l">
+  <div class="stack-s">
+    <p class="eyebrow">{STR.eyebrow}</p>
+    <h1>{STR.h1}</h1>
+  </div>
+
+  {
+    posts.length === 0 ? (
+      <p class="blog-empty">{STR.empty}</p>
+    ) : (
+      <Fragment>
+        {tags.length > 0 && (
+          <div class="blog-filters" role="group" aria-label={STR.filterLabel}>
+            <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
+              {STR.all}
+            </button>
+            {tags.map((tag) => (
+              <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <ul class="blog-cards" id="blog-cards">
+          {posts.map((post, i) => (
+            <li class="blog-card" data-tags={post.data.tags.join('|')} data-index={i} hidden={i >= PAGE_SIZE}>
+              <a href={`${blogBase}/${post.id}`}>
+                <h2>{post.data.title}</h2>
+                <p class="lede">{post.data.excerpt}</p>
+                <p class="aside blog-meta">
+                  <span>{post.data.author}</span>
+                  <span aria-hidden="true">·</span>
+                  <time datetime={post.data.publishDate.toISOString()}>
+                    {dateFmt.format(post.data.publishDate)}
+                  </time>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {post.data.readingMinutes} {STR.minRead}
+                  </span>
+                </p>
+              </a>
+              {post.data.tags.length > 0 && (
+                <ul class="blog-tags">
+                  {post.data.tags.map((tag) => (
+                    <li class="badge">{tag}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        <p class="blog-empty" id="blog-empty" hidden>
+          {STR.emptyTag}
+        </p>
+
+        {posts.length > PAGE_SIZE && (
+          <button type="button" class="btn btn-ghost" id="blog-more" data-page-size={PAGE_SIZE}>
+            {STR.more}
+          </button>
+        )}
+      </Fragment>
+    )
+  }
+</div>
+
+<script>
+  // Tag filter + "show more" pagination, client-side only — no build-time
+  // route explosion, no new dependency (I-011). A tag filter shows every
+  // match (already a short list); pagination only gates the unfiltered view.
+  const filters = document.querySelectorAll<HTMLButtonElement>('.blog-filter');
+  const cards = document.querySelectorAll<HTMLLIElement>('#blog-cards .blog-card');
+  const empty = document.getElementById('blog-empty');
+  const moreBtn = document.getElementById('blog-more') as HTMLButtonElement | null;
+  const pageSize = moreBtn ? Number(moreBtn.dataset.pageSize) : cards.length;
+  let shown = pageSize;
+  let activeTag = '';
+
+  function render() {
+    let visible = 0;
+    cards.forEach((card) => {
+      const cardTags = (card.dataset.tags ?? '').split('|');
+      const matchesTag = activeTag === '' || cardTags.includes(activeTag);
+      const withinPage = activeTag !== '' || Number(card.dataset.index) < shown;
+      const show = matchesTag && withinPage;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (empty) empty.hidden = visible > 0;
+    if (moreBtn) moreBtn.hidden = activeTag !== '' || shown >= cards.length;
+  }
+
+  filters.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeTag = button.dataset.tag ?? '';
+      filters.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+      render();
+    });
+  });
+
+  moreBtn?.addEventListener('click', () => {
+    shown += pageSize;
+    render();
+  });
+
+  render();
+</script>

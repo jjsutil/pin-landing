@@ -1,12 +1,11 @@
 ---
-import Base from '../../layouts/Base.astro';
-import BlogLayout from '../../components/BlogLayout.astro';
+import Base from '../../../layouts/Base.astro';
+import BlogLayout from '../../../components/BlogLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-// Builds every post, drafts included — the smoke-test post must render when
-// visited directly even though the listing (blog/index.astro) excludes it.
+// Builds every EN post, drafts included — mirrors src/pages/blog/[slug].astro.
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blogEn');
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
@@ -17,9 +16,9 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Base lang="es" title={`${post.data.title} — pin`} description={post.data.excerpt}>
+<Base lang="en" title={`${post.data.title} — pin`} description={post.data.excerpt}>
   <BlogLayout
-    lang="es"
+    lang="en"
     slug={post.id}
     title={post.data.title}
     author={post.data.author}

@@ -1,5 +1,10 @@
 ---
+import { ES_TO_EN, EN_TO_ES } from '../content/blog/translations';
+import type { Lang } from '../i18n';
+
 interface Props {
+  lang: Lang;
+  slug: string;
   title: string;
   author: string;
   publishDate: Date;
@@ -7,8 +12,10 @@ interface Props {
   tags: string[];
 }
 
-const { title, author, publishDate, readingMinutes, tags } = Astro.props;
-const dateLabel = new Intl.DateTimeFormat('es-CL', {
+const { lang, slug, title, author, publishDate, readingMinutes, tags } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const dateLabel = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -20,19 +27,56 @@ const dateLabel = new Intl.DateTimeFormat('es-CL', {
 const shareUrl = Astro.url.href;
 const xShareHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`;
 const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+
+// Cross-language link (I-011): only rendered when this post has a translated
+// counterpart (translations.ts), so a post that hasn't been translated yet
+// never shows a dead link.
+const altSlug = lang === 'en' ? EN_TO_ES[slug] : ES_TO_EN[slug];
+const altHref = altSlug ? `${base}${lang === 'en' ? '/blog' : '/en/blog'}/${altSlug}` : undefined;
+
+const STR =
+  lang === 'en'
+    ? {
+        eyebrow: 'Blog',
+        minRead: 'min read',
+        share: 'Share:',
+        shareX: 'Share this post on X (Twitter)',
+        shareLi: 'Share this post on LinkedIn',
+        copy: 'Copy post link',
+        copied: 'Link copied',
+        shareAria: 'Share this post',
+        altLabel: 'Leer en español',
+      }
+    : {
+        eyebrow: 'Blog',
+        minRead: 'min de lectura',
+        share: 'Compartir:',
+        shareX: 'Compartir este post en X (Twitter)',
+        shareLi: 'Compartir este post en LinkedIn',
+        copy: 'Copiar enlace del post',
+        copied: 'Enlace copiado',
+        shareAria: 'Compartir este post',
+        altLabel: 'Read in English',
+      };
 ---
 
 <section>
   <article class="wrap blog-post stack-l">
     <header class="stack-s">
-      <p class="eyebrow">Blog</p>
+      <p class="eyebrow">{STR.eyebrow}</p>
       <h1>{title}</h1>
       <p class="aside blog-meta">
         <span>{author}</span>
         <span aria-hidden="true">·</span>
         <time datetime={publishDate.toISOString()}>{dateLabel}</time>
         <span aria-hidden="true">·</span>
-        <span>{readingMinutes} min de lectura</span>
+        <span>{readingMinutes} {STR.minRead}</span>
+        {altHref && (
+          <Fragment>
+            <span aria-hidden="true">·</span>
+            <a href={altHref}>{STR.altLabel}</a>
+          </Fragment>
+        )}
       </p>
       {tags.length > 0 && (
         <ul class="blog-tags">
@@ -47,14 +91,14 @@ const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=$
       <slot />
     </div>
 
-    <footer class="blog-share" aria-label="Compartir este post">
-      <span class="blog-share-label">Compartir:</span>
+    <footer class="blog-share" aria-label={STR.shareAria}>
+      <span class="blog-share-label">{STR.share}</span>
       <a
         class="btn btn-ghost blog-share-btn"
         href={xShareHref}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Compartir este post en X (Twitter)"
+        aria-label={STR.shareX}
       >
         X / Twitter
       </a>
@@ -63,7 +107,7 @@ const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=$
         href={linkedinShareHref}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Compartir este post en LinkedIn"
+        aria-label={STR.shareLi}
       >
         LinkedIn
       </a>
@@ -72,10 +116,11 @@ const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=$
         class="btn btn-ghost blog-share-btn"
         id="blog-copy-link"
         data-url={shareUrl}
+        data-copied-label={STR.copied}
         role="status"
         aria-live="polite"
       >
-        Copiar enlace del post
+        {STR.copy}
       </button>
     </footer>
   </article>
@@ -93,7 +138,7 @@ const linkedinShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=$
       return;
     }
     const original = copyBtn.textContent;
-    copyBtn.textContent = 'Enlace copiado';
+    copyBtn.textContent = copyBtn.dataset.copiedLabel ?? original;
     copyBtn.dataset.copied = 'true';
     setTimeout(() => {
       copyBtn.textContent = original;
