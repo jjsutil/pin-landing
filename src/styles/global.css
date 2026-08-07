@@ -734,6 +734,9 @@ footer.site { border-top: 1px solid var(--line-soft); background: var(--band); }
   .blog-card { transition: none; }
   .caret.blink { animation: none; opacity: 1; }
   .page.on { animation: none; }
+  /* backdrop-filter is a continuous GPU compositing cost on a sticky element —
+     drop it for reduced-motion users; the opaque background alone still reads fine (I-004). */
+  header.bar { backdrop-filter: none; background: var(--base); }
 }
 
 /* ---------- salto al contenido (issue #3.1) ---------- */
