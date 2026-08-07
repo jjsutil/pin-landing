@@ -28,6 +28,14 @@ const dateFmt = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', {
   timeZone: 'UTC',
 });
 
+// Short form for the timeline's date gutter — the full "6 de agosto de 2026"
+// doesn't fit a slim column (I-013).
+const dateFmtShort = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+
 const PAGE_SIZE = 10;
 
 const STR =
@@ -41,6 +49,9 @@ const STR =
         emptyTag: 'No post uses that topic yet.',
         minRead: 'min read',
         more: 'Show more',
+        viewLabel: 'View as',
+        viewGrid: 'Grid',
+        viewTimeline: 'Timeline',
       }
     : {
         eyebrow: 'Blog',
@@ -51,6 +62,9 @@ const STR =
         emptyTag: 'Ningún post usa ese tema todavía.',
         minRead: 'min de lectura',
         more: 'Ver más',
+        viewLabel: 'Ver como',
+        viewGrid: 'Grilla',
+        viewTimeline: 'Línea de tiempo',
       };
 ---
 
@@ -65,57 +79,87 @@ const STR =
       <p class="blog-empty">{STR.empty}</p>
     ) : (
       <Fragment>
-        {tags.length > 0 && (
-          <div class="blog-filters" role="group" aria-label={STR.filterLabel}>
-            <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
-              {STR.all}
-            </button>
-            {tags.map((tag) => (
-              <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">
-                {tag}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <ul class="blog-cards" id="blog-cards">
-          {posts.map((post, i) => (
-            <li class="blog-card" data-tags={post.data.tags.join('|')} data-index={i} hidden={i >= PAGE_SIZE}>
-              <a href={`${blogBase}/${post.id}`}>
-                <h2>{post.data.title}</h2>
-                <p class="lede">{post.data.excerpt}</p>
-                <p class="aside blog-meta">
-                  <span>{post.data.author}</span>
-                  <span aria-hidden="true">·</span>
-                  <time datetime={post.data.publishDate.toISOString()}>
-                    {dateFmt.format(post.data.publishDate)}
-                  </time>
-                  <span aria-hidden="true">·</span>
-                  <span>
-                    {post.data.readingMinutes} {STR.minRead}
-                  </span>
-                </p>
-              </a>
-              {post.data.tags.length > 0 && (
-                <ul class="blog-tags">
-                  {post.data.tags.map((tag) => (
-                    <li class="badge">{tag}</li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        <p class="blog-empty" id="blog-empty" hidden>
-          {STR.emptyTag}
-        </p>
-
-        {posts.length > PAGE_SIZE && (
-          <button type="button" class="btn btn-ghost" id="blog-more" data-page-size={PAGE_SIZE}>
-            {STR.more}
+        <div class="blog-view-toggle" role="group" aria-label={STR.viewLabel}>
+          <button type="button" class="blog-view-btn" data-view="grid" aria-pressed="true">
+            {STR.viewGrid}
           </button>
-        )}
+          <button type="button" class="blog-view-btn" data-view="timeline" aria-pressed="false">
+            {STR.viewTimeline}
+          </button>
+        </div>
+
+        <div id="blog-view-grid">
+          {tags.length > 0 && (
+            <div class="blog-filters" role="group" aria-label={STR.filterLabel}>
+              <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
+                {STR.all}
+              </button>
+              {tags.map((tag) => (
+                <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <ul class="blog-cards" id="blog-cards">
+            {posts.map((post, i) => (
+              <li class="blog-card" data-tags={post.data.tags.join('|')} data-index={i} hidden={i >= PAGE_SIZE}>
+                <a href={`${blogBase}/${post.id}`}>
+                  <h2>{post.data.title}</h2>
+                  <p class="lede">{post.data.excerpt}</p>
+                  <p class="aside blog-meta">
+                    <span>{post.data.author}</span>
+                    <span aria-hidden="true">·</span>
+                    <time datetime={post.data.publishDate.toISOString()}>
+                      {dateFmt.format(post.data.publishDate)}
+                    </time>
+                    <span aria-hidden="true">·</span>
+                    <span>
+                      {post.data.readingMinutes} {STR.minRead}
+                    </span>
+                  </p>
+                </a>
+                {post.data.tags.length > 0 && (
+                  <ul class="blog-tags">
+                    {post.data.tags.map((tag) => (
+                      <li class="badge">{tag}</li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <p class="blog-empty" id="blog-empty" hidden>
+            {STR.emptyTag}
+          </p>
+
+          {posts.length > PAGE_SIZE && (
+            <button type="button" class="btn btn-ghost" id="blog-more" data-page-size={PAGE_SIZE}>
+              {STR.more}
+            </button>
+          )}
+        </div>
+
+        <div id="blog-view-timeline" hidden>
+          <div class="blog-timeline-viewport" id="blog-timeline-viewport">
+            <ul class="blog-timeline-list" id="blog-timeline-list">
+              {posts.map((post) => (
+                <li class="blog-timeline-row">
+                  <p class="blog-timeline-date">
+                    {dateFmtShort.format(post.data.publishDate)}
+                  </p>
+                  <a href={`${blogBase}/${post.id}`} class="blog-timeline-content">
+                    <h2>{post.data.title}</h2>
+                    <p>{post.data.excerpt}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div class="blog-timeline-fill" id="blog-timeline-fill"></div>
+          </div>
+        </div>
       </Fragment>
     )
   }
@@ -161,4 +205,76 @@ const STR =
   });
 
   render();
+
+  // View toggle — grid (tag filter + show-more, above) vs. timeline (I-013).
+  // Two independent containers, one shown at a time; nothing about the grid's
+  // own tag-filter/pagination state above needs to know this exists.
+  const viewButtons = document.querySelectorAll<HTMLButtonElement>('.blog-view-btn');
+  const viewGrid = document.getElementById('blog-view-grid');
+  const viewTimeline = document.getElementById('blog-view-timeline');
+
+  viewButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const isTimeline = button.dataset.view === 'timeline';
+      viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+      if (viewGrid) viewGrid.hidden = isTimeline;
+      if (viewTimeline) viewTimeline.hidden = !isTimeline;
+      if (isTimeline) updateTimelineFocus();
+    });
+  });
+
+  // Timeline scroll-focus (I-013) — the centered row gets closer to full
+  // scale/opacity, the rest scaled down and lightly blurred; same effect on
+  // hover, handled entirely by CSS `:has()` in global.css. The divider's
+  // accent-colored fill grows to track the active row: that growth is the
+  // "animated spine," no per-post markers needed. All of it is skipped
+  // under prefers-reduced-motion — see the guard below.
+  const timelineViewport = document.getElementById('blog-timeline-viewport');
+  const timelineList = document.getElementById('blog-timeline-list');
+  const timelineFill = document.getElementById('blog-timeline-fill');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let timelineUpdateQueued = false;
+
+  function updateTimelineFocus() {
+    timelineUpdateQueued = false;
+    if (!timelineViewport || !timelineList || !timelineFill || reducedMotion) return;
+    // Plain for-of, not .forEach: TS can't narrow a `let` reassigned inside a
+    // callback's separate scope, so `active` stayed `never` post-loop there.
+    const rows = Array.from(timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row'));
+    const vRect = timelineViewport.getBoundingClientRect();
+    const centerY = vRect.top + vRect.height / 2;
+    let active: HTMLLIElement | null = null;
+    let bestFocus = -1;
+
+    for (const row of rows) {
+      const r = row.getBoundingClientRect();
+      const dist = Math.abs(r.top + r.height / 2 - centerY);
+      const focus = Math.max(0, 1 - dist / (vRect.height / 2));
+      row.style.transform = `scale(${(0.985 + focus * 0.03).toFixed(3)})`;
+      row.style.filter = `blur(${((1 - focus) * 0.35).toFixed(2)}px)`;
+      row.style.opacity = (0.65 + focus * 0.35).toFixed(2);
+      if (focus > bestFocus) {
+        bestFocus = focus;
+        active = row;
+      }
+    }
+
+    for (const row of rows) row.classList.toggle('is-active', row === active);
+
+    if (active) {
+      const listTop = timelineList.getBoundingClientRect().top;
+      const r = active.getBoundingClientRect();
+      const fillPx = r.top + r.height / 2 - listTop;
+      timelineFill.style.height = `${Math.max(0, fillPx)}px`;
+    }
+  }
+
+  function queueTimelineUpdate() {
+    if (timelineUpdateQueued) return;
+    timelineUpdateQueued = true;
+    requestAnimationFrame(updateTimelineFocus);
+  }
+
+  timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
+  window.addEventListener('resize', queueTimelineUpdate);
 </script>
