@@ -10,10 +10,17 @@ created: 2026-08-05
 # Static mode for low-end hardware — detect or offer a no-animation experience
 
 **Partial extraction (2026-08-07, PR #27, Refs I-004):** the one piece of this issue's
-Recommendation that didn't need the benchmark/toggle machinery — gating
-`backdrop-filter` on the sticky header — shipped standalone under
-`prefers-reduced-motion: reduce` (existing signal, no new state). This issue stays
-`backlog`: the FPS self-benchmark and the visible manual toggle are still unbuilt.
+Recommendation that didn't need the benchmark machinery — gating `backdrop-filter` on
+the sticky header — shipped standalone under `prefers-reduced-motion: reduce` (existing
+signal, no new state). This issue stays `backlog`: the FPS self-benchmark is still
+unbuilt.
+
+**Owner decision (2026-08-07):** ship auto-detection only, no visible control — "auto,
+no buttons". This drops the manual-toggle half of the Recommendation below (Option C);
+the issue now targets **Option B** (FPS self-benchmark) on top of the
+`prefers-reduced-motion` handling that already exists. Recommendation, Scope and
+Acceptance criteria below are edited to match; the toggle option (C) stays in "Options
+evaluated" as a rejected alternative, with the reason it was rejected.
 
 `impact: low` — improves the experience for a subset of visitors on weak/old hardware;
 not a core flow, doesn't unblock other issues, but is user-visible and directly requested
@@ -112,7 +119,9 @@ instant (a fraction of a second where the page hasn't yet decided), a threshold 
 and it can misfire on a momentarily busy tab (e.g., another heavy tab stealing frames)
 unless the measurement window is chosen carefully.
 
-**C — Combine A + B, plus a visible manual toggle as a safety net.**
+**C — Combine A + B, plus a visible manual toggle as a safety net.** *(Rejected —
+owner decision 2026-08-07, "auto, no buttons": no visible control, ship detection
+only.)*
 Respect `prefers-reduced-motion` first (it's an explicit, authoritative signal — never
 override it). Where it's not set, run the lightweight FPS self-benchmark and default to
 static mode if it comes back below threshold. Additionally expose a small, visible
@@ -123,15 +132,13 @@ that doesn't depend on any detection working correctly.
 
 ## Recommendation
 
-**Option C.** Detection alone (B) is the most accurate technical signal but is still a
-heuristic that can be wrong; a manual toggle costs very little (the theme toggle
-pattern already exists to copy) and gives visitors a guaranteed way out regardless of
-what the benchmark decides. Keep `prefers-reduced-motion` as the first, non-overridable
-check — it's a stated accessibility preference and takes priority over a guess.
-Independently of which of A/B/C ships, gating `backdrop-filter` on the sticky header
-behind the same static-mode class is worth doing regardless — it's the one continuous,
-GPU-expensive effect actually present and it isn't touched by the current
-reduced-motion handling at all.
+**Option B**, on top of the `prefers-reduced-motion` handling that already exists.
+`prefers-reduced-motion` stays the first, non-overridable check — it's a stated
+accessibility preference and takes priority over a guess. Where it's not set, the FPS
+self-benchmark decides, with no visible control: a manual toggle was considered (Option
+C) but rejected by the owner in favor of a fully automatic experience. The
+`backdrop-filter` gating this issue also called for already shipped independently under
+`prefers-reduced-motion` (PR #27) and needs no further work here.
 
 ## Scope
 
@@ -140,9 +147,6 @@ reduced-motion handling at all.
 - A `static-mode` (or similarly named) state, set from `prefers-reduced-motion` OR a
   passing self-benchmark, applied the same way `reduced` already gates behavior in
   `main.ts` and the `prefers-reduced-motion` media query already gates `global.css`.
-- Extending the existing CSS reduced-motion rules (`global.css:619-626`) to also cover
-  `backdrop-filter` on `header.bar`.
-- A visible, persisted manual toggle (mirrors the existing theme-toggle pattern).
 
 ## Anti-scope
 
@@ -151,6 +155,11 @@ reduced-motion handling at all.
 - No `navigator.deviceMemory` or Network Information API gating — Chromium-only,
   wouldn't cover Firefox/Safari visitors, and the connection speed signal doesn't
   measure what this issue is about (rendering capability, not bandwidth).
+- No visible manual toggle — owner decision 2026-08-07 ("auto, no buttons"). Detection
+  is the only path into static mode; there is no visitor-facing control to override it
+  either way.
+- No `backdrop-filter` work — already shipped independently under
+  `prefers-reduced-motion` (PR #27, Refs I-004).
 - No implementation in this issue — this is investigation + a recommendation only, per
   the owner's request. A `pr-plan` session should pick the final benchmark parameters
   before code is written.
@@ -161,17 +170,14 @@ reduced-motion handling at all.
 ## Acceptance criteria (tentative — for the eventual implementation PR)
 
 - [ ] `prefers-reduced-motion: reduce` continues to force static mode unconditionally
-      (never overridden by the benchmark or the toggle defaulting differently).
+      (never overridden by the benchmark).
 - [ ] Without that preference set, an FPS self-benchmark runs once on load and sets
       static mode when it comes in under an agreed threshold; the decision doesn't
       cause a visible flash of animated-then-static content.
-- [ ] A visible toggle lets any visitor force static mode on/off regardless of what
-      detection decided, persisted the same way the theme choice is (`localStorage`,
-      degrades gracefully without storage per the existing pattern at `main.ts:45-49`).
-- [ ] Static mode additionally disables `backdrop-filter` on the sticky header, not
-      just the transitions already covered by `prefers-reduced-motion`.
+- [ ] No visible control is added — detection is fully automatic, nothing for a visitor
+      to click or toggle.
 - [ ] Verified on a throttled/low-end profile (e.g., Chrome DevTools CPU throttling)
       that static mode measurably reduces main-thread/compositor work, not just that
       the class gets applied.
-- [ ] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, for both the
-      toggle control and the visible difference between animated and static mode.
+- [ ] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
+      visible difference between animated and static mode.
