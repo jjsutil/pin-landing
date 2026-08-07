@@ -3,7 +3,13 @@
 // function, ponytail rung 3: stdlib does it.)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { shouldGoStatic, PERF_LITE_FPS_THRESHOLD } from './perf-lite.ts';
+import { fpsFromSample, shouldGoStatic, PERF_LITE_FPS_THRESHOLD } from './perf-lite.ts';
+
+test('fps is computed over intervals, not frames', () => {
+  // 20 frames in 1s = 19 intervals of ~52.6ms, not 20fps.
+  assert.equal(fpsFromSample(20, 1000), 19);
+  assert.equal(fpsFromSample(2, 500), 2);
+});
 
 test('fps below the threshold triggers static mode', () => {
   assert.equal(shouldGoStatic(PERF_LITE_FPS_THRESHOLD - 1), true);

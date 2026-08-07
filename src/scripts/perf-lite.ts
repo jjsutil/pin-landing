@@ -14,6 +14,18 @@ export const PERF_LITE_FPS_THRESHOLD = 30;
 // How many requestAnimationFrame callbacks the self-benchmark samples before deciding.
 export const PERF_LITE_SAMPLE_FRAMES = 20;
 
+// Gap between two consecutive frames above which the sample is thrown away and the
+// benchmark restarts. A backgrounded tab freezes requestAnimationFrame, and the huge
+// delta that shows up on return would read as ~0fps on perfectly capable hardware.
+// 500ms is well past anything real rendering produces (even 5fps is 200ms/frame).
+export const PERF_LITE_MAX_FRAME_GAP_MS = 500;
+
+// N sampled frames span N-1 intervals; dividing by N would overstate the fps ~5% at
+// PERF_LITE_SAMPLE_FRAMES=20 and bias the decision away from static mode at the edge.
+export function fpsFromSample(frames: number, elapsedMs: number): number {
+  return ((frames - 1) * 1000) / elapsedMs;
+}
+
 export function shouldGoStatic(measuredFps: number): boolean {
   return measuredFps < PERF_LITE_FPS_THRESHOLD;
 }
