@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-19 issues · **backlog 6 · ready 0 · in-dev 0 · review 0 · staging 13 · production 0**
+20 issues · **backlog 7 · ready 0 · in-dev 0 · review 0 · staging 13 · production 0**
 
 Nothing sits in `review`: both issues that entered it today left it the same day
 (I-004 via PR #33, I-016 via PR #34).
@@ -35,7 +35,8 @@ Nothing sits in `review`: both issues that entered it today left it the same day
 | I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | high | E01 | 0d |
 | I-017 | Blog timeline: under reduced motion no post is marked at all | bug | low | low | E01 | 0d |
 | I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 0d |
-| I-019 | Blog header: animated "from → to" — request recorded, scope never captured | spike | low | low | E01 | 0d |
+| I-019 | Blog header: animated "from → to" — word set to pick, ES and EN | spike | low | low | E01 | 0d |
+| I-020 | Blog post — OCR: what we learned, and what the literature actually says | feature | high | high | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 
@@ -47,7 +48,10 @@ controls a visitor touches first (high impact), fixed by reusing the existing
 (low cost). Its review round paid for itself twice: an independent code review and
 two fidelity rounds, the second of which caught the timeline freezing mid-effect
 when I-004's static mode turned on without a further scroll.
-**High impact / high cost:** I-005 (superseded — see its Gate resolution note), I-011 —
+**High impact / high cost:** I-020 — the first post on this blog written for an
+engineering peer instead of a lawyer, and the only one whose cost is research rather
+than writing: every claim carries a citation that has to be opened and checked before
+it is used. **I-005** (superseded — see its Gate resolution note), **I-011** —
 the structural i18n work: locale-aware content collection, condensed listing, English
 blog. **I-013 shipped in this quadrant** — the timeline view, a second full browsing
 mode (high impact) built on genuinely new interaction code — scroll-driven focus,
@@ -57,8 +61,9 @@ blockers before merge (high cost, earned).
 **Low impact / low cost:** I-004, I-006, I-007, I-009, I-014, I-017, I-018 —
 I-017 (no marker under reduced motion, found by I-016's review) and I-018 (the stale
 "CI is blocked by billing" note, false since this repo is public) are both small,
-independent and unblocked; I-019 sits here nominally but is a spike whose scope the
-owner still has to state, so its classification is provisional — I-006/I-007/I-009 done,
+independent and unblocked; I-019 sits here nominally — the owner has now stated the
+mechanic (a word swap, ES and EN sets to pick), so it is a copy decision waiting on
+him, not an unknown — I-006/I-007/I-009 done,
 I-004 shipped too (PR #33, staging), I-014 (pinned ordering) next up, small and
 independent.
 **Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch

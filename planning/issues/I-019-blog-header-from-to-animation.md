@@ -16,10 +16,13 @@ the request is understood (re-classify when it is).
 small front-end change; if the request turns out to mean something structural, this
 estimate does not hold and the issue should be re-scoped, not stretched.
 
-> [!WARNING]
-> **This issue exists to stop the request from being lost, not because it is ready to
-> work.** Do not implement from this file. The owner's actual words were never written
-> down, and nothing in the repo defines what "from → to" refers to.
+> [!IMPORTANT]
+> **Answered by the owner, 2026-08-07** (verbatim): *"considera más palabras que hagan
+> juego con la frase, versiones en y es"*. So the mechanic is reading 2 below — an
+> animated word swap inside a "from → to" construction in the blog header — and the
+> work is **choosing the word pairs**, in Spanish and English, not inventing an
+> interaction. What is still unstated is the fixed part of the phrase; propose it
+> together with the word sets rather than guessing it in code.
 
 ## Context
 
@@ -49,16 +52,34 @@ What does "from → to" animate between? Plausible readings, none confirmed:
 Reading 3 would also interact with I-014 (featured ordering) and should be sequenced
 after it; readings 1 and 2 are independent.
 
-## Next step
+## Scope, as answered
 
-Ask the owner, in one line, which of the above it is (or what it actually is), write
-the answer into this file, re-classify `impact`/`cost`, and only then plan the PR. If
-the answer arrives with a visual intent rather than a mechanism, an Artifact with 2–3
-options — the way I-013's design was settled — is the cheaper path to a decision than
-a code prototype.
+- A **word set**, not a one-off phrase: several pairs that read well in the same
+  construction, so the header can cycle through them. Proposed in **both languages** —
+  and translated pairs rarely survive the trip, so the English set is written as
+  English, not as a rendering of the Spanish one.
+- The words carry the product's claim (what a case file goes *from*, what it becomes),
+  so they are copy, not decoration. They belong in `src/i18n` next to the rest of the
+  verbatim copy, never inlined in the component.
+- Animation: reuse the typing/swap machinery already in `src/scripts/main.ts` rather
+  than adding a second one. It must be gated by static mode (`html.perf-lite`,
+  I-004) — a looping header animation is exactly the continuous cost that mode exists
+  to remove — and must degrade to a single static pair, never to an empty header.
+- Present the candidate sets to the owner **before** implementing. He picks; that is
+  the decision this issue is really waiting on.
+
+## Anti-scope
+
+- Not a new animation engine, and not a change to the landing's hero (this is the blog
+  header only).
+- Not a rewrite of the blog `h1`'s meaning — the new construction sits with it, or
+  replaces it only if the owner says so explicitly.
 
 ## Acceptance criteria
 
-- [ ] The request is written down in the owner's own terms in this file.
-- [ ] `impact`/`cost` re-classified against the real scope, with the one-line rationale.
-- [ ] Either a plan exists, or the issue is closed as "not wanted" — recorded either way.
+- [x] The request is written down in the owner's own terms in this file.
+- [ ] A candidate word set exists in ES and EN, with the fixed part of the phrase
+      proposed alongside it, and the owner has picked.
+- [ ] Copy lives in `src/i18n`; the animation reuses the existing mechanism.
+- [ ] Static mode and `prefers-reduced-motion` render one static pair, no loop.
+- [ ] `impact`/`cost` re-classified against the picked scope, with the rationale.
