@@ -20,12 +20,44 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = window.location.pathname.slice(BASE.length);
 const inBlog = path.startsWith('/blog') || path.startsWith('/en/blog');
 
+// Language switch is a full page navigation (no client router), which drops
+// scroll position by default unless a #hash is already carrying it somewhere.
+// Stash it only when there's no hash — a hash target must keep winning.
+// sessionStorage can throw (privacy modes, storage blocked) — swallow it like
+// the theme toggle already does with localStorage; the nav must proceed either way.
+function stashScrollForLangSwitch(): void {
+  if (window.location.hash) return;
+  try {
+    sessionStorage.setItem('langSwitchScrollY', String(window.scrollY));
+  } catch {
+    /* sin storage: el switch de idioma igual navega, solo sin restaurar scroll */
+  }
+}
+
 document.getElementById('lang-es')!.addEventListener('click', () => {
-  if (lang !== 'es') window.location.href = BASE + (inBlog ? '/blog' : '/') + window.location.hash;
+  if (lang !== 'es') {
+    stashScrollForLangSwitch();
+    window.location.href = BASE + (inBlog ? '/blog' : '/') + window.location.hash;
+  }
 });
 document.getElementById('lang-en')!.addEventListener('click', () => {
-  if (lang !== 'en') window.location.href = BASE + (inBlog ? '/en/blog' : '/en/') + window.location.hash;
+  if (lang !== 'en') {
+    stashScrollForLangSwitch();
+    window.location.href = BASE + (inBlog ? '/en/blog' : '/en/') + window.location.hash;
+  }
 });
+
+// Restore it once, right after the switch — a normal reload/back-forward
+// never sets this key, so they're unaffected.
+try {
+  const savedScrollY = sessionStorage.getItem('langSwitchScrollY');
+  if (savedScrollY !== null) {
+    sessionStorage.removeItem('langSwitchScrollY');
+    requestAnimationFrame(() => window.scrollTo(0, Number(savedScrollY)));
+  }
+} catch {
+  /* sin storage: no hay scroll que restaurar */
+}
 
 /* ---------------- tema ---------------- */
 
