@@ -20,6 +20,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Scroll-snap dropped for the same reason. The static-mode rules I-004 had added
   for those three things went with them; what static mode still does here is hide
   the accent mark.
+- Entering static mode now takes effect immediately instead of at the next scroll.
+  I-004's FPS benchmark adds `perf-lite` ~300ms after load — a state change with no
+  event — so the timeline watches the class and flushes its focus state there. A
+  visitor who stopped scrolling used to be left with the list frozen mid-effect.
 - The timeline's own scrollbar is hidden (`scrollbar-width: none`); scrolling,
   keyboard access and the fade mask are unchanged.
 
