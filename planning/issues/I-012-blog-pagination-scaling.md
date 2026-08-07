@@ -32,11 +32,15 @@ ship time).
   build-time (routes like `/blog/2`, `/en/blog/2`), no server. "Backend" is the
   build/routing layer `paginate()` generates; "frontend" is the prev/next controls on
   the listing page. The site stays 100% static either way.
+- **Owner decision (2026-08-07, follow-up round):** the prev/next control reads as a
+  dot row, not text arrows — the current dot (page) colored/highlighted, the rest
+  plain. Still `paginate()`'s build-time routes underneath; this only changes how the
+  control between pages looks, not the routing mechanism.
 - Still not scheduled — 6 posts today, well under the ~20-post threshold this issue set
   (see Acceptance criteria). The approach is settled so implementation can start on
   short notice whenever the owner says go, but this issue doesn't schedule that work.
-- Applies to both `/blog` and `/en/blog` (and the tag-filtered view, which I-011
-  explicitly exempted from pagination — revisit whether that still holds at scale).
+- Applies to the grid/showcase view (I-014) — I-013's timeline view is a separate,
+  unpaginated, scroll-only surface by design and isn't affected by this issue.
 
 ## Anti-scope
 

@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-12 issues · **backlog 2 · ready 0 · in-dev 0 · review 0 · staging 10 · production 0**
+15 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 10 · production 0**
 
 ## staging
 
@@ -26,6 +26,9 @@
 |---|---|---|---|---|---|---|
 | I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
 | I-012 | Blog pagination doesn't scale past ~20 posts | feature | low | medium | E01 | 0d |
+| I-013 | Blog timeline view — vertical, scroll-driven, no dots | feature | medium | medium | E01 | 0d |
+| I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 0d |
+| I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | medium | E01 | 0d |
 
 ## 2×2 impact/cost matrix
 
@@ -34,18 +37,25 @@ blog content trilogy-plus-three, all published and in the listing.
 **High impact / high cost:** I-005 (superseded — see its Gate resolution note), I-011 —
 the structural i18n work: locale-aware content collection, condensed listing, English
 blog.
-**Low impact / low cost:** I-004, I-006, I-007, I-009 — done (I-006, I-007, I-009) or
-parked (I-004, partially extracted via PR #27 — see its note). Nothing urgent left in
-this quadrant.
+**Low impact / low cost:** I-004, I-006, I-007, I-009, I-014 — I-006/I-007/I-009 done,
+I-004 parked (partially extracted via PR #27), I-014 (pinned ordering) next up, small
+and independent.
+**Medium impact / medium cost:** I-013 — the timeline view: real new interaction code
+(scroll-driven focus, animated progress spine), validated through three rounds of a
+shared design Artifact before implementation.
 **Low impact / other cost:** I-012 (cost: medium — real pagination touches the
-listing's data-fetch shape, not just CSS) — tracked ahead of the scaling pressure that
-would make it worth doing; not a quick win, not urgent either.
+listing's data-fetch shape, not just CSS), I-015 (cost: medium — picking and wiring an
+actual view-tracking mechanism for a currently backend-free static site is an
+architecture decision, not a quick add) — both tracked ahead of the pressure that
+would make them worth doing now.
 
 ## Cost projection
 
 No new runtime dependency beyond the two first-party Astro integrations added this
 session (`@astrojs/sitemap`, `@astrojs/rss` — official, zero-cost, no paid API). No
-paid API anywhere in this repo — cost-guard has nothing to project.
+paid API anywhere in this repo — cost-guard has nothing to project. I-015, if
+implemented, would be the first candidate to change that (a third-party analytics
+service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
