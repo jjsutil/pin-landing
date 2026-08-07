@@ -2,7 +2,7 @@
 title: "\"Artificial intelligence\" doesn't name a technology. It names a promise."
 slug: "what-machine-learning-actually-is"
 excerpt: "You're going to get sold \"artificial intelligence\" this year. Three words are enough to evaluate the pitch, and to know what you're signing when you sign."
-publishDate: 2026-08-05
+publishDate: 2026-07-02
 author: "pin Founding Team"
 tags: ["Artificial Intelligence", "Fundamentals", "Professional Judgment"]
 draft: false

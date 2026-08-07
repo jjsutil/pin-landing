@@ -2,7 +2,7 @@
 title: "Nobody gets sanctioned for using artificial intelligence. They get sanctioned for signing what they didn't read."
 slug: "is-it-legal-to-use-ai-for-work"
 excerpt: "A lawyer filed 38,477 briefs in one weekend, and civil court judges asked to ban AI from the courts. The question left for you isn't whether you can use it. It's what you're signing when you do."
-publishDate: 2026-08-05
+publishDate: 2026-07-16
 author: "pin Founding Team"
 tags: ["Professional Responsibility", "Regulation", "Verifiability"]
 draft: false

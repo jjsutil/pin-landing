@@ -2,7 +2,7 @@
 title: "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa."
 slug: "que-es-machine-learning"
 excerpt: "Le van a vender «inteligencia artificial» este año. Tres palabras alcanzan para evaluar la oferta, y para saber qué firma cuando firma."
-publishDate: 2026-08-05
+publishDate: 2026-07-02
 author: "Equipo fundador de pin"
 tags: ["Inteligencia artificial", "Fundamentos", "Criterio profesional"]
 draft: false

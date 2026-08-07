@@ -2,7 +2,7 @@
 title: "No se olvidó de su expediente. Nunca lo leyó entero."
 slug: "por-que-ninguna-herramienta-le-sirvio"
 excerpt: "Pagó la suscripción, subió el expediente y la herramienta le falló de tres maneras distintas. Ninguna de las tres fue una falla: las tres son el mismo límite."
-publishDate: 2026-08-05
+publishDate: 2026-07-09
 author: "Equipo fundador de pin"
 tags: ["Ventana de contexto", "Herramientas de IA", "Verificabilidad"]
 draft: false

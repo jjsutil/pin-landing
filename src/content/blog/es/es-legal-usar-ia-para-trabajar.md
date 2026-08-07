@@ -2,7 +2,7 @@
 title: "A nadie lo sancionan por usar inteligencia artificial. Lo sancionan por firmar lo que no leyó."
 slug: "es-legal-usar-ia-para-trabajar"
 excerpt: "Un abogado ingresó 38.477 escritos en un fin de semana y los jueces civiles pidieron prohibir la IA en tribunales. La pregunta que le queda a usted no es si puede usarla. Es qué está firmando cuando la usa."
-publishDate: 2026-08-05
+publishDate: 2026-07-16
 author: "Equipo fundador de pin"
 tags: ["Responsabilidad profesional", "Regulación", "Verificabilidad"]
 draft: false

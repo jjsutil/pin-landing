@@ -2,7 +2,7 @@
 title: "A tool isn't measured by how often it's right. It's measured by what it costs to check."
 slug: "how-an-ai-answer-is-verified"
 excerpt: "The duty to verify is already written into the rules, and already being sanctioned. What no one explains is how you fulfill it without losing the time the tool promised to save you. That cost isn't set by your discipline: it's set by the architecture."
-publishDate: 2026-08-06
+publishDate: 2026-07-23
 author: "pin Founding Team"
 tags: ["Verifiability", "Professional Judgment", "AI Tools"]
 draft: false

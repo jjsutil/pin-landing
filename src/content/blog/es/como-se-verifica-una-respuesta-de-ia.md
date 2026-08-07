@@ -2,7 +2,7 @@
 title: "La herramienta no se mide por lo que acierta. Se mide por lo que cuesta comprobarla."
 slug: "como-se-verifica-una-respuesta-de-ia"
 excerpt: "El deber de verificar ya está escrito y ya se sanciona. Lo que nadie le explica es cómo se cumple sin perder el tiempo que la herramienta prometió ahorrarle. Ese costo no lo fija su disciplina: lo fija la arquitectura."
-publishDate: 2026-08-06
+publishDate: 2026-07-23
 author: "Equipo fundador de pin"
 tags: ["Verificabilidad", "Criterio profesional", "Herramientas de IA"]
 draft: false

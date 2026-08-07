@@ -2,7 +2,7 @@
 title: "Your client trusted you with the case file. Not with your tool's servers."
 slug: "what-happens-to-your-case-file-when-you-upload-it"
 excerpt: "In May 2025, a New York court ordered the preservation of even the chats users had deleted. The question is no longer what artificial intelligence does with your case file. It's where it ends up, who retains it, and under what rules."
-publishDate: 2026-08-06
+publishDate: 2026-07-30
 author: "pin Founding Team"
 tags: ["Confidentiality", "Professional Responsibility", "Regulation"]
 draft: false

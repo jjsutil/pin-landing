@@ -2,7 +2,7 @@
 title: "It didn't forget your case file. It never read the whole thing."
 slug: "why-no-tool-has-worked-for-you"
 excerpt: "You paid for the subscription, uploaded the case file, and the tool failed you in three different ways. None of the three was a glitch: all three are the same limit."
-publishDate: 2026-08-05
+publishDate: 2026-07-09
 author: "pin Founding Team"
 tags: ["Context Window", "AI Tools", "Verifiability"]
 draft: false

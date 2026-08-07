@@ -2,7 +2,7 @@
 title: "Su cliente le confió el expediente a usted. No a los servidores de su herramienta."
 slug: "que-pasa-con-su-expediente-cuando-lo-sube"
 excerpt: "En mayo de 2025 un tribunal de Nueva York ordenó conservar hasta los chats que los usuarios habían borrado. La pregunta ya no es qué hace la inteligencia artificial con su expediente. Es dónde queda, quién lo retiene y bajo qué reglas."
-publishDate: 2026-08-06
+publishDate: 2026-07-30
 author: "Equipo fundador de pin"
 tags: ["Confidencialidad", "Responsabilidad profesional", "Regulación"]
 draft: false
