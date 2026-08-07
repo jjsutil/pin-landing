@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed (#19)
+
+- Header now links to Blog in both languages (`nav.blog`), previously reachable
+  only via footer or direct URL.
+- `src/layouts/Base.astro` favicon `<link>` was missing the slash between the
+  base path and the filename (`/pin-landingfavicon.svg`), so it never resolved
+  on GitHub Pages. Fixed using the same base-path trim pattern already used in
+  Header/Footer.
+
 ### Added (blog trilogy complete + navigability + share CTA, 2026-08-05)
 
 - I-008: third and closing blog post published (`draft: false`). Copy unchanged
