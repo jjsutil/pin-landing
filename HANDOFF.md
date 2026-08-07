@@ -1,5 +1,59 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 07/08, I-004 implementado, PR #33 abierto (draft) — sesión cerrada aquí
+
+**I-004 (modo estático automático, "auto, no buttons") queda implementado y con PR
+abierto: [`#33`](https://github.com/jjsutil/pin-landing/pull/33), rama
+`feat/i-004-fps-static-mode`, draft (corrió sin supervisión — regla del pr-writer).
+Nada pendiente de este lado; el siguiente paso es una revisión por un agente
+independiente (autor ≠ revisor) y la decisión del dueño de mergear.**
+
+- Self-benchmark de FPS (`requestAnimationFrame`, 20 frames) en `src/scripts/main.ts`
+  + lógica pura testeable en `src/scripts/perf-lite.ts` (`PERF_LITE_FPS_THRESHOLD`
+  como constante nombrada y comentada — recalibrar contra hardware real cuando alguien
+  lo mida, es el único lugar donde vive el número).
+  `prefers-reduced-motion` sigue ganando siempre, sin excepción, antes de que corra
+  cualquier benchmark.
+- El bloque `@media (prefers-reduced-motion: reduce)` de `global.css` se reusó, no se
+  duplicó: su selector ahora dispara con la clase `html.perf-lite`, que `main.ts`
+  agrega tanto por preferencia del SO como por el resultado del benchmark.
+- Test: `node --experimental-strip-types --test src/scripts/perf-lite.test.ts` (2
+  casos), verificado por mutación (`<` → `<=` rompió 1/2, revertido).
+- Gate (`scripts/check-gates.sh --base origin/main`): exit 0, 0 blockers, 0 warnings.
+  `astro check` 0 errores. `npm run build` y `GHPAGES=true npm run build`: exit 0.
+- Evidencia visual: 8 capturas en `design/evidence/` (ES, claro/oscuro,
+  animado/estático — recortadas a la franja del header, que es donde
+  `backdrop-filter` es la única diferencia visible en una captura fija). Capturadas
+  con `google-chrome` headless + `puppeteer-core` (ver Gotcha abajo).
+- **Deviation documentada en el PR**: el estado `perf-lite` NO gatea los efectos
+  JS (typing, contador, demo del visor) — esos siguen atados solo a `reduced`, como ya
+  estaban. El scope original de la issue sugiere que sí deberían (misma lógica que
+  `reduced`), pero el benchmark tarda ~300ms en resolver y esos efectos arrancan
+  sincrónicamente al cargar; gatearlos ahí reintroduce el flash que el propio criterio
+  de aceptación pide evitar. Señalado para el revisor, no decidido en silencio.
+- **Riesgo aceptado, sin verificar**: no se corrió profiling con CPU throttling
+  (DevTools) para medir la reducción real de costo de main-thread/compositor — solo se
+  confirmó que la clase aplica el CSS correcto. Recomendado antes o poco después del
+  merge, junto con la recalibración del umbral.
+- Issue `I-004`: `status: review`, criterios de aceptación actualizados (4 de 5
+  tildados, el de throttling queda explícitamente sin verificar). `planning/BOARD.md`
+  y el resumen de `README.md` regenerados (I-004 pasó de `backlog` a `review`).
+  `CHANGELOG.md` con entrada en `[Unreleased]`.
+
+**Gotcha — el entorno de este agente en background no puede tomar screenshots vía la
+extensión `claude-in-chrome`:** el `computer` (screenshot/scroll) da timeout incluso en
+`example.com`, mientras que `javascript_tool` sí responde — es una limitación del
+entorno (sandbox sin display real para la extensión), no del código. Workaround que
+funcionó: `google-chrome --headless=new` está instalado directamente en el sistema;
+`puppeteer-core` (instalado ad-hoc en el scratchpad, no en el repo) lo maneja vía CDP
+para scroll/tema/clase + captura determinística. Si otro agente en background necesita
+evidencia visual, este es el camino, no la extensión del navegador.
+
+Nada más pendiente de este ciclo. Ver checkpoints de abajo para el resto del estado
+del repo (7 ítems del brainstorm, sitemap/robots en `PR #25` sin mergear a propósito).
+
+---
+
 ## Checkpoint — 07/08, 3 pedidos nuevos: decisiones tomadas, nada implementado todavía
 
 Dueño pidió abordar 3 cosas nuevas. Se resolvieron las ambigüedades vía preguntas; el
