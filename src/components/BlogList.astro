@@ -147,12 +147,14 @@ const STR =
             <ul class="blog-timeline-list" id="blog-timeline-list">
               {posts.map((post) => (
                 <li class="blog-timeline-row">
-                  <p class="blog-timeline-date">
-                    {dateFmtShort.format(post.data.publishDate)}
-                  </p>
-                  <a href={`${blogBase}/${post.id}`} class="blog-timeline-content">
-                    <h2>{post.data.title}</h2>
-                    <p>{post.data.excerpt}</p>
+                  <a href={`${blogBase}/${post.id}`} class="blog-timeline-link">
+                    <p class="blog-timeline-date">
+                      {dateFmtShort.format(post.data.publishDate)}
+                    </p>
+                    <span class="blog-timeline-content">
+                      <h2>{post.data.title}</h2>
+                      <p>{post.data.excerpt}</p>
+                    </span>
                   </a>
                 </li>
               ))}
@@ -276,5 +278,10 @@ const STR =
   }
 
   timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
-  window.addEventListener('resize', queueTimelineUpdate);
+  // Guarded, not unconditional: while the timeline is hidden, its viewport
+  // has zero height, so the focus math divides by zero (NaN) on every
+  // window resize — harmless (invalid CSS values are dropped) but wasted.
+  window.addEventListener('resize', () => {
+    if (!viewTimeline?.hidden) queueTimelineUpdate();
+  });
 </script>
