@@ -1,5 +1,50 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 07/08, I-013 (blog timeline) mergeado — sesión cerrada aquí
+
+**Corrió en paralelo con la sesión de I-004 de abajo (mismo dueño, dos agentes
+simultáneos) — sin conflicto real, ambas tocaron archivos distintos salvo
+`global.css`, donde cada una agregó bloques separados sin pisarse.**
+
+De los 3 pedidos nuevos que abrió el checkpoint de abajo ("3 pedidos nuevos"),
+quedaron resueltos:
+
+1. **Slider del blog → I-013, implementado y mergeado (PR #32).** El artifact de
+   propuestas se armó y se iteró en vivo con el dueño (3 rondas: 5 propuestas
+   iniciales → refinamiento a "margin column + spine" → ajustes de blur/zoom/
+   transparencia), y el resultado final se implementó en `BlogList.astro` +
+   `global.css`: vista de línea de tiempo vertical, sin dots, toggle contra la
+   grilla existente (que sigue siendo la vista por defecto, sin tocar). Revisión de
+   código independiente encontró 2 blockers reales (offset del fill de 2rem,
+   colapso de spacing de la grilla al envolverla en un div) — corregidos y
+   re-verificados en vivo (Playwright, no solo el diff); un tercer bug
+   (`[hidden]` vs. clase con `display`) lo encontré yo mismo en la verificación de
+   los fixes. Revisión de fidelidad visual independiente: **approve**, sin
+   cambios pedidos. Gate y CI verdes. Board/README regenerados (I-013 pasó a
+   `staging`).
+2. **Paginación (I-012)** — solo se refinó la decisión (dots en vez de flechas de
+   texto sobre las rutas `paginate()` ya decididas). **Sin implementar** — sigue
+   en `backlog`, no se agendó para esta sesión.
+3. **I-004** — lo tomó la otra sesión en paralelo, ver el checkpoint de abajo.
+
+**Trabajo adicional de scoping, no pedido originalmente pero surgido al aclarar el
+pedido del slider:** se ficharon **I-014** (posts pinneados/featured en la vista
+grilla, reemplazando el pedido de "ordenar por vistas" hasta que exista
+tracking real) e **I-015** (spike: investigar view-tracking antes de construirlo —
+el sitio no tiene backend hoy, decisión de I-011). Ninguna de las dos está
+implementada, ambas en `backlog`.
+
+**Pendiente real para la próxima sesión:**
+- I-012 y I-014 — fichados con approach decidido, sin implementar.
+- I-015 — spike sin arrancar.
+- El pedido de "from → to" animado en el header del blog — explícitamente dejado
+  para la otra sesión paralela, no tocado acá.
+- **PR #33 (I-004, de la otra sesión) sigue esperando su propia revisión
+  independiente** — ver el checkpoint de abajo, no es de esta sesión pero
+  comparte el repo.
+
+---
+
 ## Checkpoint — 07/08, I-004 implementado, PR #33 abierto (draft) — sesión cerrada aquí
 
 **I-004 (modo estático automático, "auto, no buttons") queda implementado y con PR

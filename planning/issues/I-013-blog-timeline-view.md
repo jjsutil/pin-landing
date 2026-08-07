@@ -1,7 +1,7 @@
 ---
 id: I-013
 type: feature
-status: backlog
+status: staging
 impact: high
 cost: high
 epic: E01
@@ -62,16 +62,16 @@ effect subtle.
 
 ## Acceptance criteria
 
-- [ ] Toggle button switches between the default listing (I-014) and this timeline
+- [x] Toggle button switches between the default listing (I-014) and this timeline
       view, on both `/blog` and `/en/blog`.
-- [ ] At least 4 posts visible in the viewport at once on a standard desktop width.
-- [ ] Divider line uses `var(--line-soft)` (or equivalent existing token); the
+- [x] At least 4 posts visible in the viewport at once on a standard desktop width.
+- [x] Divider line uses `var(--line-soft)` (or equivalent existing token); the
       scroll-progress fill uses `var(--accent)` — no new colors introduced.
-- [ ] No glow/shadow/shine on the fill or focused post — flat color, thin line only.
-- [ ] Zoom/blur focus effect present but subtle: consistent with the tuned prototype
+- [x] No glow/shadow/shine on the fill or focused post — flat color, thin line only.
+- [x] Zoom/blur focus effect present but subtle: consistent with the tuned prototype
       values (small scale delta, low blur ceiling), not the first, stronger pass.
-- [ ] `prefers-reduced-motion: reduce` disables the scroll-focus transform/blur
+- [x] `prefers-reduced-motion: reduce` disables the scroll-focus transform/blur
       animation (site-wide convention, `global.css:729-739` and I-004's investigation).
-- [ ] Verified on `npx astro check` + `npm run build`, both locales.
-- [ ] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
+- [x] Verified on `npx astro check` + `npm run build`, both locales.
+- [x] Visual evidence (light + dark, ES) per this repo's UI-evidence rule, showing the
       timeline view and the toggle control.
