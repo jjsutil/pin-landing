@@ -3,18 +3,7 @@
 
 # Board — pin-landing
 
-15 issues · **backlog 3 · ready 0 · in-dev 0 · review 1 · staging 11 · production 0**
-
-## review
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
-
-Objective criteria win over frontmatter here (roadmap-board's own rule): I-004's
-issue file on `main` still reads `backlog`, but PR #33 (`feat/i-004-fps-static-mode`)
-is open and references it — that makes it `review`, not `backlog`. The status bump
-lives in that PR's own branch, not yet merged.
+15 issues · **backlog 3 · ready 0 · in-dev 0 · review 0 · staging 12 · production 0**
 
 ## staging
 
@@ -23,6 +12,7 @@ lives in that PR's own branch, not yet merged.
 | I-001 | Blog infrastructure — content collection, routes, footer entry | feature | high | low | E01 | 2d |
 | I-002 | Blog post 1 — "«Inteligencia artificial» no nombra una tecnología. Nombra una promesa." | feature | high | low | E01 | 2d |
 | I-003 | Blog post 2 — "No se olvidó de su expediente. Nunca lo leyó entero." | feature | high | low | E01 | 2d |
+| I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
 | I-005 | Blog i18n — English posts and a structure that scales past one language | feature | high | high | E01 | 2d |
 | I-006 | CTA / interaction on blog posts — share (X/LinkedIn) + copy-link, no comment box | feature | low | low | E01 | 2d |
 | I-007 | Blog listing navigability — tags, timeline, topic grouping | feature | low | low | E01 | 2d |
@@ -52,8 +42,8 @@ animated progress fill — validated through three rounds of a shared design Art
 then through a code-review round that caught and fixed 2 real geometry/spacing
 blockers before merge (high cost, earned).
 **Low impact / low cost:** I-004, I-006, I-007, I-009, I-014 — I-006/I-007/I-009 done,
-I-004 in `review` (PR #33, awaiting its own independent review — see HANDOFF), I-014
-(pinned ordering) next up, small and independent.
+I-004 shipped too (PR #33, staging), I-014 (pinned ordering) next up, small and
+independent.
 **Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch
 shape, not just CSS), I-015 (picking and wiring an actual view-tracking mechanism for a
 currently backend-free static site is an architecture decision, not a quick add) — both
@@ -73,5 +63,5 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — I-004 entered `review` today (PR #33, opened 2026-08-07), well under the
-7-day threshold.
+None — nothing sits in `review`: I-004 merged the same day it entered it (PR #33,
+2026-08-07).

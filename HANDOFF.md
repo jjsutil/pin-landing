@@ -1,5 +1,68 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 07/08, I-004 revisado y mergeado (PR #33) — sesión cerrada aquí
+
+**I-004 quedó en `main` (squash `dc61299`). La revisión independiente no fue un
+trámite: encontró un defecto que anulaba parte del propósito de la unidad y lo
+arregló antes del merge. Nada pendiente de esta unidad.**
+
+Revisión por tres agentes frescos (autor ≠ revisor), ninguno autor del código:
+
+- **Código — APROBAR.** Verificó que `prefers-reduced-motion` gana siempre y sin
+  correr el benchmark, que la especificidad de `html.perf-lite` gana sin depender del
+  orden de aparición, que no hay doble ejecución ni leak de `rAF` (MPA clásico, sin
+  ClientRouter), que 120Hz no da falsos positivos, y que el test falla por mutación.
+  Dos hallazgos con consecuencia real, arreglados: el FPS se dividía por 20 frames
+  cuando 20 frames abarcan 19 intervalos (sobreestimaba ~5%, sesgando *en contra* de
+  activar el modo justo en el umbral) → `fpsFromSample()` con test propio; y una
+  pestaña en background congela `rAF`, cuyo delta gigante se leía como ~0fps en
+  hardware capaz → se descarta la muestra si un hueco supera
+  `PERF_LITE_MAX_FRAME_GAP_MS` (500ms) y el benchmark reinicia.
+- **Fidelidad visual del home — FIEL.** `perf-lite` forzada vs `prefers-reduced-motion`
+  emulado coinciden superficie por superficie, claro y oscuro. Sin regresión, sin flash.
+- **Fidelidad visual del blog — encontró el defecto que importaba.**
+  `BlogList.astro` leía su propio `matchMedia('(prefers-reduced-motion: reduce)')` en
+  vez de la clase, así que en hardware lento detectado por el benchmark el handler de
+  scroll del timeline **seguía escribiendo `transform`/`filter: blur`/`opacity` inline
+  por fila en cada frame** — el costo exacto que I-004 existe para eliminar. Arreglado
+  en la raíz: ahora lee `perf-lite` (fuente de verdad única de `main.ts`) y lo consulta
+  en cada pasada, porque el benchmark resuelve ~300ms después de cargar. Al entrar en
+  modo estático limpia una vez los estilos inline, porque si no, activarse tarde dejaba
+  media lista congelada borrosa. Ronda 2 sobre el render: **FIEL**, incluido el caso de
+  activación tardía a mitad de sesión.
+
+**Merge de `main` durante la revisión:** el PR estaba 3 commits atrás e I-013 había
+agregado reglas *dentro* del mismo `@media (prefers-reduced-motion: reduce)` que este PR
+convierte en clase — conflicto semántico, no solo textual. Se portaron a `html.perf-lite`
+(`.blog-timeline-row`/`.blog-timeline-fill` → `transition: none`, viewport →
+`scroll-snap-type: none`) y se anuló además el foco por hover del timeline, que vive en un
+`@media (prefers-reduced-motion: no-preference)` y por lo tanto seguía activo cuando
+`perf-lite` viene del benchmark y no de la preferencia del SO.
+
+Verificación final sobre `884982b`: `check-gates.sh --base origin/main` exit 0, 0
+blockers, 0 warnings (14 capturas, todas SHA-pinneadas); CI `check-gates` success;
+`astro check` 0 errores; `npm run build` y `GHPAGES=true npm run build` OK; tests 3/3.
+Evidencia visual del blog commiteada en `design/evidence/i004-blog-timeline-*`.
+
+**Sigue pendiente, riesgo aceptado y NO verificado:** no se corrió profiling con CPU
+throttling (DevTools) para medir el ahorro real de main-thread/compositor.
+`PERF_LITE_FPS_THRESHOLD = 30` sigue siendo un punto de partida razonado, no medido —
+`src/scripts/perf-lite.ts` es el único lugar donde vive el número. Recalibrar cuando
+alguien lo mida contra hardware débil real.
+
+**Desviación que sigue en pie, a propósito:** los efectos JS de tipeo, contador y demo
+del visor NO se gatean por `perf-lite` (solo por `prefers-reduced-motion`) — arrancan
+sincrónicamente al cargar y gatearlos reintroduciría el flash que el criterio de
+aceptación pide evitar. El timeline del blog **sí** quedó gateado (ver arriba); es la
+excepción, porque su handler corre en scroll, no al cargar.
+
+**Gotcha del entorno, sigue vigente:** la extensión `claude-in-chrome` no puede tomar
+capturas en sesiones de background (timeout incluso en `example.com`). El camino que
+funciona es `google-chrome --headless=new` + `puppeteer-core` (instalado ad-hoc en el
+scratchpad, nunca en el repo) vía CDP.
+
+---
+
 ## Checkpoint — 07/08, I-013 (blog timeline) mergeado — sesión cerrada aquí
 
 **Corrió en paralelo con la sesión de I-004 de abajo (mismo dueño, dos agentes

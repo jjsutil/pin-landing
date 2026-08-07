@@ -1,7 +1,7 @@
 ---
 id: I-004
 type: feature
-status: review
+status: staging
 impact: low
 cost: low
 created: 2026-08-05
