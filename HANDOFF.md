@@ -1,5 +1,44 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 07/08, I-016 (corrección del timeline I-013) — PR #34 abierto
+
+**El dueño revisó el timeline que dejó I-013 y listó cinco defectos en la misma
+superficie. Los cinco están corregidos en `feat/i-016-blog-timeline-refinement`,
+[PR #34](https://github.com/jjsutil/pin-landing/pull/34) (draft). Gate local y CI
+en verde. Falta lo único que falta: revisión independiente (autor ≠ revisor) y la
+decisión del dueño.**
+
+Qué cambió, en una línea cada uno:
+
+- **Un solo renglón de controles.** El switch de vista es icon-only y reusa el
+  `.segmented` que ya existía (el del toggle de precios), anclado a la segunda
+  columna de un grid `1fr auto`. Las palabras "Grilla"/"Línea de tiempo" quedan
+  solo como `aria-label`/`title`.
+- **La marca azul** dejó de ser una barra que crecía desde arriba: ahora es un
+  segmento de 2.25rem que se desliza al post centrado — marca *cuál*, no *cuánto*.
+- **Destaca un solo item.** El falloff se mide en alturas de fila (con smoothstep)
+  en vez de medias-pantallas, así que a una fila del centro el efecto ya está en
+  su piso.
+- **Fluidez: la causa era escritura triple.** JS escribía `transform`/`filter` por
+  frame, el CSS los transicionaba 160ms, y una regla `:has(:hover)` los pisaba con
+  `!important`. Se borraron la transición y el hover; el scroll es el único driver.
+  También se fue el `scroll-snap` y la rampa de `opacity` (solo zoom y blur).
+- **Scrollbar del componente oculto** (`scrollbar-width: none` + pseudo WebKit),
+  verificado `offsetWidth - clientWidth === 0`, sin tocar el scroll real.
+
+Verificado contra el build de producción con Playwright (no contra el diff):
+valores inline por fila, posición de la marca, round-trip del toggle, y
+reduced-motion (sin estilos inline, marca no renderizada). Un bug encontrado *en*
+la verificación y corregido: con los filtros en `display:none` el grid quedaba con
+un solo item y el switch se estiraba a todo el ancho.
+
+**Nota:** CI **sí corrió** en este PR (`check-gates` pass) — el bloqueo por billing
+que documenta `.claude/repo-conventions.md` ya no aplica; conviene actualizar esa
+nota en un PR aparte.
+
+Sigue pendiente lo de antes: I-012, I-014 (fichados, sin implementar), I-015 (spike
+sin arrancar), el "from → to" animado del header del blog, y PR #33 (I-004)
+esperando su revisión independiente.
 ## Checkpoint — 07/08, I-004 revisado y mergeado (PR #33) — sesión cerrada aquí
 
 **I-004 quedó en `main` (squash `dc61299`). La revisión independiente no fue un
