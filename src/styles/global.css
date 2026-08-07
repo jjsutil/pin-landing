@@ -843,11 +843,10 @@ html.perf-lite .page.on { animation: none; }
 /* backdrop-filter is a continuous GPU compositing cost on a sticky element —
    drop it in static mode; the opaque background alone still reads fine (I-004). */
 html.perf-lite header.bar { backdrop-filter: none; background: var(--base); }
-/* Timeline del blog (I-013), traído a esta clase junto con el resto. Ojo: el handler
-   de scroll de BlogList.astro sí sigue seteando transform/filter/opacity cuando
-   `perf-lite` viene del benchmark (solo se saltea bajo prefers-reduced-motion) —
-   misma desviación ya documentada para los demás efectos JS; acá se apagan la
-   transición y el snap, que son costo de compositing puro. */
+/* Timeline del blog (I-013), traído a esta clase junto con el resto: el handler de
+   scroll de BlogList.astro también lee `perf-lite` y deja de setear
+   transform/filter/opacity, así que esto solo saca la transición y el snap que ya
+   no se usan. */
 html.perf-lite .blog-timeline-row, html.perf-lite .blog-timeline-fill { transition: none; }
 html.perf-lite .blog-timeline-viewport { scroll-snap-type: none; }
 /* El efecto de foco por hover vive en un `@media (prefers-reduced-motion:

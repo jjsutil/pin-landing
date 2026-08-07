@@ -229,17 +229,44 @@ const STR =
   // scale/opacity, the rest scaled down and lightly blurred; same effect on
   // hover, handled entirely by CSS `:has()` in global.css. The divider's
   // accent-colored fill grows to track the active row: that growth is the
-  // "animated spine," no per-post markers needed. All of it is skipped
-  // under prefers-reduced-motion — see the guard below.
+  // "animated spine," no per-post markers needed. All of it is skipped in
+  // static mode — see the guard below.
   const timelineViewport = document.getElementById('blog-timeline-viewport');
   const timelineList = document.getElementById('blog-timeline-list');
   const timelineFill = document.getElementById('blog-timeline-fill');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let timelineUpdateQueued = false;
+  let timelineFocusCleared = false;
+
+  // Single source of truth for static mode: the `perf-lite` class main.ts puts on
+  // <html>, which covers both prefers-reduced-motion and the FPS self-benchmark
+  // (I-004). Read on every pass, not once at load: the benchmark resolves ~300ms in,
+  // so a value captured here at parse time would always say "not static".
+  const isStatic = () => document.documentElement.classList.contains('perf-lite');
+
+  // Static mode can start mid-session (see above), and by then rows carry inline
+  // transform/filter/opacity from earlier passes — bailing without clearing them
+  // would freeze half the list blurred forever.
+  function clearTimelineFocus() {
+    if (!timelineList || !timelineFill) return;
+    for (const row of timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row')) {
+      row.style.transform = '';
+      row.style.filter = '';
+      row.style.opacity = '';
+      row.classList.remove('is-active');
+    }
+    timelineFill.style.height = '';
+  }
 
   function updateTimelineFocus() {
     timelineUpdateQueued = false;
-    if (!timelineViewport || !timelineList || !timelineFill || reducedMotion) return;
+    if (!timelineViewport || !timelineList || !timelineFill) return;
+    if (isStatic()) {
+      if (!timelineFocusCleared) {
+        clearTimelineFocus();
+        timelineFocusCleared = true;
+      }
+      return;
+    }
     // Plain for-of, not .forEach: TS can't narrow a `let` reassigned inside a
     // callback's separate scope, so `active` stayed `never` post-loop there.
     const rows = Array.from(timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row'));
