@@ -14,6 +14,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   animations/transitions/`backdrop-filter` it already turned off for
   `prefers-reduced-motion` — one reused block, not a second copy.
 
+### Added (blog timeline view, I-013)
+
+- `/blog` and `/en/blog` now offer a second way to browse posts: a vertical,
+  scroll-driven timeline, toggled in next to the existing grid (which stays
+  the default). No dots, no page numbers, no tags — chronological only.
+
 ### Fixed (#19)
 
 - Header now links to Blog in both languages (`nav.blog`), previously reachable

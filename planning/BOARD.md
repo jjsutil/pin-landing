@@ -3,13 +3,18 @@
 
 # Board — pin-landing
 
-15 issues · **backlog 4 · ready 0 · in-dev 0 · review 1 · staging 10 · production 0**
+15 issues · **backlog 3 · ready 0 · in-dev 0 · review 1 · staging 11 · production 0**
 
 ## review
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
 | I-004 | Static mode for low-end hardware — detect or offer a no-animation experience | feature | low | low | — | 2d |
+
+Objective criteria win over frontmatter here (roadmap-board's own rule): I-004's
+issue file on `main` still reads `backlog`, but PR #33 (`feat/i-004-fps-static-mode`)
+is open and references it — that makes it `review`, not `backlog`. The status bump
+lives in that PR's own branch, not yet merged.
 
 ## staging
 
@@ -25,13 +30,13 @@
 | I-009 | Logo "pin." doesn't lead to the home page | bug | low | low | — | 1d |
 | I-010 | Blog posts 4–6 — verification method, confidentiality/data residency, OCR fidelity | feature | high | low | E01 | 1d |
 | I-011 | Blog listing condensed + English blog (`/en/blog`) | feature | high | high | E01 | 1d |
+| I-013 | Blog timeline view — vertical, scroll-driven, no dots | feature | high | high | E01 | 0d |
 
 ## backlog
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
 | I-012 | Blog pagination doesn't scale past ~20 posts | feature | low | medium | E01 | 0d |
-| I-013 | Blog timeline view — vertical, scroll-driven, no dots | feature | high | high | E01 | 0d |
 | I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 0d |
 | I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | high | E01 | 0d |
 
@@ -41,13 +46,14 @@
 blog content trilogy-plus-three, all published and in the listing.
 **High impact / high cost:** I-005 (superseded — see its Gate resolution note), I-011 —
 the structural i18n work: locale-aware content collection, condensed listing, English
-blog. I-013 joins this quadrant next: the timeline view is a second full browsing mode
-(high impact) built on genuinely new interaction code — scroll-driven focus, animated
-progress fill — validated through three rounds of a shared design Artifact before
-implementation (high cost).
+blog. **I-013 shipped in this quadrant** — the timeline view, a second full browsing
+mode (high impact) built on genuinely new interaction code — scroll-driven focus,
+animated progress fill — validated through three rounds of a shared design Artifact,
+then through a code-review round that caught and fixed 2 real geometry/spacing
+blockers before merge (high cost, earned).
 **Low impact / low cost:** I-004, I-006, I-007, I-009, I-014 — I-006/I-007/I-009 done,
-I-004 in review (FPS self-benchmark + `perf-lite` class, PR pending), I-014 (pinned
-ordering) next up, small and independent.
+I-004 in `review` (PR #33, awaiting its own independent review — see HANDOFF), I-014
+(pinned ordering) next up, small and independent.
 **Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch
 shape, not just CSS), I-015 (picking and wiring an actual view-tracking mechanism for a
 currently backend-free static site is an architecture decision, not a quick add) — both
@@ -67,4 +73,5 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — I-004 just entered `review` (0d), well under the 7-day threshold.
+None — I-004 entered `review` today (PR #33, opened 2026-08-07), well under the
+7-day threshold.

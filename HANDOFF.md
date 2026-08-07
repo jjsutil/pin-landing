@@ -1,5 +1,104 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 07/08, I-013 (blog timeline) mergeado — sesión cerrada aquí
+
+**Corrió en paralelo con la sesión de I-004 de abajo (mismo dueño, dos agentes
+simultáneos) — sin conflicto real, ambas tocaron archivos distintos salvo
+`global.css`, donde cada una agregó bloques separados sin pisarse.**
+
+De los 3 pedidos nuevos que abrió el checkpoint de abajo ("3 pedidos nuevos"),
+quedaron resueltos:
+
+1. **Slider del blog → I-013, implementado y mergeado (PR #32).** El artifact de
+   propuestas se armó y se iteró en vivo con el dueño (3 rondas: 5 propuestas
+   iniciales → refinamiento a "margin column + spine" → ajustes de blur/zoom/
+   transparencia), y el resultado final se implementó en `BlogList.astro` +
+   `global.css`: vista de línea de tiempo vertical, sin dots, toggle contra la
+   grilla existente (que sigue siendo la vista por defecto, sin tocar). Revisión de
+   código independiente encontró 2 blockers reales (offset del fill de 2rem,
+   colapso de spacing de la grilla al envolverla en un div) — corregidos y
+   re-verificados en vivo (Playwright, no solo el diff); un tercer bug
+   (`[hidden]` vs. clase con `display`) lo encontré yo mismo en la verificación de
+   los fixes. Revisión de fidelidad visual independiente: **approve**, sin
+   cambios pedidos. Gate y CI verdes. Board/README regenerados (I-013 pasó a
+   `staging`).
+2. **Paginación (I-012)** — solo se refinó la decisión (dots en vez de flechas de
+   texto sobre las rutas `paginate()` ya decididas). **Sin implementar** — sigue
+   en `backlog`, no se agendó para esta sesión.
+3. **I-004** — lo tomó la otra sesión en paralelo, ver el checkpoint de abajo.
+
+**Trabajo adicional de scoping, no pedido originalmente pero surgido al aclarar el
+pedido del slider:** se ficharon **I-014** (posts pinneados/featured en la vista
+grilla, reemplazando el pedido de "ordenar por vistas" hasta que exista
+tracking real) e **I-015** (spike: investigar view-tracking antes de construirlo —
+el sitio no tiene backend hoy, decisión de I-011). Ninguna de las dos está
+implementada, ambas en `backlog`.
+
+**Pendiente real para la próxima sesión:**
+- I-012 y I-014 — fichados con approach decidido, sin implementar.
+- I-015 — spike sin arrancar.
+- El pedido de "from → to" animado en el header del blog — explícitamente dejado
+  para la otra sesión paralela, no tocado acá.
+- **PR #33 (I-004, de la otra sesión) sigue esperando su propia revisión
+  independiente** — ver el checkpoint de abajo, no es de esta sesión pero
+  comparte el repo.
+
+---
+
+## Checkpoint — 07/08, I-004 implementado, PR #33 abierto (draft) — sesión cerrada aquí
+
+**I-004 (modo estático automático, "auto, no buttons") queda implementado y con PR
+abierto: [`#33`](https://github.com/jjsutil/pin-landing/pull/33), rama
+`feat/i-004-fps-static-mode`, draft (corrió sin supervisión — regla del pr-writer).
+Nada pendiente de este lado; el siguiente paso es una revisión por un agente
+independiente (autor ≠ revisor) y la decisión del dueño de mergear.**
+
+- Self-benchmark de FPS (`requestAnimationFrame`, 20 frames) en `src/scripts/main.ts`
+  + lógica pura testeable en `src/scripts/perf-lite.ts` (`PERF_LITE_FPS_THRESHOLD`
+  como constante nombrada y comentada — recalibrar contra hardware real cuando alguien
+  lo mida, es el único lugar donde vive el número).
+  `prefers-reduced-motion` sigue ganando siempre, sin excepción, antes de que corra
+  cualquier benchmark.
+- El bloque `@media (prefers-reduced-motion: reduce)` de `global.css` se reusó, no se
+  duplicó: su selector ahora dispara con la clase `html.perf-lite`, que `main.ts`
+  agrega tanto por preferencia del SO como por el resultado del benchmark.
+- Test: `node --experimental-strip-types --test src/scripts/perf-lite.test.ts` (2
+  casos), verificado por mutación (`<` → `<=` rompió 1/2, revertido).
+- Gate (`scripts/check-gates.sh --base origin/main`): exit 0, 0 blockers, 0 warnings.
+  `astro check` 0 errores. `npm run build` y `GHPAGES=true npm run build`: exit 0.
+- Evidencia visual: 8 capturas en `design/evidence/` (ES, claro/oscuro,
+  animado/estático — recortadas a la franja del header, que es donde
+  `backdrop-filter` es la única diferencia visible en una captura fija). Capturadas
+  con `google-chrome` headless + `puppeteer-core` (ver Gotcha abajo).
+- **Deviation documentada en el PR**: el estado `perf-lite` NO gatea los efectos
+  JS (typing, contador, demo del visor) — esos siguen atados solo a `reduced`, como ya
+  estaban. El scope original de la issue sugiere que sí deberían (misma lógica que
+  `reduced`), pero el benchmark tarda ~300ms en resolver y esos efectos arrancan
+  sincrónicamente al cargar; gatearlos ahí reintroduce el flash que el propio criterio
+  de aceptación pide evitar. Señalado para el revisor, no decidido en silencio.
+- **Riesgo aceptado, sin verificar**: no se corrió profiling con CPU throttling
+  (DevTools) para medir la reducción real de costo de main-thread/compositor — solo se
+  confirmó que la clase aplica el CSS correcto. Recomendado antes o poco después del
+  merge, junto con la recalibración del umbral.
+- Issue `I-004`: `status: review`, criterios de aceptación actualizados (4 de 5
+  tildados, el de throttling queda explícitamente sin verificar). `planning/BOARD.md`
+  y el resumen de `README.md` regenerados (I-004 pasó de `backlog` a `review`).
+  `CHANGELOG.md` con entrada en `[Unreleased]`.
+
+**Gotcha — el entorno de este agente en background no puede tomar screenshots vía la
+extensión `claude-in-chrome`:** el `computer` (screenshot/scroll) da timeout incluso en
+`example.com`, mientras que `javascript_tool` sí responde — es una limitación del
+entorno (sandbox sin display real para la extensión), no del código. Workaround que
+funcionó: `google-chrome --headless=new` está instalado directamente en el sistema;
+`puppeteer-core` (instalado ad-hoc en el scratchpad, no en el repo) lo maneja vía CDP
+para scroll/tema/clase + captura determinística. Si otro agente en background necesita
+evidencia visual, este es el camino, no la extensión del navegador.
+
+Nada más pendiente de este ciclo. Ver checkpoints de abajo para el resto del estado
+del repo (7 ítems del brainstorm, sitemap/robots en `PR #25` sin mergear a propósito).
+
+---
+
 ## Checkpoint — 07/08, 3 pedidos nuevos: decisiones tomadas, nada implementado todavía
 
 Dueño pidió abordar 3 cosas nuevas. Se resolvieron las ambigüedades vía preguntas; el
