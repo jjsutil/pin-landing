@@ -67,3 +67,19 @@ equivalent.
 - [ ] The decision on the accent mark in static mode is recorded in this issue with
       its one-line reason.
 - [ ] Verified on the real render (both static triggers), not on the diff.
+
+## Stopped, pending owner call (2026-08-07)
+
+Picked up this session, timeboxed per the owner's own instruction: implement only if
+mechanical, stop rather than invent the answer if it hits the open decision above.
+It does. The mechanical two-thirds of this issue (apply `.is-active` to the centred
+row in static mode via the existing scroll listener + `MutationObserver`, no inline
+`transform`/`filter`) is fully scoped and ready to implement — see
+`updateTimelineFocus()` / `clearTimelineFocus()` in `src/components/BlogList.astro`
+(around line 301). What blocks a complete, mergeable fix is the accent-mark
+question: leaving it hidden is the path of least code, but it's the product call the
+issue itself reserves for the owner, not a default I should pick on his behalf.
+
+**One line to unblock:** "mark stays hidden" or "mark comes back as a static
+segment (no motion, just positioned)". Either answer lets the next session
+implement and ship this in one pass — the mechanical part alone.
