@@ -326,7 +326,10 @@ const STR =
       // eases in and out instead of arriving with a visible kink.
       const t = Math.max(0, 1 - dist / r.height);
       const focus = t * t * (3 - 2 * t);
-      row.style.transform = `scale(${(0.978 + focus * 0.047).toFixed(3)})`;
+      // Half the amplitude the first build shipped (0.978→1.025), owner's call
+      // 2026-08-07: same deviation either side of 1, just half of it. The blur
+      // is what carries the focus; the zoom only has to hint at it.
+      row.style.transform = `scale(${(0.989 + focus * 0.023).toFixed(3)})`;
       row.style.filter = `blur(${((1 - focus) * 0.9).toFixed(2)}px)`;
       if (dist < bestDist) {
         bestDist = dist;
