@@ -1,7 +1,7 @@
 ---
 id: I-018
 type: chore
-status: review
+status: staging
 impact: low
 cost: low
 created: 2026-08-07

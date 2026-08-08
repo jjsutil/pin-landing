@@ -257,7 +257,10 @@ const STR =
       if (viewGrid) viewGrid.hidden = isTimeline;
       if (filterBar) filterBar.hidden = isTimeline;
       if (viewTimeline) viewTimeline.hidden = !isTimeline;
-      if (isTimeline) updateTimelineFocus();
+      if (isTimeline) {
+        syncTimelinePadding();
+        updateTimelineFocus();
+      }
     });
   });
 
@@ -357,12 +360,34 @@ const STR =
     requestAnimationFrame(updateTimelineFocus);
   }
 
+  // Scroll range fix (I-021): the viewport only scrolls as far as its own
+  // padding allows, so without enough top/bottom room the first and last rows
+  // (and everything near them) can never reach the centre line above — only
+  // whichever row or two starts near the geometric middle of the list ever
+  // gets close enough to lift out of the base blur. Padding equal to half the
+  // viewport height (minus half a row) gives every row, including the very
+  // first and last, room to travel all the way to centre. Row heights vary
+  // with title/excerpt wrap, so this measures the real render instead of
+  // guessing a second number in CSS; the static 2rem in global.css is only
+  // the pre-hydration fallback for before this runs.
+  function syncTimelinePadding() {
+    if (!timelineViewport || !timelineList) return;
+    const firstRow = timelineList.querySelector<HTMLLIElement>('.blog-timeline-row');
+    if (!firstRow) return;
+    const pad = Math.max(0, timelineViewport.clientHeight / 2 - firstRow.getBoundingClientRect().height / 2);
+    timelineViewport.style.paddingTop = `${pad}px`;
+    timelineViewport.style.paddingBottom = `${pad}px`;
+  }
+
   timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
   // Guarded, not unconditional: while the timeline is hidden, its viewport
   // has zero height, so the focus math divides by zero (NaN) on every
   // window resize — harmless (invalid CSS values are dropped) but wasted.
   window.addEventListener('resize', () => {
-    if (!viewTimeline?.hidden) queueTimelineUpdate();
+    if (!viewTimeline?.hidden) {
+      syncTimelinePadding();
+      queueTimelineUpdate();
+    }
   });
 
   // The FPS benchmark (I-004) adds `perf-lite` ~300ms after load, which is a state

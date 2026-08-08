@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Blog timeline scroll can now reach every post, not just one or two near the
+  middle of the list — the scroll viewport's top/bottom padding is measured from
+  the real render (half the viewport height) instead of a fixed `2rem`, giving
+  every row, including the first and last, enough travel to reach the focus
+  centre line (I-021).
+
 ### Docs (I-018)
 
 - `.claude/repo-conventions.md` no longer claims Actions is blocked by billing on
