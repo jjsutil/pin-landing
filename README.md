@@ -32,7 +32,7 @@ Node 22+. To demo over the internet: `npm run demo`, then `ngrok http 4321`
 <!-- BOARD-SUMMARY:START -->
 ## Roadmap at a glance
 
-**21 issues** — backlog 6 · ready 0 · in-dev 0 · review 1 · staging 14 · production 0
+**21 issues** — backlog 6 · ready 0 · in-dev 0 · review 0 · staging 15 · production 0
 
 E01 (blog section): the content trilogy-plus-three (I-001–I-003, I-008, I-010), the
 CTA/tag-filter polish (I-006, I-007), the structural i18n pass (I-011 — condensed
@@ -45,7 +45,8 @@ as well** — the owner's correction of the I-013 timeline: one icon-only view s
 instead of a second row of pills, and a highlight that marks a single post instead
 of the whole column (PR #34 merged, staging). **I-018 (the stale "CI is blocked by
 billing" doc note) shipped too** — PR #35 merged, staging. **I-021 (the timeline's
-scroll range — most posts were permanently unreachable) is in review, its PR open.**
+scroll range — most posts were permanently unreachable) shipped too** — PR #37
+merged, staging.
 Backlog: I-012 (blog pagination doesn't scale past ~20 posts, dot-styled `paginate()`
 once scheduled), I-014 (pinned/featured post ordering), I-015 (a spike on view-count
 tracking — no backend today, so this decides how before anything gets built), I-017

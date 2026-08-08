@@ -1,5 +1,59 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 08/08, I-021 mergeado (PR #37) — sesión cerrada acá
+
+**Reporte del dueño: en la vista timeline del blog, el scroll solo llegaba a enfocar
+dos fechas — el resto quedaba con blur permanente. Causa raíz encontrada, arreglada,
+y con un blocker real cazado por la revisión independiente antes del merge. Nada
+pendiente de esta unidad.**
+
+**Causa raíz:** `.blog-timeline-viewport` (`src/styles/global.css`) tenía
+`padding: 2rem 0` fijo — y ese padding ES el rango de scroll disponible, porque el
+foco se calcula por distancia al centro del viewport. Con solo 2rem, la mayoría de
+las filas nunca viajaban lo suficiente para cruzar esa línea central; solo 1-2 filas
+cercanas al medio geométrico de la lista alcanzaban el foco alguna vez.
+
+**Fix (`src/components/BlogList.astro`):** `syncTimelinePadding()`, nueva función que
+mide en runtime el alto real del viewport y de las filas (promedio de la primera y
+la última, no solo la primera — ver el `should` abajo) y setea el padding dinámico a
+la mitad del alto del viewport, en vez de adivinar un segundo número fijo en CSS. Se
+llama al entrar a la vista timeline y en cada resize.
+
+**Revisión independiente (agente fresco, ciego al diseño del fix) — request-changes,
+y tenía razón:** encontró que la marca de acento (`.blog-timeline-fill`) seguía con
+`top: 2rem` fijo en CSS — el propio comentario que ya estaba en ese archivo predecía
+exactamente esta falla ("top must match that padding exactly, or the mark ...
+undershoots"). Lo verificó contra las capturas del propio PR, no solo el diff: la
+marca renderizaba lejos de la fila realmente enfocada. Corregido en un commit de
+seguimiento en la misma rama (`syncTimelinePadding()` ahora también escribe
+`timelineFill.style.top`), re-verificado con headless Chrome (antes: fallaba en los
+3 puntos de scroll probados; después: pasa en los 3), capturas re-tomadas. El
+`should` (padding derivado solo de la primera fila, sesgado por su
+`padding-top: 0` asimétrico) también se corrigió en el mismo commit, no quedó como
+riesgo aceptado.
+
+Verificado con headless Chrome + puppeteer-core vía CDP (patrón ya documentado en
+este archivo — la extensión `claude-in-chrome` sigue sin funcionar en sesiones de
+fondo): barrido completo de scroll confirmando que las 6 filas llegan a blur ≈0 en
+algún punto (antes del fix, las filas 0,1,4,5 nunca bajaban del blur base,
+confirmado por mutación con `git stash` contra el server real), más un check nuevo
+de alineación de la marca contra la fila enfocada. `npx astro check` / `npm run
+build` / `check-gates.sh --base origin/main` en 0 en ambas rondas. Evidencia visual:
+4 capturas en `design/evidence/i021-*` (ES claro top/middle/bottom + un dark en
+middle), sobrescritas con la versión corregida antes del merge.
+
+**Riesgo aceptado, no verificado:** el criterio de aceptación sobre
+`prefers-reduced-motion`/`perf-lite` no se re-ejercitó en vivo en esta pasada —
+razonado como bajo riesgo porque el fix corre en un código path independiente del
+guard de `isStatic()`, pero sigue sin confirmar. Queda en el issue I-021 (status
+`staging`) como el único checkbox sin marcar.
+
+Board y resumen del README regenerados (I-021 → `staging`, 15 en staging / 0 en
+review). Commit directo a `main`, mismo patrón que los checkpoints anteriores de
+regen de board (sin PR, docs-only).
+
+---
+
 ## Checkpoint — 07/08, I-016 mergeado (PR #34) — sesión cerrada acá
 
 **El dueño revisó el timeline que dejó I-013 y listó cinco defectos en la misma

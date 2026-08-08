@@ -3,13 +3,7 @@
 
 # Board — pin-landing
 
-21 issues · **backlog 6 · ready 0 · in-dev 0 · review 1 · staging 14 · production 0**
-
-## review
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-021 | Blog timeline: scroll can only ever centre two posts | bug | high | low | E01 | 0d |
+21 issues · **backlog 6 · ready 0 · in-dev 0 · review 0 · staging 15 · production 0**
 
 ## staging
 
@@ -29,6 +23,7 @@
 | I-013 | Blog timeline view — vertical, scroll-driven, no dots | feature | high | high | E01 | 1d |
 | I-016 | Blog listing: icon-only view switch, single-item timeline focus | feature | high | low | E01 | 1d |
 | I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 1d |
+| I-021 | Blog timeline: scroll can only ever centre two posts | bug | high | low | E01 | 0d |
 
 ## backlog
 
@@ -50,10 +45,13 @@ controls a visitor touches first (high impact), fixed by reusing the existing
 `.segmented` component and deleting the code that fought itself, not by adding any
 (low cost). Its review round paid for itself twice: an independent code review and
 two fidelity rounds, the second of which caught the timeline freezing mid-effect
-when I-004's static mode turned on without a further scroll. **I-021** joins this
-quadrant now — the timeline's main interaction (high impact: without it most posts
-were unreachable) fixed with one measured-padding function, no new component (low
-cost).
+when I-004's static mode turned on without a further scroll. **I-021 shipped in this
+quadrant too** (PR #37, staging) — the timeline's main interaction (high impact:
+without it most posts were unreachable) fixed with one measured-padding function, no
+new component (low cost). Its own review round caught a real blocker before merge:
+the accent mark's position hadn't been updated to track the new dynamic padding, so
+it rendered detached from the focused row — fixed in a follow-up commit on the same
+PR and re-verified against fresh screenshots before merging.
 **High impact / high cost:** I-020 — the first post on this blog written for an
 engineering peer instead of a lawyer, and the only one whose cost is research rather
 than writing: every claim carries a citation that has to be opened and checked before
@@ -92,5 +90,4 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — I-021 entered `review` today (0d < 7d threshold), nothing else in `in-dev` or
-`review`.
+None — nothing in `in-dev` or `review`.
