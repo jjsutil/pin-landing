@@ -372,11 +372,26 @@ const STR =
   // the pre-hydration fallback for before this runs.
   function syncTimelinePadding() {
     if (!timelineViewport || !timelineList) return;
-    const firstRow = timelineList.querySelector<HTMLLIElement>('.blog-timeline-row');
+    const rows = timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row');
+    const firstRow = rows[0];
     if (!firstRow) return;
-    const pad = Math.max(0, timelineViewport.clientHeight / 2 - firstRow.getBoundingClientRect().height / 2);
+    const lastRow = rows[rows.length - 1];
+    // `.blog-timeline-row:first-child` has `padding-top: 0` (asymmetric vs.
+    // other rows), and the last row's height can differ (title-wrap
+    // dependent) — averaging first and last avoids a bias-short estimate
+    // from the first row alone.
+    const rowH = lastRow && lastRow !== firstRow
+      ? (firstRow.getBoundingClientRect().height + lastRow.getBoundingClientRect().height) / 2
+      : firstRow.getBoundingClientRect().height;
+    const pad = Math.max(0, timelineViewport.clientHeight / 2 - rowH / 2);
     timelineViewport.style.paddingTop = `${pad}px`;
     timelineViewport.style.paddingBottom = `${pad}px`;
+    // The mark (.blog-timeline-fill) is a sibling of the list, not a
+    // descendant, so its own resting `top` — not the list's — sets its
+    // coordinate origin. It must track the viewport's padding-top exactly
+    // (see the CSS comment at .blog-timeline-fill) or it renders detached
+    // from the row it's supposed to point at (I-021 follow-up).
+    if (timelineFill) timelineFill.style.top = `${pad}px`;
   }
 
   timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
