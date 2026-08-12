@@ -192,6 +192,10 @@ const STR =
               ))}
             </ul>
             <div class="blog-timeline-fill" id="blog-timeline-fill"></div>
+            {/* Snap stops, one per post, positioned at runtime — see
+                syncTimelineStops() below for why the rows can't be the
+                snap targets themselves. */}
+            <div class="blog-timeline-stops" id="blog-timeline-stops" aria-hidden="true"></div>
           </div>
         </div>
       </Fragment>
@@ -257,7 +261,10 @@ const STR =
       if (viewGrid) viewGrid.hidden = isTimeline;
       if (filterBar) filterBar.hidden = isTimeline;
       if (viewTimeline) viewTimeline.hidden = !isTimeline;
-      if (isTimeline) updateTimelineFocus();
+      if (isTimeline) {
+        syncTimelineStops();
+        updateTimelineFocus();
+      }
     });
   });
 
@@ -273,6 +280,7 @@ const STR =
   const timelineViewport = document.getElementById('blog-timeline-viewport');
   const timelineList = document.getElementById('blog-timeline-list');
   const timelineFill = document.getElementById('blog-timeline-fill');
+  const timelineStops = document.getElementById('blog-timeline-stops');
   let timelineUpdateQueued = false;
   let timelineFocusCleared = false;
 
@@ -311,43 +319,63 @@ const STR =
     // Re-arm the one-shot clear: static mode can be entered more than once in a
     // session, and a latched flag would skip the cleanup on the second entry.
     timelineFocusCleared = false;
-    // Plain for-of, not .forEach: TS can't narrow a `let` reassigned inside a
-    // callback's separate scope, so `active` stayed `never` post-loop there.
+    // Focus is a function of scroll PROGRESS in index space, not of distance to
+    // a fixed line on screen (I-027). With the frame always full (I-026) the
+    // list only travels ~4 row-heights, so a fixed centre line is reachable by
+    // the middle posts alone: the first two and the last two are never centred
+    // and were permanently blurred. Reading progress instead — 0% is the first
+    // post, 100% the last, every post its own turn in between — every post gets
+    // focused, the frame stays full, and neither depends on row heights, which
+    // vary with title wrap. The highlight consequently travels down the frame
+    // as you scroll rather than sitting at a fixed height; that is the trade
+    // that makes the ends reachable at all (see the issue for the arithmetic).
     const rows = Array.from(timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row'));
-    const vRect = timelineViewport.getBoundingClientRect();
-    const centerY = vRect.top + vRect.height / 2;
-    let active: HTMLLIElement | null = null;
-    let bestDist = Infinity;
+    const max = timelineViewport.scrollHeight - timelineViewport.clientHeight;
+    const idx = max > 0 ? (timelineViewport.scrollTop / max) * (rows.length - 1) : 0;
+    const active = rows[Math.round(idx)] ?? null;
 
-    for (const row of rows) {
-      const r = row.getBoundingClientRect();
-      const dist = Math.abs(r.top + r.height / 2 - centerY);
-      // Linear ramp over one row-height, then smoothstep so the highlight
-      // eases in and out instead of arriving with a visible kink.
-      const t = Math.max(0, 1 - dist / r.height);
+    rows.forEach((row, i) => {
+      // Linear ramp over one post, then smoothstep so the highlight eases in
+      // and out instead of arriving with a visible kink.
+      const t = Math.max(0, 1 - Math.abs(i - idx));
       const focus = t * t * (3 - 2 * t);
       // Half the amplitude the first build shipped (0.978→1.025), owner's call
       // 2026-08-07: same deviation either side of 1, just half of it. The blur
       // is what carries the focus; the zoom only has to hint at it.
       row.style.transform = `scale(${(0.989 + focus * 0.023).toFixed(3)})`;
       row.style.filter = `blur(${((1 - focus) * 0.9).toFixed(2)}px)`;
-      if (dist < bestDist) {
-        bestDist = dist;
-        active = row;
-      }
-    }
-
-    for (const row of rows) row.classList.toggle('is-active', row === active);
+      row.classList.toggle('is-active', row === active);
+    });
 
     if (active) {
       // Content-space coordinates: the mark is absolutely positioned inside the
-      // scrolling viewport, so it scrolls with the list; `top: 2rem` in CSS is
-      // the viewport's own padding, i.e. the list's origin.
+      // scrolling viewport, so it scrolls with the list, and the viewport has no
+      // padding (I-026) — the list's own origin is the mark's origin.
       const listTop = timelineList.getBoundingClientRect().top;
       const r = active.getBoundingClientRect();
       const markH = timelineFill.offsetHeight;
       const y = r.top + r.height / 2 - listTop - markH / 2;
       timelineFill.style.transform = `translateY(${Math.max(0, y).toFixed(1)}px)`;
+    }
+  }
+
+  // One snap stop per post, spread evenly over the whole scroll range, so one
+  // gesture advances exactly one post (`scroll-snap-stop: always` forbids a
+  // fling from skipping past). Snapping on the rows themselves cannot do this:
+  // row-aligned stops only exist where the list can actually scroll a row, which
+  // is 4 positions for 10 posts — every gesture would jump two or three posts.
+  // Rebuilt on resize because the scroll range changes when titles rewrap.
+  function syncTimelineStops() {
+    if (!timelineViewport || !timelineList || !timelineStops) return;
+    const n = timelineList.querySelectorAll('.blog-timeline-row').length;
+    const max = timelineViewport.scrollHeight - timelineViewport.clientHeight;
+    timelineStops.replaceChildren();
+    if (n < 2 || max <= 0) return;
+    for (let i = 0; i < n; i++) {
+      const stop = document.createElement('div');
+      stop.className = 'blog-timeline-stop';
+      stop.style.top = `${((max * i) / (n - 1)).toFixed(2)}px`;
+      timelineStops.append(stop);
     }
   }
 
@@ -359,16 +387,18 @@ const STR =
 
   // No runtime padding on the viewport (I-026, reversing I-021): padding here
   // is empty frame at the extremes, and the frame must read full — ~6 posts,
-  // always. The trade the owner accepted on 2026-08-12: the first and last
-  // posts sit against the edges, so they never reach the centre line and
-  // never take full focus. That is the very defect I-021 opened for; it is
-  // re-accepted, not overlooked.
+  // always. I-026 accepted losing focus on the outermost posts as the price;
+  // I-027 got them back instead, by reading scroll progress rather than
+  // distance to a fixed centre line (see updateTimelineFocus above).
   timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
   // Guarded, not unconditional: while the timeline is hidden, its viewport
   // has zero height, so the focus math divides by zero (NaN) on every
   // window resize — harmless (invalid CSS values are dropped) but wasted.
   window.addEventListener('resize', () => {
-    if (!viewTimeline?.hidden) queueTimelineUpdate();
+    if (!viewTimeline?.hidden) {
+      syncTimelineStops();
+      queueTimelineUpdate();
+    }
   });
 
   // The FPS benchmark (I-004) adds `perf-lite` ~300ms after load, which is a state

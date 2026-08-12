@@ -5,6 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed (blog timeline: the focus now reaches every post, I-027)
+
+- Scrolling the timeline to either end left the highlight three posts short of the end
+  — the owner's report: "hasta abajo veo el post del 16 jul en highlight". The focus is
+  no longer the row nearest a fixed centre line (unreachable by the outermost posts
+  once the frame is always full, I-026) but a reading of **scroll progress**: 0% is the
+  first post, 100% the last, each takes its turn. The highlight travels down the frame
+  as you scroll instead of sitting at a fixed height — that is the trade that makes the
+  ends reachable at all.
+- Snap stops moved off the rows onto one zero-size target per post, spread across the
+  whole scroll range, so a gesture advances one post instead of two or three.
+- **Measured limit, recorded in I-027:** a full mouse-wheel tick (100px in Chrome)
+  crosses two of the 57px stops — it always rests on a post, never between, but a wheel
+  user steps two at a time. Trackpad and touch rest on every post. Fixing it for the
+  wheel would mean ~3.5 visible posts instead of 6, or a custom scroller.
+- This amends I-026's accepted risk rather than living with it.
+
 ### Changed (blog timeline: frame always full, stepped scroll, I-026)
 
 - The timeline view's frame now stays full at both ends of the list — ~6 posts always
