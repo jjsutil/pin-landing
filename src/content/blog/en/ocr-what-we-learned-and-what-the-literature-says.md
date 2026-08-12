@@ -2,7 +2,7 @@
 title: "The failure that should worry you about OCR doesn't look like garbled text. It looks like 98% confidence and a missing paragraph."
 slug: "ocr-what-we-learned-and-what-the-literature-says"
 excerpt: "We built our OCR pipeline as a confidence-routed cascade, benchmarked it against three newer document-understanding tools, then threw genuinely dirty scans at it and watched the safety net fail to catch four real bugs. What we found, and what the current literature actually supports."
-publishDate: 2026-08-14
+publishDate: 2026-08-20
 author: "pin Founding Team"
 tags: ["OCR", "AI Tools", "Engineering"]
 draft: false

@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-23 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 18 · production 0**
+25 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 20 · production 0**
 
 ## staging
 
@@ -27,6 +27,8 @@
 | I-022 | Editorial voices — author persona system + editorial calendar | chore | high | low | E01 | 0d |
 | I-023 | Blog post 7 — founder's-voice thesis (Alicia Chang Cox) | feature | high | low | E01 | 0d |
 | I-020 | Blog post — OCR: what we learned, and what the literature actually says | feature | high | high | E01 | 1d |
+| I-024 | Blog post — inference & interpretability, in depth (technical series, part 2) | feature | high | high | E01 | 0d |
+| I-025 | Blog post — RAG in depth, where it silently fails (technical series, part 3) | feature | high | high | E01 | 0d |
 
 ## backlog
 
@@ -64,7 +66,12 @@ this blog written for an engineering peer instead of a lawyer, and the only one 
 cost is research rather than writing: every claim carries a citation that was opened
 and checked, and its "what we got wrong" material was sourced from a real read of the
 private `foja` codebase, abstracted, and reviewed/approved by the owner before
-publish — the first post here to draw from a private source. **I-005** (superseded — see its Gate resolution note), **I-011** —
+publish — the first post here to draw from a private source. **I-024 and I-025
+shipped here too** — parts 2 and 3 of the same technical series (inference/
+interpretability, RAG), the first posts on this blog drafted by a dispatched
+Fable-model agent rather than composed directly; independent citation review caught
+zero citation errors across 15 sources but did catch one unauthorized pin-adjacent
+claim in I-025, fixed before publish. **I-005** (superseded — see its Gate resolution note), **I-011** —
 the structural i18n work: locale-aware content collection, condensed listing, English
 blog. **I-013 shipped in this quadrant** — the timeline view, a second full browsing
 mode (high impact) built on genuinely new interaction code — scroll-driven focus,

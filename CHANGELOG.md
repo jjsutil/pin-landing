@@ -5,6 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Published (technical series, parts 2-3 — inference/interpretability, RAG, I-024/I-025)
+
+- Blog posts 9 and 10, "How inference and interpretability actually work" / "Cómo
+  funcionan de verdad la inferencia y la interpretabilidad" (I-024) and "How RAG
+  actually works, and where it silently fails" / "Cómo funciona RAG de verdad, y dónde
+  falla en silencio" (I-025) — parts 2 and 3 of the technical-depth series opened by
+  the OCR post (I-020). Drafted by a dispatched Fable-model agent (owner instruction),
+  15 citations across both posts independently re-verified by a second agent before
+  publish (0 citation errors found). One real defect caught and fixed pre-publish: an
+  unauthorized, unsourced claim about pin's own document-ingestion practice in the RAG
+  post, outside the single pin-adjacent claim (the public OHRBench/OCR connection) the
+  brief allowed — removed in both languages before merge.
+- Blog post 8's `publishDate` corrected from 2026-08-14 to 2026-08-20 — it had broken
+  the blog's Thursday-weekly cadence (every prior post lands exactly 7 days apart);
+  posts 9 and 10 continue that cadence forward (08-27, 09-03), owner's explicit
+  instruction to date and publish ahead of the calendar.
+- `translations.ts` — cross-links the two new ES/EN slug pairs.
+
 ### Published (blog post 8 — OCR for engineers, I-020)
 
 - Blog post 8, "OCR: what we learned, and what the literature actually says" — the
