@@ -1,7 +1,7 @@
 ---
 id: I-022
 type: chore
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
