@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed (blog timeline: frame always full, stepped scroll, I-026)
+
+- The timeline view's frame now stays full at both ends of the list — ~6 posts always
+  on screen, entering and leaving through the mask edges — instead of showing an empty
+  half-frame with the first (or last) post floating at the centre. The runtime padding
+  that caused it (`syncTimelinePadding()`, I-021) is deleted, which also puts the
+  divider spine back across the whole frame at every scroll position.
+- Scrolling now rests in discrete steps (`scroll-snap-type: y proximity` +
+  `scroll-snap-align: center`), reversing the 2026-08-07 decision that removed
+  scroll-snap. `proximity`, not `mandatory`, so it can only settle a gesture that
+  already ended near a post — the reason the first attempt fought the zoom/blur.
+- **Accepted, owner's call (2026-08-12):** with the padding gone the list stops hard at
+  the first and last post, so those two never reach the focus centre — the defect I-021
+  was opened for, traded back for a frame that is always full. I-021 is headed as
+  superseded rather than rewritten.
+
 ### Published (technical series, parts 2-3 — inference/interpretability, RAG, I-024/I-025)
 
 - Blog posts 9 and 10, "How inference and interpretability actually work" / "Cómo

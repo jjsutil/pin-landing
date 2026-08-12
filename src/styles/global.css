@@ -718,12 +718,20 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   position: relative;
   height: 34rem;
   overflow-y: auto;
-  /* No scrollbar and no scroll-snap: the component's own chrome is the moving
-     highlight, and snapping fought the continuous zoom/blur (owner, 2026-08-07).
-     Scrolling itself is untouched — wheel, touch, keys and the mask edges all
-     still say the list continues. */
+  /* No scrollbar: the component's own chrome is the moving highlight.
+     Scroll-snap WAS rejected on 2026-08-07 for fighting the continuous
+     zoom/blur; the owner reinstated it on 2026-08-12 asking for a scroll that
+     rests in discrete steps ("más pausado, pero ni torpe ni lento"). It is
+     back as `proximity`, not `mandatory`, precisely so it can only settle a
+     gesture that already ended near a row — it never yanks the list away from
+     the centred post mid-scroll, which is what made the first attempt fight
+     the focus effect.
+     Zero padding is load-bearing (I-026): padding here IS empty frame at the
+     extremes. The frame must read full — ~6 posts, always — with posts
+     entering and leaving through the mask edges. */
   scrollbar-width: none;
-  padding: 2rem 0;
+  scroll-snap-type: y proximity;
+  padding: 0;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
 }
@@ -737,12 +745,13 @@ body.on-access main#top, body.on-access footer.site { display: none; }
 .blog-timeline-fill {
   /* Sibling of .blog-timeline-list, not a descendant (a <div> can't be a
      direct child of <ul>) — so its containing block is .blog-timeline-viewport,
-     whose own padding-top (2rem, above) sits ABOVE that. top must match that
-     padding exactly, or the mark starts 2rem short of the divider's origin
-     and undershoots the active row's real position by the same amount.
+     and `top` must equal that viewport's padding-top or the mark renders
+     detached from the row it points at. The viewport has no padding since
+     I-026, so `top: 0`; the JS writes only `transform`, in content-space
+     coordinates measured from the list's own origin.
      A short segment, not a fill growing from the top: it marks WHICH post is
      centred, which a 400px-long bar never did (owner, 2026-08-07). */
-  position: absolute; left: calc(5.25rem - 0.5px); top: 2rem; width: 2px; height: 2.25rem;
+  position: absolute; left: calc(5.25rem - 0.5px); top: 0; width: 2px; height: 2.25rem;
   border-radius: 1px; background: var(--accent); opacity: 0.85;
   transition: transform 200ms cubic-bezier(.22,.7,.24,1);
   z-index: 0;
@@ -759,10 +768,15 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   position: relative;
   z-index: 1;
   padding: 1.5rem 0;
+  scroll-snap-align: center;
   will-change: transform, filter;
 }
-.blog-timeline-row:first-child { padding-top: 0; }
-.blog-timeline-row:last-child { padding-bottom: 0; }
+/* Matches the viewport's mask fade (2.5rem): at either end of the scroll the
+   fade must land on empty space, not on the first/last post's own title —
+   otherwise the outermost post renders permanently half-faded and the frame
+   claims there is more above/below when there isn't (I-026). */
+.blog-timeline-row:first-child { padding-top: 2.5rem; }
+.blog-timeline-row:last-child { padding-bottom: 2.5rem; }
 
 /* The whole row is one link (title + date + excerpt all read as one
    target), so the 2-column layout lives on the anchor itself. */

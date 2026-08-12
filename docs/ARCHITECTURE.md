@@ -143,7 +143,10 @@ this map to link a post to its translation, when one exists.
 The listing (`BlogList.astro`, shared by both locales) is a client-side card
 grid with tag-chip filtering and "Ver más/Show more" pagination past 10 posts —
 noted in `I-011` as fine today, a scaling concern past ~20 posts (real
-pagination routes would replace the client-side slice at that point).
+pagination routes would replace the client-side slice at that point). The same
+component also carries the second browsing mode reached from the icon switch
+(`I-013`): a fixed-height timeline frame, always full, whose list scrolls inside
+it, snaps to a post and drives the zoom/blur focus effect from scroll position.
 
 ## Build & deploy
 

@@ -257,10 +257,7 @@ const STR =
       if (viewGrid) viewGrid.hidden = isTimeline;
       if (filterBar) filterBar.hidden = isTimeline;
       if (viewTimeline) viewTimeline.hidden = !isTimeline;
-      if (isTimeline) {
-        syncTimelinePadding();
-        updateTimelineFocus();
-      }
+      if (isTimeline) updateTimelineFocus();
     });
   });
 
@@ -360,49 +357,18 @@ const STR =
     requestAnimationFrame(updateTimelineFocus);
   }
 
-  // Scroll range fix (I-021): the viewport only scrolls as far as its own
-  // padding allows, so without enough top/bottom room the first and last rows
-  // (and everything near them) can never reach the centre line above — only
-  // whichever row or two starts near the geometric middle of the list ever
-  // gets close enough to lift out of the base blur. Padding equal to half the
-  // viewport height (minus half a row) gives every row, including the very
-  // first and last, room to travel all the way to centre. Row heights vary
-  // with title/excerpt wrap, so this measures the real render instead of
-  // guessing a second number in CSS; the static 2rem in global.css is only
-  // the pre-hydration fallback for before this runs.
-  function syncTimelinePadding() {
-    if (!timelineViewport || !timelineList) return;
-    const rows = timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row');
-    const firstRow = rows[0];
-    if (!firstRow) return;
-    const lastRow = rows[rows.length - 1];
-    // `.blog-timeline-row:first-child` has `padding-top: 0` (asymmetric vs.
-    // other rows), and the last row's height can differ (title-wrap
-    // dependent) — averaging first and last avoids a bias-short estimate
-    // from the first row alone.
-    const rowH = lastRow && lastRow !== firstRow
-      ? (firstRow.getBoundingClientRect().height + lastRow.getBoundingClientRect().height) / 2
-      : firstRow.getBoundingClientRect().height;
-    const pad = Math.max(0, timelineViewport.clientHeight / 2 - rowH / 2);
-    timelineViewport.style.paddingTop = `${pad}px`;
-    timelineViewport.style.paddingBottom = `${pad}px`;
-    // The mark (.blog-timeline-fill) is a sibling of the list, not a
-    // descendant, so its own resting `top` — not the list's — sets its
-    // coordinate origin. It must track the viewport's padding-top exactly
-    // (see the CSS comment at .blog-timeline-fill) or it renders detached
-    // from the row it's supposed to point at (I-021 follow-up).
-    if (timelineFill) timelineFill.style.top = `${pad}px`;
-  }
-
+  // No runtime padding on the viewport (I-026, reversing I-021): padding here
+  // is empty frame at the extremes, and the frame must read full — ~6 posts,
+  // always. The trade the owner accepted on 2026-08-12: the first and last
+  // posts sit against the edges, so they never reach the centre line and
+  // never take full focus. That is the very defect I-021 opened for; it is
+  // re-accepted, not overlooked.
   timelineViewport?.addEventListener('scroll', queueTimelineUpdate, { passive: true });
   // Guarded, not unconditional: while the timeline is hidden, its viewport
   // has zero height, so the focus math divides by zero (NaN) on every
   // window resize — harmless (invalid CSS values are dropped) but wasted.
   window.addEventListener('resize', () => {
-    if (!viewTimeline?.hidden) {
-      syncTimelinePadding();
-      queueTimelineUpdate();
-    }
+    if (!viewTimeline?.hidden) queueTimelineUpdate();
   });
 
   // The FPS benchmark (I-004) adds `perf-lite` ~300ms after load, which is a state
