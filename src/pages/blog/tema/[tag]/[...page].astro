@@ -1,0 +1,43 @@
+---
+// Per-topic ES listing (I-012): /blog/tema/<slug> and /blog/tema/<slug>/2.
+// The tag filter used to be a client-side button over every card in the DOM;
+// with paginated routes that would have searched one page's six posts instead
+// of the blog, so a topic is a real, shareable, paginated URL instead.
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Base from '../../../../layouts/Base.astro';
+import BlogList from '../../../../components/BlogList.astro';
+import { tagIndex } from '../../../../content/blog/tags';
+import { PAGE_SIZE } from '../../../../content/blog/listing';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+  );
+  const tags = tagIndex(posts.map((post) => post.data.tags));
+  return tags.flatMap(({ label, slug }) => {
+    const tagged = posts.filter((post) => post.data.tags.includes(label));
+    return paginate(tagged, {
+      params: { tag: slug },
+      pageSize: PAGE_SIZE,
+      // Timeline scope is the topic — "this subject, over time". The chip row
+      // is NOT scoped: it lists every topic in the blog, because it is the way
+      // out of the one you are standing in.
+      props: { timelinePosts: tagged, tags, activeTag: label },
+    });
+  });
+}) satisfies GetStaticPaths;
+
+const { page, timelinePosts, tags, activeTag } = Astro.props;
+const suffix = page.currentPage > 1 ? ` (página ${page.currentPage})` : '';
+---
+
+<Base
+  lang="es"
+  title={`${activeTag}${suffix} — Blog pin`}
+  description={`Publicaciones de pin sobre ${activeTag}.`}
+>
+  <section>
+    <BlogList lang="es" page={page} timelinePosts={timelinePosts} tags={tags} activeTag={activeTag} />
+  </section>
+</Base>

@@ -5,6 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed (blog grid: real pagination and topic routes, I-012)
+
+- The card view is paginated for real: `/blog` and `/blog/2` (plus the EN twins) are
+  built by Astro's `paginate()` at **6 cards per page**, so a page ships only its own
+  cards. The client-side "Ver más" reveal — every post in the DOM, most of them hidden —
+  is gone, along with the ~35 lines that faked filtering and paging in the browser.
+- **Topics are URLs now**: `/blog/tema/<slug>` and `/en/blog/topic/<slug>`, paginated
+  the same way. Forced by the above, not cosmetic — a client-side filter over a page
+  that ships 6 cards would search 6 posts instead of the blog. The chips became links,
+  so a topic is shareable, and `aria-current="page"` replaces `aria-pressed`.
+- The control between pages is a **row of dots** (owner, 2026-08-07), the current one in
+  `--accent`. Each dot is a 24×24 hit target with its own accessible name; the links
+  carry `#posts` so a page change lands on the cards rather than above the heading.
+- **Page changes animate** via native `@view-transition` — no JS, no dependency. Two
+  consequences, both deliberate: it applies to *every* same-origin navigation on the
+  site, and being an at-rule it cannot be switched off by the FPS-based static mode
+  (`perf-lite`) — only by `prefers-reduced-motion`.
+- New: `src/content/blog/tags.ts` (tag → slug, fails the build on a collision) and
+  `src/content/blog/listing.ts` (the page size, one home for four routes).
+
 ### Fixed (blog timeline: the focus now reaches every post, I-027)
 
 - Scrolling the timeline to either end left the highlight three posts short of the end

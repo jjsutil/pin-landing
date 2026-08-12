@@ -1,25 +1,42 @@
 ---
 // Shared blog-listing markup for /blog (ES) and /en/blog (EN) — condensed
-// card grid, tag filter, "ver más"/"show more" reveal past PAGE_SIZE (I-011).
+// card grid with a dot-row pager, plus the timeline view (I-013).
 // No visit counter by design: static site, no backend — order is by
 // publishDate only (owner decision, issue I-011).
-import { getCollection } from 'astro:content';
+//
+// Presentational only since I-012: the routes own the data. `page` is Astro's
+// paginate() Page (this page's slice), `timelinePosts` is the whole unpaginated
+// scope the timeline renders, and `activeTag` is set on a per-topic route. What
+// used to filter and paginate here in the browser is now real URLs.
+import type { Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n';
+import { tagSlug, type TagEntry } from '../content/blog/tags';
+
+type Post = CollectionEntry<'blog'> | CollectionEntry<'blogEn'>;
 
 interface Props {
   lang: Lang;
+  page: Page<Post>;
+  /** The whole unpaginated scope of this route — every post, or a topic's run. */
+  timelinePosts: Post[];
+  /** Every topic in the blog, not just this route's — the chip row is a way OUT. */
+  tags: TagEntry[];
+  /** Tag label when this is a per-topic route, absent on the main listing. */
+  activeTag?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, page, timelinePosts, tags, activeTag } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const blogBase = lang === 'en' ? `${base}/en/blog` : `${base}/blog`;
+const topicBase = lang === 'en' ? `${blogBase}/topic` : `${blogBase}/tema`;
 
-const posts = (
-  await getCollection(lang === 'en' ? 'blogEn' : 'blog', ({ data }) => !data.draft)
-).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const posts = page.data;
 
-// Unique tags, first-seen order — posts are already date-sorted above.
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+// `#posts` so a page change lands on the grid instead of ~460px above it
+// (the h1 and the toolbar sit between the top of the page and the cards).
+const pageHref = (n: number) =>
+  `${activeTag ? `${topicBase}/${tagSlug(activeTag)}` : blogBase}${n > 1 ? `/${n}` : ''}#posts`;
 
 const dateFmt = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', {
   year: 'numeric',
@@ -36,8 +53,6 @@ const dateFmtShort = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-CL', 
   timeZone: 'UTC',
 });
 
-const PAGE_SIZE = 10;
-
 const STR =
   lang === 'en'
     ? {
@@ -46,9 +61,9 @@ const STR =
         empty: 'We will publish here soon.',
         filterLabel: 'Filter by topic',
         all: 'All',
-        emptyTag: 'No post uses that topic yet.',
         minRead: 'min read',
-        more: 'Show more',
+        pagesLabel: 'Pagination',
+        page: 'Page',
         viewLabel: 'View as',
         viewGrid: 'Grid',
         viewTimeline: 'Timeline',
@@ -59,9 +74,9 @@ const STR =
         empty: 'Pronto vamos a publicar acá.',
         filterLabel: 'Filtrar por tema',
         all: 'Todos',
-        emptyTag: 'Ningún post usa ese tema todavía.',
         minRead: 'min de lectura',
-        more: 'Ver más',
+        pagesLabel: 'Paginación',
+        page: 'Página',
         viewLabel: 'Ver como',
         viewGrid: 'Grilla',
         viewTimeline: 'Línea de tiempo',
@@ -75,7 +90,7 @@ const STR =
   </div>
 
   {
-    posts.length === 0 ? (
+    timelinePosts.length === 0 ? (
       <p class="blog-empty">{STR.empty}</p>
     ) : (
       <Fragment>
@@ -84,17 +99,28 @@ const STR =
             `.segmented` control (as in the pricing toggle) so it never reads
             as one more tag chip — owner: two rows of pills was confusing. */}
         <div class="blog-toolbar">
+          {/* Real links since I-012, not buttons: a topic is a URL you can
+              share, and the browser owns the "which one am I on" state via
+              aria-current instead of a click handler. */}
           {tags.length > 0 ? (
-            <div class="blog-filters" id="blog-filters" role="group" aria-label={STR.filterLabel}>
-              <button type="button" class="blog-filter" data-tag="" aria-pressed="true">
+            <nav class="blog-filters" id="blog-filters" aria-label={STR.filterLabel}>
+              <a
+                href={blogBase}
+                class="blog-filter"
+                aria-current={activeTag === undefined ? 'page' : undefined}
+              >
                 {STR.all}
-              </button>
+              </a>
               {tags.map((tag) => (
-                <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">
-                  {tag}
-                </button>
+                <a
+                  href={`${topicBase}/${tag.slug}`}
+                  class="blog-filter"
+                  aria-current={tag.label === activeTag ? 'page' : undefined}
+                >
+                  {tag.label}
+                </a>
               ))}
-            </div>
+            </nav>
           ) : (
             <span />
           )}
@@ -134,9 +160,10 @@ const STR =
         </div>
 
         <div id="blog-view-grid">
+          <span id="posts" class="blog-anchor" aria-hidden="true" />
           <ul class="blog-cards" id="blog-cards">
-            {posts.map((post, i) => (
-              <li class="blog-card" data-tags={post.data.tags.join('|')} data-index={i} hidden={i >= PAGE_SIZE}>
+            {posts.map((post) => (
+              <li class="blog-card">
                 <a href={`${blogBase}/${post.id}`}>
                   <h2>{post.data.title}</h2>
                   <p class="lede">{post.data.excerpt}</p>
@@ -163,21 +190,28 @@ const STR =
             ))}
           </ul>
 
-          <p class="blog-empty" id="blog-empty" hidden>
-            {STR.emptyTag}
-          </p>
-
-          {posts.length > PAGE_SIZE && (
-            <button type="button" class="btn btn-ghost" id="blog-more" data-page-size={PAGE_SIZE}>
-              {STR.more}
-            </button>
+          {/* Dots, not text arrows (owner, 2026-08-07). The <a> is the 24×24
+              hit target; the <span> inside is the 8px dot you actually see. */}
+          {page.lastPage > 1 && (
+            <nav class="blog-pages" aria-label={STR.pagesLabel}>
+              {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) => (
+                <a
+                  href={pageHref(n)}
+                  class="blog-page-dot"
+                  aria-current={n === page.currentPage ? 'page' : undefined}
+                  aria-label={`${STR.page} ${n}`}
+                >
+                  <span aria-hidden="true" />
+                </a>
+              ))}
+            </nav>
           )}
         </div>
 
         <div id="blog-view-timeline" hidden>
           <div class="blog-timeline-viewport" id="blog-timeline-viewport">
             <ul class="blog-timeline-list" id="blog-timeline-list">
-              {posts.map((post) => (
+              {timelinePosts.map((post) => (
                 <li class="blog-timeline-row">
                   <a href={`${blogBase}/${post.id}`} class="blog-timeline-link">
                     <p class="blog-timeline-date">
@@ -204,54 +238,15 @@ const STR =
 </div>
 
 <script>
-  // Tag filter + "show more" pagination, client-side only — no build-time
-  // route explosion, no new dependency (I-011). A tag filter shows every
-  // match (already a short list); pagination only gates the unfiltered view.
-  const filters = document.querySelectorAll<HTMLButtonElement>('.blog-filter');
-  const cards = document.querySelectorAll<HTMLLIElement>('#blog-cards .blog-card');
-  const empty = document.getElementById('blog-empty');
-  const moreBtn = document.getElementById('blog-more') as HTMLButtonElement | null;
-  const pageSize = moreBtn ? Number(moreBtn.dataset.pageSize) : cards.length;
-  let shown = pageSize;
-  let activeTag = '';
-
-  function render() {
-    let visible = 0;
-    cards.forEach((card) => {
-      const cardTags = (card.dataset.tags ?? '').split('|');
-      const matchesTag = activeTag === '' || cardTags.includes(activeTag);
-      const withinPage = activeTag !== '' || Number(card.dataset.index) < shown;
-      const show = matchesTag && withinPage;
-      card.hidden = !show;
-      if (show) visible += 1;
-    });
-    if (empty) empty.hidden = visible > 0;
-    if (moreBtn) moreBtn.hidden = activeTag !== '' || shown >= cards.length;
-  }
-
-  filters.forEach((button) => {
-    button.addEventListener('click', () => {
-      activeTag = button.dataset.tag ?? '';
-      filters.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
-      render();
-    });
-  });
-
-  moreBtn?.addEventListener('click', () => {
-    shown += pageSize;
-    render();
-  });
-
-  render();
-
-  // View toggle — grid (tag filter + show-more, above) vs. timeline (I-013).
-  // Two independent containers, one shown at a time; nothing about the grid's
-  // own tag-filter/pagination state above needs to know this exists.
+  // View toggle — grid (cards + dot pager) vs. timeline (I-013). Two
+  // independent containers, one shown at a time. Since I-012 this is the ONLY
+  // client-side state the listing has: filtering and paging are routes now, so
+  // the ~35 lines that used to fake them in the browser are gone.
   const viewButtons = document.querySelectorAll<HTMLButtonElement>('.blog-view-btn');
   const viewGrid = document.getElementById('blog-view-grid');
   const viewTimeline = document.getElementById('blog-view-timeline');
-  // The tag filter belongs to the grid only (the timeline is chronological by
-  // design, I-013), but it now lives in the shared toolbar — so it hides with it.
+  // The topic links belong to the grid only (the timeline is chronological by
+  // design, I-013), but they live in the shared toolbar — so they hide with it.
   const filterBar = document.getElementById('blog-filters');
 
   viewButtons.forEach((button) => {
