@@ -2,7 +2,7 @@
 title: "La falla de OCR que debería preocuparle no se ve como texto corrupto. Se ve como 98% de confianza y un párrafo faltante."
 slug: "ocr-lo-que-aprendimos-y-lo-que-dice-la-literatura"
 excerpt: "Construimos nuestro pipeline de OCR como una cascada enrutada por confianza, lo comparamos contra tres herramientas más nuevas de comprensión de documentos, y después le tiramos encima escaneos genuinamente sucios y vimos a la red de seguridad no atajar cuatro bugs reales. Lo que encontramos, y lo que la literatura actual realmente respalda."
-publishDate: 2026-08-14
+publishDate: 2026-08-20
 author: "Equipo fundador de pin"
 tags: ["OCR", "Herramientas de IA", "Ingeniería"]
 draft: false
