@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog post 8 — OCR for engineers, I-020)
+
+- Blog post 8, "OCR: what we learned, and what the literature actually says"
+  (`draft: true`, pending owner approval) — the blog's first post written for an
+  engineering audience rather than lawyers. Four verified citations (TrOCR, DocLayNet,
+  a 2025 visually-rich-document QA survey, OHRBench) and a real four-bug postmortem
+  from a dirty-document test run, sourced from the private `foja` codebase and
+  abstracted (no exact accuracy numbers, engine names, or case identity) pending the
+  owner's review of what to disclose.
+- `translations.ts` — cross-links the new ES/EN slug pair.
+
 ### Published (blog post 7, I-023)
 
 - Blog post 7, "Why I started pin" / "Por qué empecé pin" — the blog's first named

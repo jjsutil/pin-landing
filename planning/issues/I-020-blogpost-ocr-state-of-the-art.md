@@ -1,7 +1,7 @@
 ---
 id: I-020
 type: feature
-status: backlog
+status: review
 impact: high
 cost: high
 epic: E01
@@ -31,13 +31,13 @@ facing the same problem — grounded in the current state of the art, with refer
 Not a product pitch: someone who never uses pin should still come away with something
 they can apply on Monday.
 
-**Point of view.** Written as the pin team — data scientist, software engineer, ML
-engineer and CTO in one voice, the way an engineering team writes when it has actually
-shipped the thing. The reader is assumed to have a rigorous scientific background and
-does not need "what is a neural network" explained. The author's own background is in
-astrophysics; that shapes the standard of evidence, and it is **not** a hook, a
-metaphor or an anecdote — no telescopes, no galaxies, no "just like in astronomy". If
-a sentence would not survive the author dropping the astrophysics, cut the astrophysics.
+**Point of view — revised, owner decision 2026-08-12 (chat).** Originally scoped as a
+single named voice with an astrophysics background (see git history for the original
+text). The owner chose the collective byline instead ("opción 1 pero sin otra persona.
+Solo el founder team") — no new persona file, no astrophysics framing at all. Written
+as the pin team, the way an engineering team writes when it has actually shipped the
+thing. The reader is assumed to have a rigorous scientific background and does not need
+"what is a neural network" explained.
 
 **Content it should cover** (shape, not a table of contents to follow literally):
 
@@ -68,6 +68,36 @@ a sentence would not survive the author dropping the astrophysics, cut the astro
   published at the time of writing.
 - A claim from our own experience is labelled as ours, never dressed as a finding.
 
+**Sourcing for "what we got wrong" — owner-directed, 2026-08-12.** The owner pointed
+directly at the private `foja` repo (`~/Projects/foja`) as the source for real
+engineering material — architecture, a real dirty-document postmortem, four real
+bugs — read via a read-only exploration pass, with an explicit instruction to protect
+anything commercially sensitive while still landing something substantive. What made
+it into the post: the cascade architecture (native → classical OCR → VLM, confidence-
+routed, no exact model/vendor names used), a qualitative description of a bake-off
+against three newer open-source tools (no tool names, no exact accuracy numbers — one
+lost on Spanish-language handling, two had licensing/dependency blockers), and the
+four real bugs from a documented dirty-scan postmortem (two public, non-confidential
+court filings used as test material — neither the case nor the court is named).
+**Deliberately left out:** exact CER/accuracy-rate numbers (the print/handwriting
+split, the classical-vs-VLM CER comparison), the specific OCR/VLM engine names, and
+the specific court/case the test documents came from — all confirmed real in the
+source repo but held back as a conservative default pending the owner's explicit
+sign-off, since this is the first post in this repo sourced from a private codebase.
+
+**One specific number is kept, flagged separately (found by independent review,
+2026-08-12):** the post's opening hook — a page that finished OCR at 98% confidence
+while missing a full line of text — restates the real confidence score from the
+dirty-scan postmortem verbatim. Unlike the CER/accuracy numbers above, this single
+figure doesn't reveal the pipeline's accuracy profile or competitive positioning; it
+illustrates one bug (a confidence signal that discarded evidence before averaging),
+which is already described qualitatively in the same post. Kept because it's the
+strongest, most concrete hook in the piece and genericizing it ("high confidence")
+would weaken the post without actually protecting anything sensitive — but this is
+the owner's call, not a default, precisely because it's a real number and the rule
+above says numbers need explicit sign-off.
+rather than from public material or the owner's own dictation.
+
 **Deliverable.** Spanish and English versions (`src/content/blog/es/` and
 `src/content/blog/en/`), both `draft: true` pending owner approval of the copy — the
 established pattern for every post in this repo. Frontmatter per the existing schema
@@ -85,12 +115,19 @@ established pattern for every post in this repo. Frontmatter per the existing sc
 
 ## Acceptance criteria
 
-- [ ] ES and EN versions exist, `draft: true`, valid frontmatter, `astro check` and
+- [x] ES and EN versions exist, `draft: true`, valid frontmatter, `astro check` and
       `npm run build` pass.
-- [ ] Every citation resolves and was opened; the claim attributed matches the source.
-      The verification evidence goes in the PR body.
-- [ ] The post does not overlap the existing lay-audience OCR post; it links to it.
-- [ ] No astrophysics framing anywhere in the text.
-- [ ] At least one concrete mistake of ours is stated, with what it cost and what
-      replaced it.
-- [ ] A reader who never uses pin gets something applicable.
+- [x] Every citation resolves and was opened; the claim attributed matches the source.
+      The verification evidence goes in the PR body. Four sources used: TrOCR (Li et
+      al., AAAI 2023), DocLayNet (Pfitzmann et al., KDD 2022), a 2025 survey on QA over
+      visually rich documents (Barboule et al.), and OHRBench (Zhang et al., ICCV 2025
+      — already cited in the lay-audience post, reused here for the deeper claim).
+- [x] The post does not overlap the existing lay-audience OCR post; it links to it.
+- [x] No astrophysics framing anywhere in the text — moot, no persona used at all
+      (owner decision above).
+- [x] At least one concrete mistake of ours is stated, with what it cost and what
+      replaced it — four, from the foja postmortem (see Sourcing above).
+- [x] A reader who never uses pin gets something applicable.
+- [ ] **New — owner reviews what was sourced from the private `foja` repo before
+      `draft` flips to `false`.** Same copy-approval gate every post uses, called out
+      separately here because the source is different from every prior post.
