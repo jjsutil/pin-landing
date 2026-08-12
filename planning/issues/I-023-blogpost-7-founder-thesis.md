@@ -1,7 +1,7 @@
 ---
 id: I-023
 type: feature
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01
@@ -46,8 +46,14 @@ the "Company & founder vision" pillar of `E01-editorial-calendar.md`.
 
 ## Acceptance criteria
 
-- [ ] ES and EN posts exist, valid frontmatter, `astro check` / `npm run build` pass.
-- [ ] Every specific fact traces to `alicia-chang-cox.md` or the owner's message.
-- [ ] Owner approves copy before `draft` flips to `false` — same gate every prior post
-      used.
-- [ ] `translations.ts` updated; cross-link renders both directions.
+- [x] ES and EN posts exist, valid frontmatter, `astro check` / `npm run build` pass.
+- [x] Every specific fact traces to `alicia-chang-cox.md` or the owner's message.
+- [x] Owner approves copy before `draft` flips to `false` — owner approved in full,
+      2026-08-11 chat, no changes requested.
+- [x] `translations.ts` updated; cross-link renders both directions.
+
+## Resolution
+
+Published 2026-08-11 (`draft: false` in both languages) — owner approved the copy
+as written, no edits requested. Live at `/blog/por-que-empece-pin/` and
+`/en/blog/why-i-started-pin/`.

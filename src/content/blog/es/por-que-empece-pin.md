@@ -5,7 +5,7 @@ excerpt: "Grab, Uber, Stripe: tres empresas, tres productos distintos, el mismo 
 publishDate: 2026-08-13
 author: "Alicia Chang Cox, Founder & CEO de pin"
 tags: ["Visión de compañía", "Regulación", "Herramientas de IA"]
-draft: true
+draft: false
 readingMinutes: 4
 ---
 
