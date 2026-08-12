@@ -1,6 +1,9 @@
 # E01 — Blog section (footer-only entry point)
 
 > Pillar plan for the blog epic. Read this before planning any I-00x issue under E01.
+> For which topic goes in whose voice and when, see the companion
+> [editorial calendar](./E01-editorial-calendar.md) (I-022) — this doc stays scoped to
+> architecture.
 
 ## Why
 
@@ -21,16 +24,20 @@ fidelity contract) is untouched.
   HTML/SVG where a post needs a real diagram — Astro's Markdown renderer passes raw HTML
   through, so no `@astrojs/mdx` dependency is needed for "diagrammed" posts. Add it later
   only if a post genuinely needs interactive/component-driven content.
-- **ES only for v1.** The site is bilingual (`i18n: es default, en`), but the two seed
-  posts are written for the Chile-first legal audience the whole site targets. `/en/blog`
-  is explicitly out of scope until an English post exists — do not scaffold empty EN
-  routes ahead of content.
+- **ES + EN, both live.** `/en/blog` shipped in I-011 (`blogEn` collection,
+  `src/content/blog/en/`) — every post ships in both languages, cross-linked via
+  `translations.ts`. The "ES only for v1, don't scaffold EN ahead of content" note above
+  was the v1 decision; it's superseded, kept here only as history.
 - **Standardized frontmatter** (schema below) is what "estandarizadas" means in practice:
   every post — this one or one the owner sends later — fills the same fields and renders
   through the same `BlogLayout.astro`, so format decisions happen once, not per post.
-- **Byline, not anonymous.** Both seed posts are attributed to `equipo fundador de pin`
-  (frontmatter `author`), not a single name — matches the founder-led GTM motion already
-  in `docs/business` on the foja side.
+- **Byline: collective by default, named when the voice is real.** `author` is a free
+  string; `Equipo fundador de pin` / `pin Founding Team` remains the default for
+  collective/explainer posts. As of I-022, a post can instead carry a named byline
+  (starting with CEO Alicia Chang Cox) when the content is genuinely that person's voice
+  — see the [editorial calendar](./E01-editorial-calendar.md) for the policy and
+  `planning/authors/` for the persona each named byline is built from. No schema change:
+  a named byline is just a different string in the same field.
 
 ### Frontmatter schema (all posts)
 

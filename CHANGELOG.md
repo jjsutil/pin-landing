@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (blog editorial voices + calendar, I-022)
+
+- `planning/authors/` — a persona template plus the blog's first named-author
+  profile, Founder & CEO Alicia Chang Cox, built from her career facts (Carey,
+  Banco de Chile, Harvard JD, Grab founding board, Uber, Stripe, pin).
+- `planning/plans/E01-editorial-calendar.md` — the blog's pillar taxonomy, voice
+  policy and sustainable cadence, companion to the `E01-blog.md` pillar plan.
+  Fixes two stale bullets in `E01-blog.md` itself (EN was marked out of scope
+  though I-011 shipped it; bylines were marked collective-only).
+
 ### Fixed
 
 - Blog timeline scroll can now reach every post, not just one or two near the
