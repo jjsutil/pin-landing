@@ -1,7 +1,7 @@
 ---
 id: I-026
 type: bug
-status: review
+status: staging
 impact: high
 cost: low
 epic: E01

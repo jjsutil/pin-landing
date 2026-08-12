@@ -3,13 +3,7 @@
 
 # Board — pin-landing
 
-26 issues · **backlog 5 · ready 0 · in-dev 0 · review 1 · staging 20 · production 0**
-
-## review
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
-| I-026 | Blog timeline: the frame must stay full, and the scroll must rest in steps | bug | high | low | E01 | 0d |
+26 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 21 · production 0**
 
 ## staging
 
@@ -35,6 +29,7 @@
 | I-020 | Blog post — OCR: what we learned, and what the literature actually says | feature | high | high | E01 | 1d |
 | I-024 | Blog post — inference & interpretability, in depth (technical series, part 2) | feature | high | high | E01 | 0d |
 | I-025 | Blog post — RAG in depth, where it silently fails (technical series, part 3) | feature | high | high | E01 | 0d |
+| I-026 | Blog timeline: the frame must stay full, and the scroll must rest in steps | bug | high | low | E01 | 0d |
 
 ## backlog
 
@@ -66,11 +61,13 @@ quadrant too** (PR #38, staging, docs-only) — a persona template, the CEO's fi
 author profile, and the editorial calendar that keeps future named-voice posts
 cohesive. **I-023 shipped too** — the blog's first named-founder post, built strictly
 from I-022's persona (no invented facts), published 2026-08-11 with the owner's
-copy approval unchanged from what was drafted. **I-026 sits here, in review** — the
-same timeline surface again: the frame now stays full at both ends (~6 posts, always)
-and the scroll rests in discrete steps. It is a *reversal*, not an increment — it
-deletes I-021's runtime padding and re-accepts, by owner decision, the very defect
-I-021 fixed, because that padding was the empty half-frame.
+copy approval unchanged from what was drafted. **I-026 shipped too** (PR #45,
+staging) — the same timeline surface again: the frame now stays full at both ends
+(~6 posts, always) and the scroll rests in discrete steps. It is a *reversal*, not an
+increment — it deletes I-021's runtime padding and re-accepts, by owner decision, the
+very defect I-021 fixed, because that padding was the empty half-frame. Verified by
+mutation in both directions (restore the padding → the frame checks fail; remove the
+snap → the step check fails).
 **High impact / high cost:** I-020 shipped in this quadrant too — the first post on
 this blog written for an engineering peer instead of a lawyer, and the only one whose
 cost is research rather than writing: every claim carries a citation that was opened
@@ -116,4 +113,4 @@ service) — flagged there for whoever picks it up, not decided.
 
 ## Staleness alerts
 
-None — I-026 entered `review` today (0d, threshold 7d); nothing in `in-dev`.
+None — nothing in `in-dev` or `review`.

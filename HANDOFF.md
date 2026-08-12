@@ -1,5 +1,61 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 12/08, I-026 mergeado (PR #45) — sesión cerrada acá
+
+**Reporte del dueño: la vista timeline debía mostrar siempre ~6 entradas llenando el
+marco, entrando por un extremo y saliendo por el otro; en los extremos mostraba medio
+marco vacío con la primera (o última) entrada al centro. Arreglado y en `main`. Nada
+pendiente de esta unidad.**
+
+**Causa raíz (una, no dos):** `syncTimelinePadding()` — la función que agregó I-021 —
+escribía `padding-top/bottom` igual a **medio viewport** (~228px sobre un marco de
+544px). Ese padding *es* el medio marco vacío. Segundo síntoma del dueño ("el marco
+del carrusel se mueve, debería ser fijo"): la línea divisoria se dibuja sobre el `<ul>`
+(`.blog-timeline-list::before`, `top:0;bottom:0`), así que con ese padding arrancaba en
+la primera fila y terminaba en la última, viajando con el contenido. Borrado el padding,
+la lista es más alta que el marco en toda posición de scroll y la espina lo cubre entero
+— un fix, dos síntomas.
+
+**Decisiones del dueño (12/08), ambas registradas en I-026:**
+
+1. **Tope duro, no loop.** Se le mostraron las dos opciones. Consecuencia aceptada
+   explícitamente: la primera y la última entrada quedan contra los bordes y **nunca
+   llegan al centro**, así que no reciben foco pleno ni la marca de acento. Es el
+   defecto exacto que abrió I-021 — **re-aceptado**, no resuelto. I-021 quedó encabezado
+   como superseded, con fecha, sin reescribir su historia (regla 10).
+2. **Scroll en pasos.** `scroll-snap-type: y proximity` + `scroll-snap-align: center`,
+   **revirtiendo la decisión del 07/08** que sacó el snap por pelearse con el zoom/blur.
+   `proximity` y no `mandatory` es lo que evita la recaída: solo asienta un gesto que ya
+   terminó cerca de una fila, nunca tironea la lista a mitad del scroll. La razón vieja
+   quedó escrita en el comentario del CSS, no borrada.
+
+Detalle no obvio del fix: la primera y la última fila llevan `2.5rem` en su borde
+externo, **igualando el fundido del `mask-image`** — sin eso el fundido cae sobre el
+título de la entrada extrema y queda medio desvanecida de forma permanente, mintiendo
+que hay más contenido arriba/abajo.
+
+Verificado con headless Chrome por CDP sin dependencias (`WebSocket` global de node 22;
+la extensión `claude-in-chrome` no logró capturar en esta sesión — `Script injection
+timed out`, reproducido 4 veces). 16 checks en verde. El check del paso dispara un
+**gesto de rueda real** (`Input.dispatchMouseEvent`): asignar `scrollTop` saltea el motor
+de snap y no probaría nada. **Mutación en las dos direcciones:** devolver el padding →
+fallan 1a (gap 202px), 1b (4 filas), 1c, 1d, 2 y 5 (marca a -228px); sacar el snap →
+falla 4b (43,4px descentrado). De paso quedó cerrado el checkbox de `perf-lite` que
+I-021 había dejado sin marcar. `npx astro check` / `npm run build` /
+`check-gates.sh --base origin/main` en 0, corrido pelado. Evidencia visual: 6 capturas
+en `design/evidence/i026-*` (ES claro y oscuro × top/middle/bottom, recortadas al
+componente).
+
+**Sin revisión independiente:** modo autónomo inactivo; el dueño aprobó el merge
+directamente ("dale mergea todo, aprobado") después de leer el PR. No corrió agente
+revisor ni subagente de fidelidad.
+
+Board y resumen del README regenerados (I-026 → `staging`, 21 en staging / 0 en review).
+Commit directo a `main`, mismo patrón que los checkpoints anteriores de regen de board
+(sin PR, docs-only).
+
+---
+
 ## Checkpoint — 08/08, I-021 mergeado (PR #37) — sesión cerrada acá
 
 **Reporte del dueño: en la vista timeline del blog, el scroll solo llegaba a enfocar
