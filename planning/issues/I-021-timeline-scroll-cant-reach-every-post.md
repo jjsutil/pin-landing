@@ -10,6 +10,16 @@ created: 2026-08-08
 
 # Blog timeline: scroll can only ever centre two posts
 
+> **Superseded by I-026 (owner decision, 2026-08-12).** The fix below —
+> `syncTimelinePadding()`, padding equal to half the viewport height — bought
+> universal focus at the price of a half-empty frame at both ends of the list, which
+> is exactly what its own third acceptance criterion warned against. Shown both
+> options, the owner chose the full frame: the padding is gone, the list stops hard at
+> the first and last post, and those two no longer reach the centre line. **The defect
+> described below is therefore re-accepted, not fixed.** Everything else this issue
+> delivered (the accent mark's alignment with the active row) survives. Kept as
+> written for the history; do not read it as the current behaviour.
+
 `impact: high` — the whole point of the timeline view (I-013/I-016) is browsing
 chronologically by scroll; today most posts are permanently unreachable, which
 defeats the feature on its main surface.
