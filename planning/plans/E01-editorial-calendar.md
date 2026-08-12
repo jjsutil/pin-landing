@@ -21,7 +21,7 @@ list — new posts should extend a pillar's argument, not just share its keyword
 | Fundamentals | What the technology actually is/isn't, no hype | pin Founding Team (collective) | *what-machine-learning-actually-is*, *why-no-tool-has-worked-for-you* |
 | Regulation & professional responsibility | What duty a lawyer using AI actually carries, and what it costs to meet it | pin Founding Team (collective) | *is-it-legal-to-use-ai-for-work* → *how-an-ai-answer-is-verified* (declared series) |
 | Confidentiality & data handling | Where the case file goes, who can read it, under what rules | pin Founding Team (collective) | *what-happens-to-your-case-file-when-you-upload-it* |
-| Technical depth | How the product actually works, for a practitioner evaluating it | Named engineering voice (persona not yet written) | *how-a-scanned-case-file-is-read* (lay version); OCR literature post reserved by I-020 |
+| Technical depth | How the product actually works, for a practitioner evaluating it | pin Founding Team (collective — owner declined a named voice for this pillar, 2026-08-12) | *how-a-scanned-case-file-is-read* (lay version); *ocr-what-we-learned-and-what-the-literature-says* (I-020, technical version) |
 | Company & founder vision | Why pin exists, why this team, why this market first | Alicia Chang Cox, Founder & CEO ([persona](../authors/alicia-chang-cox.md)) | opened by post 7 (I-023) |
 
 ## Voice policy
@@ -69,9 +69,13 @@ already have an owner and a reason to exist.
 
 | # | Post | Pillar | Voice | Status |
 |---|---|---|---|---|
-| 7 | *Why I started pin* (working title) | Company & founder vision | Alicia Chang Cox | I-023, drafted 2026-08-11, `draft: true` pending owner approval |
-| 8 | OCR — what we learned, what the literature says | Technical depth | Named engineering voice (persona not yet written) | I-020, `backlog` |
+| 7 | *Why I started pin* | Company & founder vision | Alicia Chang Cox | I-023, **published** 2026-08-11 |
+| 8 | OCR — what we learned, what the literature says | Technical depth | pin Founding Team (owner decision 2026-08-12: collective, no new persona) | I-020, drafted 2026-08-12, `draft: true` pending owner approval — sourced partly from the private `foja` codebase, first post to do so |
 | 9+ | Not assigned | — | — | picked at the next planning session against this doc's pillar mix, not pre-named here |
+
+Two consecutive posts (7, 8) shipped same-day rather than the ~2-week target — owner's
+explicit call, not a drift from the cadence policy above. Pillars didn't repeat (vision
+→ technical), so the one hard rule (no back-to-back same pillar outside a series) held.
 
 ## Relation to other docs
 
