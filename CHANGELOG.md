@@ -5,13 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Added (blog post 7 — founder's-voice thesis, I-023)
+### Published (blog post 7, I-023)
 
-- Blog post 7, "Why I started pin" / "Por qué empecé pin" (`draft: true`, pending
-  owner approval) — the blog's first named byline, Founder & CEO Alicia Chang Cox,
-  on why pin exists, told through her career pattern (Grab, Uber, Stripe). Every
-  specific fact traces to `planning/authors/alicia-chang-cox.md` (I-022).
-- `translations.ts` — cross-links the new ES/EN slug pair.
+- Blog post 7, "Why I started pin" / "Por qué empecé pin" — the blog's first named
+  byline, Founder & CEO Alicia Chang Cox, on why pin exists, told through her career
+  pattern (Grab, Uber, Stripe). Owner approved the copy in full, no changes;
+  `draft: true → false` in both languages, live at `/blog/`.
 
 ### Added (blog editorial voices + calendar, I-022)
 

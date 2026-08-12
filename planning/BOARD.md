@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-23 issues · **backlog 6 · ready 0 · in-dev 0 · review 1 · staging 16 · production 0**
+23 issues · **backlog 6 · ready 0 · in-dev 0 · review 0 · staging 17 · production 0**
 
 ## staging
 
@@ -25,11 +25,6 @@
 | I-018 | `.claude/repo-conventions.md` still says CI is blocked by billing — it isn't | chore | low | low | — | 1d |
 | I-021 | Blog timeline: scroll can only ever centre two posts | bug | high | low | E01 | 0d |
 | I-022 | Editorial voices — author persona system + editorial calendar | chore | high | low | E01 | 0d |
-
-## review
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
 | I-023 | Blog post 7 — founder's-voice thesis (Alicia Chang Cox) | feature | high | low | E01 | 0d |
 
 ## backlog
@@ -61,9 +56,9 @@ it rendered detached from the focused row — fixed in a follow-up commit on the
 PR and re-verified against fresh screenshots before merging. **I-022 shipped in this
 quadrant too** (PR #38, staging, docs-only) — a persona template, the CEO's first
 author profile, and the editorial calendar that keeps future named-voice posts
-cohesive. **I-023 sits here now, in review** — the blog's first named-founder post,
-built strictly from I-022's persona (no invented facts), two new files plus a
-translation-map entry.
+cohesive. **I-023 shipped too** — the blog's first named-founder post, built strictly
+from I-022's persona (no invented facts), published 2026-08-11 with the owner's
+copy approval unchanged from what was drafted.
 **High impact / high cost:** I-020 — the first post on this blog written for an
 engineering peer instead of a lawyer, and the only one whose cost is research rather
 than writing: every claim carries a citation that has to be opened and checked before
