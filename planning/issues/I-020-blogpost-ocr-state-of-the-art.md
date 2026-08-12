@@ -79,10 +79,23 @@ against three newer open-source tools (no tool names, no exact accuracy numbers 
 lost on Spanish-language handling, two had licensing/dependency blockers), and the
 four real bugs from a documented dirty-scan postmortem (two public, non-confidential
 court filings used as test material — neither the case nor the court is named).
-**Deliberately left out:** exact CER numbers, the specific OCR/VLM engine names, and
+**Deliberately left out:** exact CER/accuracy-rate numbers (the print/handwriting
+split, the classical-vs-VLM CER comparison), the specific OCR/VLM engine names, and
 the specific court/case the test documents came from — all confirmed real in the
 source repo but held back as a conservative default pending the owner's explicit
-sign-off, since this is the first post in this repo sourced from a private codebase
+sign-off, since this is the first post in this repo sourced from a private codebase.
+
+**One specific number is kept, flagged separately (found by independent review,
+2026-08-12):** the post's opening hook — a page that finished OCR at 98% confidence
+while missing a full line of text — restates the real confidence score from the
+dirty-scan postmortem verbatim. Unlike the CER/accuracy numbers above, this single
+figure doesn't reveal the pipeline's accuracy profile or competitive positioning; it
+illustrates one bug (a confidence signal that discarded evidence before averaging),
+which is already described qualitatively in the same post. Kept because it's the
+strongest, most concrete hook in the piece and genericizing it ("high confidence")
+would weaken the post without actually protecting anything sensitive — but this is
+the owner's call, not a default, precisely because it's a real number and the rule
+above says numbers need explicit sign-off.
 rather than from public material or the owner's own dictation.
 
 **Deliverable.** Spanish and English versions (`src/content/blog/es/` and
