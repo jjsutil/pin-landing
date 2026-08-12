@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-26 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 21 · production 0**
+27 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 22 · production 0**
 
 ## staging
 
@@ -30,6 +30,7 @@
 | I-024 | Blog post — inference & interpretability, in depth (technical series, part 2) | feature | high | high | E01 | 0d |
 | I-025 | Blog post — RAG in depth, where it silently fails (technical series, part 3) | feature | high | high | E01 | 0d |
 | I-026 | Blog timeline: the frame must stay full, and the scroll must rest in steps | bug | high | low | E01 | 0d |
+| I-027 | Blog timeline: the focus never reaches the first or the last post | bug | high | low | E01 | 0d |
 
 ## backlog
 
@@ -67,7 +68,11 @@ staging) — the same timeline surface again: the frame now stays full at both e
 increment — it deletes I-021's runtime padding and re-accepts, by owner decision, the
 very defect I-021 fixed, because that padding was the empty half-frame. Verified by
 mutation in both directions (restore the padding → the frame checks fail; remove the
-snap → the step check fails).
+snap → the step check fails). **I-027 shipped right behind it** (PR #46, staging),
+amending the risk I-026 accepted rather than living with it: the focus is now read from
+scroll progress instead of distance to a fixed centre line, so the first and last post
+are focusable and the frame stays full. Its mutation check reproduces the owner's bug
+report exactly — the two posts he named are the two the old code highlighted.
 **High impact / high cost:** I-020 shipped in this quadrant too — the first post on
 this blog written for an engineering peer instead of a lawyer, and the only one whose
 cost is research rather than writing: every claim carries a citation that was opened

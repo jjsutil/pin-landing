@@ -1,5 +1,49 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 12/08, I-027 mergeado (PR #46) — en curso: I-012 (paginación de cards)
+
+**El riesgo que I-026 aceptó llegó a la práctica en la misma sesión: el dueño reportó
+que al scrollear hasta abajo el resaltado quedaba en "16 jul" y arriba en "20 ago" —
+tres posts corto de cada extremo. Arreglado y en `main`.**
+
+**Dónde me equivoqué de marco, y vale registrarlo:** le dije al dueño que marco lleno +
+todas las entradas enfocables + una a la vez solo convivían con un loop infinito. Falso.
+Até el foco a la geometría ("qué fila está más cerca de la línea de centro") y con esa
+premisa sí era imposible. Él insistió — *"Es imposible que no sea posible. Solo hay que
+partir recorriendo desde el inicio en la posición más alta del scroll"* — y tenía razón.
+
+**El fix:** el foco se lee del **progreso del scroll en espacio de índices**,
+`idx = (scrollTop / maxScroll) × (posts − 1)`. 0% = primera entrada, 100% = última. Cero
+geometría de filas, así que además queda inmune a que los títulos envuelvan distinto. El
+precio es que el resaltado baja por el marco en vez de quedarse a altura fija — eso es
+justamente lo que hace alcanzables los extremos. Las paradas de snap salieron de las
+filas a elementos de tamaño cero, una por post, repartidas en todo el recorrido: una
+parada alineada a fila solo existe donde la lista puede scrollear una fila entera (4
+posiciones para 10 posts), por eso cada gesto saltaba de a dos o tres.
+
+**Límite medido, registrado en I-027, NO resuelto:** un tic de rueda son 100px en Chrome
+y el recorrido total son 510px (57px por post), así que con rueda se avanza de a dos
+posts. Siempre descansa *sobre* un post, nunca entre dos. Con trackpad/touch descansa en
+todos. `scroll-snap-stop: always` está puesto y Chrome no lo respeta acá (medido: un
+gesto de 300px cruzó cinco paradas). Igualarlo pediría ~3,5 posts visibles en vez de 6,
+o un scroller propio (track espaciador + lista sticky transformada). No se hizo porque
+cambia el número de entradas que el dueño pidió.
+
+14 checks vía CDP, todos en verde. **La mutación es la evidencia que vale:** devolver el
+foco por línea de centro reporta post 2 arriba y post 7 abajo — exactamente "20 ago" y
+"16 jul", los dos que el dueño nombró. Segunda mutación: sin las paradas, los descansos
+caen entre posts (50/100/150/200) y el post enfocado sobresale 26px del marco.
+`astro check` / `npm run build` / `check-gates.sh` en 0, corrido pelado. Evidencia:
+`design/evidence/i027-*` (ES claro y oscuro × top/middle/bottom).
+
+**Sin revisión independiente** (igual que I-026): modo autónomo inactivo, el dueño
+aprobó el merge directamente tras leer el PR.
+
+**Lo que sigue, ya pedido por el dueño:** paginación para la vista de cards — es I-012,
+hoy en `backlog`, en su propio PR (superficie distinta del timeline).
+
+---
+
 ## Checkpoint — 12/08, I-026 mergeado (PR #45) — sesión cerrada acá
 
 **Reporte del dueño: la vista timeline debía mostrar siempre ~6 entradas llenando el
