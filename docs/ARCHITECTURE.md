@@ -35,7 +35,7 @@ keeping in mind before adding anything.
 | Path | What |
 |---|---|
 | `src/pages/index.astro`, `src/pages/en/index.astro` | The two landing routes (ES default at `/`, EN at `/en/`) |
-| `src/pages/blog/`, `src/pages/en/blog/` | Blog listing + post routes, one tree per locale |
+| `src/pages/blog/`, `src/pages/en/blog/` | Blog routes, one tree per locale: `[...page].astro` (paginated listing), `tema/[tag]/[...page].astro` (`topic/` in EN — paginated per topic), `[slug].astro` (posts) |
 | `src/components/` | One component per landing section (`Hero`, `Figures`, `Ask`, `Thesis`, `Quotes`, `ApplyForm`, `AccessView`, `Header`, `Footer`) plus blog components (`BlogLayout`, `BlogList`) |
 | `src/scripts/main.ts` | **All** client behavior — see below |
 | `src/i18n/index.ts` | ES/EN copy dictionaries, one flat object per locale, keyed by string (`'nav.login'`, `'ac.submit'`, …) |
@@ -140,13 +140,19 @@ between an ES post and its EN counterpart lives in one place,
 literal table so the two directions can't drift apart. `BlogLayout.astro` uses
 this map to link a post to its translation, when one exists.
 
-The listing (`BlogList.astro`, shared by both locales) is a client-side card
-grid with tag-chip filtering and "Ver más/Show more" pagination past 10 posts —
-noted in `I-011` as fine today, a scaling concern past ~20 posts (real
-pagination routes would replace the client-side slice at that point). The same
-component also carries the second browsing mode reached from the icon switch
-(`I-013`): a fixed-height timeline frame, always full, whose list scrolls inside
-it, snaps to a post and drives the zoom/blur focus effect from scroll position.
+The listing (`BlogList.astro`, shared by both locales) is **presentational since
+`I-012`**: the routes fetch and slice, the component renders. Pagination is
+Astro's own `paginate()` at 6 cards per page (`src/content/blog/listing.ts`), so
+a page ships only its own cards instead of hiding the rest with JS, and the
+control between pages is a row of dots. Topics are routes too —
+`/blog/tema/<slug>`, `/en/blog/topic/<slug>`, paginated the same way — because a
+client-side filter over a 6-card page would have searched 6 posts instead of the
+blog; `src/content/blog/tags.ts` maps a tag label to its URL slug and fails the
+build if two tags would collide. The same component also carries the second
+browsing mode reached from the icon switch (`I-013`): a fixed-height timeline
+frame, always full, whose list scrolls inside it, snaps to a post and drives the
+zoom/blur focus effect from scroll progress (`I-026`, `I-027`). The timeline is
+never paginated — it renders the route's whole scope.
 
 ## Build & deploy
 
