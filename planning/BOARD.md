@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-23 issues · **backlog 5 · ready 0 · in-dev 0 · review 1 · staging 17 · production 0**
+23 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 18 · production 0**
 
 ## staging
 
@@ -26,11 +26,6 @@
 | I-021 | Blog timeline: scroll can only ever centre two posts | bug | high | low | E01 | 0d |
 | I-022 | Editorial voices — author persona system + editorial calendar | chore | high | low | E01 | 0d |
 | I-023 | Blog post 7 — founder's-voice thesis (Alicia Chang Cox) | feature | high | low | E01 | 0d |
-
-## review
-
-| id | title | type | impact | cost | epic | age |
-|---|---|---|---|---|---|---|
 | I-020 | Blog post — OCR: what we learned, and what the literature actually says | feature | high | high | E01 | 1d |
 
 ## backlog
@@ -64,12 +59,12 @@ author profile, and the editorial calendar that keeps future named-voice posts
 cohesive. **I-023 shipped too** — the blog's first named-founder post, built strictly
 from I-022's persona (no invented facts), published 2026-08-11 with the owner's
 copy approval unchanged from what was drafted.
-**High impact / high cost:** I-020 — the first post on this blog written for an
-engineering peer instead of a lawyer, and the only one whose cost is research rather
-than writing: every claim carries a citation that has to be opened and checked before
-it is used, and its "what we got wrong" material was sourced from a real read of the
-private `foja` codebase — flagged for extra owner review before publish, since no
-prior post drew from a private source. **I-005** (superseded — see its Gate resolution note), **I-011** —
+**High impact / high cost:** I-020 shipped in this quadrant too — the first post on
+this blog written for an engineering peer instead of a lawyer, and the only one whose
+cost is research rather than writing: every claim carries a citation that was opened
+and checked, and its "what we got wrong" material was sourced from a real read of the
+private `foja` codebase, abstracted, and reviewed/approved by the owner before
+publish — the first post here to draw from a private source. **I-005** (superseded — see its Gate resolution note), **I-011** —
 the structural i18n work: locale-aware content collection, condensed listing, English
 blog. **I-013 shipped in this quadrant** — the timeline view, a second full browsing
 mode (high impact) built on genuinely new interaction code — scroll-driven focus,

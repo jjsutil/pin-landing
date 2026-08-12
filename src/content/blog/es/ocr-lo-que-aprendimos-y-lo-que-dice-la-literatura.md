@@ -5,7 +5,7 @@ excerpt: "Construimos nuestro pipeline de OCR como una cascada enrutada por conf
 publishDate: 2026-08-14
 author: "Equipo fundador de pin"
 tags: ["OCR", "Herramientas de IA", "Ingeniería"]
-draft: true
+draft: false
 readingMinutes: 9
 ---
 

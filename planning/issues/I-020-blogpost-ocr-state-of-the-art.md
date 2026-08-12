@@ -128,6 +128,16 @@ established pattern for every post in this repo. Frontmatter per the existing sc
 - [x] At least one concrete mistake of ours is stated, with what it cost and what
       replaced it — four, from the foja postmortem (see Sourcing above).
 - [x] A reader who never uses pin gets something applicable.
-- [ ] **New — owner reviews what was sourced from the private `foja` repo before
-      `draft` flips to `false`.** Same copy-approval gate every post uses, called out
-      separately here because the source is different from every prior post.
+- [x] **Owner reviews what was sourced from the private `foja` repo before
+      `draft` flips to `false`.** Owner reviewed both the sourcing disclosure and the
+      independent review's blocker (the 98% figure), 2026-08-12: approved the
+      disclosure balance as-is, including keeping "98% confidence, missing a
+      paragraph" as the post's hook.
+
+## Resolution
+
+Published 2026-08-12 (`draft: false` in both languages) — owner reviewed and
+approved, including the private-repo sourcing disclosure and the specific "98%"
+figure flagged by independent review. Live at
+`/blog/ocr-lo-que-aprendimos-y-lo-que-dice-la-literatura/` and
+`/en/blog/ocr-what-we-learned-and-what-the-literature-says/`.

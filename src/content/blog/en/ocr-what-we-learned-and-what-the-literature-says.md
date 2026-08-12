@@ -5,7 +5,7 @@ excerpt: "We built our OCR pipeline as a confidence-routed cascade, benchmarked 
 publishDate: 2026-08-14
 author: "pin Founding Team"
 tags: ["OCR", "AI Tools", "Engineering"]
-draft: true
+draft: false
 readingMinutes: 9
 ---
 
