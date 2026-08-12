@@ -1,5 +1,56 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 12/08, I-012 mergeado (PR #47) — sesión cerrada acá
+
+**Tercera unidad del día sobre el blog, pedida por el dueño mientras se cerraba I-027:
+paginación real para la vista de cards. En `main`, desplegada. Nada pendiente.**
+
+**El punto que decidió el diseño, y que no se ve hasta que lo escribís:** paginar era la
+parte fácil (`paginate()` de Astro, 6 por página). Lo que mandó fue una consecuencia —
+**el filtro de temas dejaba de funcionar**. Filtraba client-side sobre todas las cards
+del DOM; con páginas que traen 6 cards habría filtrado 6 posts en vez del blog. Por eso
+los temas pasaron a ser rutas (`/blog/tema/<slug>`, `/en/blog/topic/<slug>`, paginadas
+igual). No es decoración: es lo que sostiene la paginación. Efecto lateral bueno: un tema
+es ahora una URL compartible, y el estado activo lo lleva `aria-current` en vez de un
+handler.
+
+**Detalle de arquitectura del componente que costó un ida y vuelta:** `BlogList.astro`
+derivaba los chips de `timelinePosts`, lo que obligaba a pasarle todos los posts siempre.
+En una ruta de tema eso es incorrecto en las dos direcciones — el timeline debe achicarse
+al tema, pero la fila de chips **no**, porque es la salida del tema en el que estás. Se
+separaron en dos props (`timelinePosts` = alcance de la ruta, `tags` = todo el blog).
+
+**Decisiones del dueño (12/08):** tamaño de página 6 (dos filas de tres — con 10 posts es
+la primera configuración donde el control se ve: con `PAGE_SIZE = 10` el botón "Ver más"
+no renderizaba nunca); punto activo marcado **solo por color**, elegido explícitamente
+por sobre alargarlo a un segmento; transición nativa `@view-transition` sin JS.
+
+**Riesgos aceptados, en el PR:** la transición aplica a **toda** navegación same-origin
+del sitio, no solo al paginador — es una at-rule de documento y no se acota sin JS; y por
+lo mismo el modo estático por FPS (`perf-lite`) **no puede apagarla**, solo
+`prefers-reduced-motion`. Además, el punto activo depende solo del color (`aria-current`
+cubre a la tecnología asistiva, no a una deficiencia de visión cromática). Sin truncado
+de la fila de puntos: crece un punto cada 6 posts, se escribirá cuando se alargue.
+
+19 checks vía CDP contra el dev server **y** contra el build de producción. Mutación en
+tres direcciones: `PAGE_SIZE = 10` reproduce el comportamiento previo (6 checks en rojo),
+sacar la caja de 24px rompe el assert de blanco de click, sacar `aria-current` rompe el
+de estado. Los checks 4a-4c re-afirman I-013/I-026/I-027 para que este PR no los deshaga
+en silencio. Build: 57 páginas (eran 25). `tagIndex()` tira el build si dos tags
+colisionan en el mismo slug. Evidencia: `design/evidence/i012-*`, tomada contra
+`astro preview` — la primera pasada tenía el dev toolbar de Astro plantado en medio.
+
+**Sin revisión independiente**, igual que I-026 e I-027: modo autónomo inactivo, el dueño
+aprobó los tres merges directamente tras leer cada PR.
+
+**Higiene pendiente, no bloqueante:** `.claude/worktrees/` sigue sin trackear (worktrees
+viejos de sesiones anteriores, deliberadamente fuera de los commits — git los agregaría
+como repos embebidos). Y existe una rama `feat/I-012-blog-pagination` vacía (0 commits
+propios) de una sesión vieja, con worktree en `~/Projects/pin-landing-i012`; esta unidad
+se hizo en `feat/I-012-grid-pagination` para no tocarla. Candidatas a `branch-janitor`.
+
+---
+
 ## Checkpoint — 12/08, I-027 mergeado (PR #46) — en curso: I-012 (paginación de cards)
 
 **El riesgo que I-026 aceptó llegó a la práctica en la misma sesión: el dueño reportó

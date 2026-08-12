@@ -3,7 +3,7 @@
 
 # Board — pin-landing
 
-27 issues · **backlog 5 · ready 0 · in-dev 0 · review 0 · staging 22 · production 0**
+27 issues · **backlog 4 · ready 0 · in-dev 0 · review 0 · staging 23 · production 0**
 
 ## staging
 
@@ -31,12 +31,12 @@
 | I-025 | Blog post — RAG in depth, where it silently fails (technical series, part 3) | feature | high | high | E01 | 0d |
 | I-026 | Blog timeline: the frame must stay full, and the scroll must rest in steps | bug | high | low | E01 | 0d |
 | I-027 | Blog timeline: the focus never reaches the first or the last post | bug | high | low | E01 | 0d |
+| I-012 | Blog pagination doesn't scale past ~20 posts | feature | high | high | E01 | 5d |
 
 ## backlog
 
 | id | title | type | impact | cost | epic | age |
 |---|---|---|---|---|---|---|
-| I-012 | Blog pagination doesn't scale past ~20 posts | feature | low | medium | E01 | 1d |
 | I-014 | Blog listing — pinned/featured ordering | feature | low | low | E01 | 1d |
 | I-015 | Investigate view tracking, for future "most-viewed" ordering | spike | low | high | E01 | 1d |
 | I-017 | Blog timeline: under reduced motion no post is marked at all | bug | low | low | E01 | 1d |
@@ -73,7 +73,13 @@ amending the risk I-026 accepted rather than living with it: the focus is now re
 scroll progress instead of distance to a fixed centre line, so the first and last post
 are focusable and the frame stays full. Its mutation check reproduces the owner's bug
 report exactly — the two posts he named are the two the old code highlighted.
-**High impact / high cost:** I-020 shipped in this quadrant too — the first post on
+**High impact / high cost:** **I-012 shipped here** (PR #47, staging) — reclassified from
+`low`/`medium` when the owner scheduled it on 2026-08-12: the card view now pages for
+real (`paginate()`, 6 per page, dot control) and **topics became routes**, which was
+forced rather than chosen — a client-side filter over a 6-card page would have searched
+6 posts instead of the blog. Page changes animate through native `@view-transition`, no
+JS; that at-rule applies site-wide and cannot be reached by the FPS-based static mode,
+both accepted in the PR. I-020 shipped in this quadrant too — the first post on
 this blog written for an engineering peer instead of a lawyer, and the only one whose
 cost is research rather than writing: every claim carries a citation that was opened
 and checked, and its "what we got wrong" material was sourced from a real read of the
@@ -99,11 +105,10 @@ mechanic (a word swap, ES and EN sets to pick), so it is a copy decision waiting
 him, not an unknown — I-006/I-007/I-009 done,
 I-004 shipped too (PR #33, staging), I-014 (pinned ordering) next up, small and
 independent.
-**Low impact / high cost:** I-012 (real pagination touches the listing's data-fetch
-shape, not just CSS), I-015 (picking and wiring an actual view-tracking mechanism for a
-currently backend-free static site is an architecture decision, not a quick add) — both
-tracked ahead of the pressure that would make them worth doing now; neither is a quick
-win, but neither is urgent either.
+**Low impact / high cost:** I-015 (picking and wiring an actual view-tracking mechanism for a
+currently backend-free static site is an architecture decision, not a quick add) —
+tracked ahead of the pressure that would make it worth doing now; not a quick win, but
+not urgent either. I-012 used to sit here and left the quadrant when it was built.
 
 `impact`/`cost` are binary (`high | low`, `.claude/repo-conventions.md:50-51`) — no
 `medium` tier exists, corrected here after review (I-013, I-015 briefly carried one).
