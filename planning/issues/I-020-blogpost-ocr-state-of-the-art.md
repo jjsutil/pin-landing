@@ -96,7 +96,6 @@ strongest, most concrete hook in the piece and genericizing it ("high confidence
 would weaken the post without actually protecting anything sensitive — but this is
 the owner's call, not a default, precisely because it's a real number and the rule
 above says numbers need explicit sign-off.
-rather than from public material or the owner's own dictation.
 
 **Deliverable.** Spanish and English versions (`src/content/blog/es/` and
 `src/content/blog/en/`), both `draft: true` pending owner approval of the copy — the
