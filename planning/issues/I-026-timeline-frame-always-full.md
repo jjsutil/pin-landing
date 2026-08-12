@@ -37,6 +37,12 @@ the frame's edges and travels with the content — the owner's "el marco del car
 mueve, cuando debería ser fijo". With the padding gone the list is taller than the
 frame at every scroll position, so the spine covers it: no separate fix.
 
+> **Amended by I-027 (same day).** Decision 1's accepted consequence — the first and
+> last post never taking focus — turned out not to be a necessary price: reading the
+> focus from scroll progress instead of from distance to a fixed centre line gets both
+> the full frame and every post focusable. The hard stop stands; the loss of focus at
+> the ends does not. See I-027.
+
 ## Owner decisions (2026-08-12)
 
 1. **Hard stop at the ends, not a loop.** The list stops at the first and last post.

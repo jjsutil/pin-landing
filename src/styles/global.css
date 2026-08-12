@@ -730,7 +730,9 @@ body.on-access main#top, body.on-access footer.site { display: none; }
      extremes. The frame must read full — ~6 posts, always — with posts
      entering and leaving through the mask edges. */
   scrollbar-width: none;
-  scroll-snap-type: y proximity;
+  /* `mandatory` + one stop per post (.blog-timeline-stop, positioned by
+     syncTimelineStops()) is what makes one gesture equal one post. */
+  scroll-snap-type: y mandatory;
   padding: 0;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, black 2.5rem, black calc(100% - 2.5rem), transparent 100%);
@@ -768,8 +770,19 @@ body.on-access main#top, body.on-access footer.site { display: none; }
   position: relative;
   z-index: 1;
   padding: 1.5rem 0;
-  scroll-snap-align: center;
   will-change: transform, filter;
+}
+
+/* Zero-size, invisible snap targets — one per post, spread evenly across the
+   whole scroll range by syncTimelineStops(). The rows can't do this job: a
+   row-aligned stop only exists where the list can actually scroll a row, which
+   with a full frame is 4 positions for 10 posts, so every gesture would skip
+   two or three. `scroll-snap-stop: always` is what forbids a fling from
+   flying past a stop. */
+.blog-timeline-stops { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+.blog-timeline-stop {
+  position: absolute; left: 0; width: 1px; height: 1px;
+  scroll-snap-align: start; scroll-snap-stop: always;
 }
 /* Matches the viewport's mask fade (2.5rem): at either end of the scroll the
    fade must land on empty space, not on the first/last post's own title —
