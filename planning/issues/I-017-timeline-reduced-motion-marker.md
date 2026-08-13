@@ -1,7 +1,7 @@
 ---
 id: I-017
 type: bug
-status: backlog
+status: review
 impact: low
 cost: low
 epic: E01
@@ -60,15 +60,38 @@ equivalent.
 
 ## Acceptance criteria
 
-- [ ] Under `prefers-reduced-motion: reduce`, exactly one row carries `.is-active` at
+- [x] Under `prefers-reduced-motion: reduce`, exactly one row carries `.is-active` at
       any scroll position, and its date reads in the accent colour.
-- [ ] Under `perf-lite` set by the FPS benchmark mid-session, the same holds, and the
+- [x] Under `perf-lite` set by the FPS benchmark mid-session, the same holds, and the
       rows still carry **no** inline `transform`/`filter` (`style.cssText === ''`).
-- [ ] The decision on the accent mark in static mode is recorded in this issue with
+- [x] The decision on the accent mark in static mode is recorded in this issue with
       its one-line reason.
-- [ ] Verified on the real render (both static triggers), not on the diff.
+- [x] Verified on the real render (both static triggers), not on the diff.
 
-## Stopped, pending owner call (2026-08-07)
+## Resolved (2026-08-12)
+
+**Mark stays hidden.** `.is-active`'s colour change on the date and title (already
+existing CSS, unchanged) is signal enough on its own; positioning the mark is exactly
+the per-frame cost static mode exists to avoid, and this issue's own `cost: low`
+never budgeted for it. Owner call, made explicit rather than defaulted — see
+`planning/pr-plans/PR-001-plan.md`.
+
+**Reality note, for whoever reads this after "Stopped" below:** by implementation
+time the focus model had moved on (I-026/I-027) — scroll-progress in index space
+(`idx = (scrollTop / max) × (rows.length − 1)`), not the geometry/`getBoundingClientRect`-
+per-row model this issue was written against, and `clearTimelineFocus()` no longer
+exists (removed as part of this fix — see the PR plan's Reality notes). The mechanical
+scope itself didn't change: `updateTimelineFocus()` still just needed to keep
+computing which row is centred and toggling `.is-active` in static mode instead of
+returning before it.
+
+Implemented, verified against `astro preview` (CDP: `prefers-reduced-motion` emulated
++ `perf-lite` forced mid-session, top/middle/bottom, plus a mutation check
+reintroducing the old early-return to confirm the checks actually catch it), gated,
+and merged in PR-001.
+
+<details>
+<summary>Superseded — "Stopped, pending owner call" (2026-08-07), kept for history</summary>
 
 Picked up this session, timeboxed per the owner's own instruction: implement only if
 mechanical, stop rather than invent the answer if it hits the open decision above.
@@ -83,3 +106,5 @@ issue itself reserves for the owner, not a default I should pick on his behalf.
 **One line to unblock:** "mark stays hidden" or "mark comes back as a static
 segment (no motion, just positioned)". Either answer lets the next session
 implement and ship this in one pass — the mechanical part alone.
+
+</details>
