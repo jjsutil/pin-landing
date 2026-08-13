@@ -1,5 +1,68 @@
 # HANDOFF — pin-landing
 
+## Checkpoint — 12/08, I-017 mergeado (PR #48) — sesión cerrada acá
+
+**El `should` que I-016's review dejó como riesgo aceptado (bajo reduced-motion el
+timeline no marca ningún post) quedó cerrado. En `main`, desplegado. Nada pendiente de
+esta unidad.**
+
+**Verificado contra el código real, no contra el issue** (pedido explícito del dueño al
+arrancar): I-017 se escribió el 07/08 contra el modelo de foco viejo (geometría,
+`getBoundingClientRect()` por fila). Para el 12/08 ese modelo ya no existía —
+I-026/I-027 lo reemplazaron por progreso de scroll en espacio de índices
+(`idx = (scrollTop/max) × (rows.length−1)`). El alcance mecánico no cambió (aplicar
+`.is-active` a la fila centrada en modo estático), pero el código alrededor sí:
+`clearTimelineFocus()`/`timelineFocusCleared` — el latch de "un solo pase" que el
+`early return` viejo necesitaba — quedó **borrado**, no adaptado: con el loop de filas
+corriendo siempre (estático o no), el latch es peso muerto. Detalle: `updateTimelineFocus()`
+ahora calcula `idx`/`active` sin condicionar a `isStatic()`, y solo la escritura de
+`transform`/`filter` por fila se bifurca; `.is-active` se togglea siempre.
+
+**Decisión del dueño (12/08), la que el issue reservaba explícitamente:** la marca de
+acento (`.blog-timeline-fill`) se queda oculta en modo estático — el cambio de color de
+`.is-active` alcanza como señal, y posicionar la marca es justamente el costo por frame
+que el modo estático existe para evitar. No fue un default silencioso: se preguntó antes
+de escribir el plan (`planning/pr-plans/PR-001-plan.md`, primer uso de esa carpeta en
+este repo).
+
+**Gate de UI en autónomo, las dos piezas corridas por agentes frescos, en paralelo:**
+- **Revisión de código independiente — approve-with-nits, 0 blockers.** Confirmó que la
+  rama estática nunca escribe `transform`/`filter`/`opacity` inline (asignar `''`
+  invoca `removeProperty`, `style.cssText` queda `''`), que no quedó código muerto de
+  `clearTimelineFocus`, y trazó a mano que borrar el latch no introduce regresión (el
+  código nuevo es sin estado por llamada, más seguro que el flag que reemplaza). Un
+  `should`: sin cobertura automatizada para la rama estático/animado — el único guardia
+  hoy es el mutation check manual (revertido antes de commitear). Reconocido en
+  accepted-risks del PR, no arreglado — mismo patrón que I-013/I-016/I-026/I-027, que
+  tampoco extrajeron el script del timeline a un módulo testeable.
+- **Fidelidad visual — APPROVE.** 24 combinaciones (ES/EN × claro/oscuro × ambos
+  disparadores estáticos × top/middle/bottom) más un sanity check de que la vista
+  animada no se rompió. Exactamente una fila `.is-active` en cada una, color de acento
+  consistente, cero estilos inline, marca confirmada `display: none`.
+
+**Verificación propia antes de despachar los agentes:** CDP contra `astro preview`
+(headless Chrome + `puppeteer-core`, el patrón ya documentado más abajo en este
+archivo), `prefers-reduced-motion` emulado + `perf-lite` forzado a mitad de sesión, en
+top/middle/bottom. Mutación: reintroducir el `early return` viejo en vivo (no en el
+código) — los tres checks pasan a reportar cero filas `.is-active`, confirmando que el
+check realmente detecta la regresión que dice detectar. `npx astro check` 0 errores,
+`npm run build` 57 páginas, `check-gates.sh --base origin/main` bare exit 0 (dos
+rondas: una antes de la evidencia visual, bloqueada por el paso 8/10; otra después,
+verde).
+
+**Corrección de proceso en el camino, vale registrarla:** puse `status: staging` en el
+issue y el board **antes** de abrir el PR — apurado, mal. El criterio real es `review`
+mientras el PR está abierto y `staging` recién al mergear (`roadmap-board` lo deja
+explícito). Corregido con un commit de más en la rama antes de pedir CI, y el bump a
+`staging` real se hizo después del merge, en un commit docs-only directo a `main` — mismo
+patrón que los checkpoints anteriores de regen de board.
+
+`planning/pr-plans/` es carpeta nueva en este repo — primera vez que se usa la skill
+`pr-plan` acá. El issue I-017 traía "Reality notes" reales que valió la pena escribir
+antes de tocar código: sin ese paso, el plan se habría escrito contra
+`getBoundingClientRect()` por fila, que ya no existe.
+
+
 ## Checkpoint — 12/08, I-012 mergeado (PR #47) — sesión cerrada acá
 
 **Tercera unidad del día sobre el blog, pedida por el dueño mientras se cerraba I-027:
