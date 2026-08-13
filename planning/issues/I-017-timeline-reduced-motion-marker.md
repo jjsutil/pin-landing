@@ -1,7 +1,7 @@
 ---
 id: I-017
 type: bug
-status: staging
+status: review
 impact: low
 cost: low
 epic: E01
