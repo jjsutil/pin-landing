@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed (blog timeline: reduced-motion/perf-lite now marks the centred post, I-017)
+
+- Under `prefers-reduced-motion: reduce` or `perf-lite` (the FPS self-benchmark,
+  I-004), the timeline's centred post carries `.is-active` again — its date and
+  title switch to the accent colour, same CSS the animated view already used. Rows
+  still carry **no** inline `transform`/`filter` in static mode; only the class
+  toggles. Pre-existing since I-013, found by I-016's review, blocked since
+  2026-08-07 on an owner call now resolved: the accent mark itself stays hidden in
+  static mode (repositioning it is exactly the per-frame cost this mode avoids).
+
 ### Changed (blog grid: real pagination and topic routes, I-012)
 
 - The card view is paginated for real: `/blog` and `/blog/2` (plus the EN twins) are
