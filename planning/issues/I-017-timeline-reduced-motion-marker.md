@@ -1,7 +1,7 @@
 ---
 id: I-017
 type: bug
-status: review
+status: staging
 impact: low
 cost: low
 epic: E01
@@ -85,10 +85,12 @@ scope itself didn't change: `updateTimelineFocus()` still just needed to keep
 computing which row is centred and toggling `.is-active` in static mode instead of
 returning before it.
 
-Implemented, verified against `astro preview` (CDP: `prefers-reduced-motion` emulated
-+ `perf-lite` forced mid-session, top/middle/bottom, plus a mutation check
-reintroducing the old early-return to confirm the checks actually catch it), gated,
-and merged in PR-001.
+Implemented per `planning/pr-plans/PR-001-plan.md`, verified against `astro preview`
+(CDP: `prefers-reduced-motion` emulated + `perf-lite` forced mid-session,
+top/middle/bottom, plus a mutation check reintroducing the old early-return to
+confirm the checks actually catch it), gated, independently code-reviewed
+(approve-with-nits) and fidelity-reviewed (APPROVE, 24 combinations), and merged as
+[PR #48](https://github.com/jjsutil/pin-landing/pull/48).
 
 <details>
 <summary>Superseded — "Stopped, pending owner call" (2026-08-07), kept for history</summary>
