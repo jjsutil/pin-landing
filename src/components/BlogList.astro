@@ -277,7 +277,6 @@ const STR =
   const timelineFill = document.getElementById('blog-timeline-fill');
   const timelineStops = document.getElementById('blog-timeline-stops');
   let timelineUpdateQueued = false;
-  let timelineFocusCleared = false;
 
   // Single source of truth for static mode: the `perf-lite` class main.ts puts on
   // <html>, which covers both prefers-reduced-motion and the FPS self-benchmark
@@ -285,35 +284,9 @@ const STR =
   // so a value captured here at parse time would always say "not static".
   const isStatic = () => document.documentElement.classList.contains('perf-lite');
 
-  // Static mode can start mid-session (see above), and by then rows carry inline
-  // transform/filter from earlier passes — bailing without clearing them would
-  // freeze half the list blurred forever. The mark is moved with `transform`
-  // since I-016 (it used to grow via `height`), so that is what has to be reset;
-  // `html.perf-lite` also hides it in CSS, and clearing the inline value keeps
-  // the two from disagreeing if the class is ever removed again.
-  function clearTimelineFocus() {
-    if (!timelineList || !timelineFill) return;
-    for (const row of timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row')) {
-      row.style.transform = '';
-      row.style.filter = '';
-      row.classList.remove('is-active');
-    }
-    timelineFill.style.transform = '';
-  }
-
   function updateTimelineFocus() {
     timelineUpdateQueued = false;
     if (!timelineViewport || !timelineList || !timelineFill) return;
-    if (isStatic()) {
-      if (!timelineFocusCleared) {
-        clearTimelineFocus();
-        timelineFocusCleared = true;
-      }
-      return;
-    }
-    // Re-arm the one-shot clear: static mode can be entered more than once in a
-    // session, and a latched flag would skip the cleanup on the second entry.
-    timelineFocusCleared = false;
     // Focus is a function of scroll PROGRESS in index space, not of distance to
     // a fixed line on screen (I-027). With the frame always full (I-026) the
     // list only travels ~4 row-heights, so a fixed centre line is reachable by
@@ -324,25 +297,44 @@ const STR =
     // vary with title wrap. The highlight consequently travels down the frame
     // as you scroll rather than sitting at a fixed height; that is the trade
     // that makes the ends reachable at all (see the issue for the arithmetic).
+    // Computed unconditionally (static or not, I-017) — which row is centred
+    // doesn't depend on whether the animation runs, only marking it visually does.
     const rows = Array.from(timelineList.querySelectorAll<HTMLLIElement>('.blog-timeline-row'));
     const max = timelineViewport.scrollHeight - timelineViewport.clientHeight;
     const idx = max > 0 ? (timelineViewport.scrollTop / max) * (rows.length - 1) : 0;
     const active = rows[Math.round(idx)] ?? null;
+    const staticMode = isStatic();
 
     rows.forEach((row, i) => {
-      // Linear ramp over one post, then smoothstep so the highlight eases in
-      // and out instead of arriving with a visible kink.
-      const t = Math.max(0, 1 - Math.abs(i - idx));
-      const focus = t * t * (3 - 2 * t);
-      // Half the amplitude the first build shipped (0.978→1.025), owner's call
-      // 2026-08-07: same deviation either side of 1, just half of it. The blur
-      // is what carries the focus; the zoom only has to hint at it.
-      row.style.transform = `scale(${(0.989 + focus * 0.023).toFixed(3)})`;
-      row.style.filter = `blur(${((1 - focus) * 0.9).toFixed(2)}px)`;
+      if (staticMode) {
+        // No inline transform/filter under reduced-motion/perf-lite — that's
+        // the per-frame cost static mode exists to avoid. `.is-active` below
+        // is the only marker (I-017); it drives purely static CSS
+        // (global.css `.blog-timeline-row.is-active ...`), so clearing these
+        // two props is enough, no separate cleanup pass needed on entry.
+        row.style.transform = '';
+        row.style.filter = '';
+      } else {
+        // Linear ramp over one post, then smoothstep so the highlight eases in
+        // and out instead of arriving with a visible kink.
+        const t = Math.max(0, 1 - Math.abs(i - idx));
+        const focus = t * t * (3 - 2 * t);
+        // Half the amplitude the first build shipped (0.978→1.025), owner's call
+        // 2026-08-07: same deviation either side of 1, just half of it. The blur
+        // is what carries the focus; the zoom only has to hint at it.
+        row.style.transform = `scale(${(0.989 + focus * 0.023).toFixed(3)})`;
+        row.style.filter = `blur(${((1 - focus) * 0.9).toFixed(2)}px)`;
+      }
       row.classList.toggle('is-active', row === active);
     });
 
-    if (active) {
+    // The mark stays CSS-hidden in static mode (`html.perf-lite
+    // .blog-timeline-fill`, I-016) — owner call, I-017: `.is-active`'s color
+    // change on the date and title is signal enough, and moving the mark is
+    // exactly the per-frame cost static mode exists to avoid. Leaving it
+    // unpositioned here is safe: the next non-static pass repositions it from
+    // scratch before it's ever visible again.
+    if (active && !staticMode) {
       // Content-space coordinates: the mark is absolutely positioned inside the
       // scrolling viewport, so it scrolls with the list, and the viewport has no
       // padding (I-026) — the list's own origin is the mark's origin.
