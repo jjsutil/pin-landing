@@ -1,4 +1,4 @@
-# pin-landing
+# pin-landing 
 
 Commercial landing page for **pin** (working name) — the case-file reading
 product currently developed as foja. A fully static Astro site: Spanish at `/`,
